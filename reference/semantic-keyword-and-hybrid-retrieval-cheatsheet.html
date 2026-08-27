@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference · Semantic search, keyword search, and hybrid retrieval</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Reference · QualioBot course</p>
+    <h1>Semantic search, keyword search, and hybrid retrieval</h1>
+    <p class="dek">A quick guide to reading the Lesson 5 retrieval comparison.</p>
+    <p class="zh"><span class="zh-label">中文</span> 用于阅读第 5 课检索对比结果的快速参考。</p>
+    <section class="card accent"><h2>One-line rule</h2><p><strong>Before changing the retrieval architecture, measure which signal actually adds the expected source.</strong></p><p class="zh"><strong>一句话规则：</strong>先测量是哪个信号补上了预期来源，再决定是否改动检索架构。</p></section>
+    <section><h2>Glossary</h2><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><strong>Vector search</strong></td><td>Uses embedding similarity to find meaning and paraphrases. Cross-language results depend on the embedding model.</td></tr>
+      <tr><td><strong>Full-text search</strong></td><td>Matches identifiers, names, acronyms, and numbers literally.</td></tr>
+      <tr><td><strong>Cumulative union</strong></td><td>In Lesson 5, the expected source counts as found when its metadata appears in either the vector or full-text results.</td></tr>
+      <tr><td><strong>Hybrid retrieval</strong></td><td>A broader production design that can combine or rerank several signals. This lesson first measures each signal’s contribution to source recall.</td></tr>
+    </tbody></table></section>
+    <section><h2>How to read the table</h2><table><thead><tr><th>Column</th><th>Use this evidence</th><th>Don't claim</th></tr></thead><tbody>
+      <tr><td>Vector result</td><td><code>retrieval.indexes.vector.all</code></td><td>That semantic search produced a correct answer.</td></tr>
+      <tr><td>Full-text result</td><td><code>retrieval.indexes.fulltext.all</code></td><td>That full-text ranking wins for every query.</td></tr>
+      <tr><td>Cumulative union</td><td><code>retrieval.cumulative["vector+fulltext"].all</code></td><td>That summary or graph retrieval contributed; those are separate ablations.</td></tr>
+      <tr><td>Interpretation</td><td>Which expected source was added, duplicated, or is still missing.</td><td>A general architecture decision based on one row.</td></tr>
+    </tbody></table><p class="callout">Always match expected document references against source metadata, not arbitrary chunk text. Otherwise, cross-references can create false hits.</p></section>
+    <section><h2>Decision hints</h2><table><thead><tr><th>Question shape</th><th>Useful first hypothesis</th><th>Next experiment</th></tr></thead><tbody>
+      <tr><td>Exact document ID</td><td>Full-text search may recover what vector search misses.</td><td>Extract the ID, search for it literally, then merge and deduplicate.</td></tr>
+      <tr><td>Cross-lingual concept</td><td>Vector search may help when the embedding model is multilingual.</td><td>Compare the cross-lingual row and verify that the model supports this assumption.</td></tr>
+      <tr><td>Two-document question</td><td>Union recall can be high even when answer quality is low.</td><td>Inspect context assembly and generation after retrieval.</td></tr>
+    </tbody></table></section>
+    <section><h2>Local pointers</h2><ul><li><code>demo/eval.py</code></li><li><code>demo/eval_set.yaml</code></li><li><code>reports/lesson-05-experiment.json</code></li></ul></section>
+    <footer><a href="../lessons/0005-semantic-keyword-and-hybrid-retrieval.html">Lesson 5</a> · <a href="../MISSION.md">Mission</a> · <a href="../RESOURCES.md">Resources</a></footer>
+  </main>
+</body>
+</html>

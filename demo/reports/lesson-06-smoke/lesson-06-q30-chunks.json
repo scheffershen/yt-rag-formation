@@ -1,0 +1,229 @@
+{
+  "question_id": "q30",
+  "question": "Un taux d'accuse de reception de 85 pour cent a la mise en activite - est-ce un probleme, et sous quel delai doit-il etre traite ?",
+  "expected_sources": [
+    "PR-QA-MRD-001",
+    "PR-QA-MRD-009"
+  ],
+  "must_include": [
+    "90 jours"
+  ],
+  "window_chars": 280,
+  "overlap_chars": 40,
+  "metric": "source-window proxy: windows containing both the source reference and every required fact term",
+  "limitation": "This inspects synthetic Markdown source windows. It does not query, change, or reindex the live demo stack.",
+  "source_reports": [
+    {
+      "reference": "PR-QA-MRD-001",
+      "source_path": "corpus\\md\\PR-QA-MRD-001.md",
+      "window_count": 21,
+      "score": {
+        "evidence_identity_windows": [],
+        "evidence_identity_rate": 0.0
+      },
+      "windows": [
+        {
+          "index": 1,
+          "text": "# PR-QA-MRD-001 - Gestion documentaire du systeme qualite",
+          "contains_required_terms": false
+        },
+        {
+          "index": 2,
+          "text": "| Champ | Valeur | Champ | Valeur |\n|---|---|---|---|\n| Reference | PR-QA-MRD-001 | Version | V6 |\n| Type | Procedure | Mise en activite | 2025-02-10 |\n| Entite | Meridian Labs - Assurance Qualite | Redacteur | Sarah Delaunay |\n| Statut | En activite | Approbateur | Marc Villeneu",
+          "contains_required_terms": false
+        },
+        {
+          "index": 3,
+          "text": "n activite | Approbateur | Marc Villeneuve |",
+          "contains_required_terms": false
+        },
+        {
+          "index": 4,
+          "text": "## 1. Objet et domaine d'application",
+          "contains_required_terms": false
+        },
+        {
+          "index": 5,
+          "text": "La presente procedure decrit le cycle de vie des documents du systeme qualite de Meridian Labs : redaction, verification, approbation, diffusion, revision et archivage. Elle s'applique a l'ensemble des collaborateurs, y compris les prestataires intervenant sur les processus quali",
+          "contains_required_terms": false
+        },
+        {
+          "index": 6,
+          "text": "ires intervenant sur les processus qualite.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 7,
+          "text": "## 2. Responsabilites",
+          "contains_required_terms": false
+        },
+        {
+          "index": 8,
+          "text": "- Le redacteur produit la version de travail et renseigne le tableau de revisions.\n- Le verificateur controle la coherence technique et les references croisees.\n- Le Responsable Assurance Qualite approuve le document et declenche sa mise en activite.\n- Chaque manager s'assure de ",
+          "contains_required_terms": false
+        },
+        {
+          "index": 9,
+          "text": " activite.\n- Chaque manager s'assure de l'accuse de reception de ses collaborateurs.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 10,
+          "text": "## 3. Circuit d'approbation\n\nAucun document ne peut etre mis en activite sans l'approbation du Responsable Assurance Qualite. L'approbation est tracee electroniquement dans l'outil de gestion documentaire, avec horodatage et identite de l'approbateur.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 11,
+          "text": "horodatage et identite de l'approbateur.\n\n## 4. Auto-formation et accuse de reception",
+          "contains_required_terms": false
+        },
+        {
+          "index": 12,
+          "text": "4. Auto-formation et accuse de reception\n\nApres approbation, le document est diffuse aux collaborateurs concernes. Ceux-ci disposent d'un delai d'auto-formation de 15 jours ouvres pour prendre connaissance du document et accuser reception avant sa mise en activite.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 13,
+          "text": "ser reception avant sa mise en activite.\n\nPasse ce delai, le manager relance nominativement les collaborateurs n'ayant pas accuse reception. Un taux d'accuse de reception inferieur a 90 pour cent a la date de mise en activite constitue une non-conformite mineure au sens de la procedure PR-QA-MRD-009.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 14,
+          "text": "e au sens de la procedure PR-QA-MRD-009.\n\n## 5. Revision periodique\n\nChaque document du systeme qualite fait l'objet d'une revision periodique tous les 3 ans, ou de facon anticipee en cas d'evolution reglementaire, de reorganisation, ou a la suite d'une action corrective.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 15,
+          "text": ", ou a la suite d'une action corrective.\n\n## 6. Archivage et conservation\n\nLes documents qualite approuves sont archives pendant 10 ans a compter de leur date de retrait. L'archivage est electronique, sur le coffre-fort documentaire decrit dans la procedure PR-ITS-MRD-004.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 16,
+          "text": "decrit dans la procedure PR-ITS-MRD-004.\n\nLa conservation des dossiers individuels de formation des collaborateurs releve de la procedure PR-EXM-MRD-003 et suit une regle distincte.\n\n## 7. Documents externes",
+          "contains_required_terms": false
+        },
+        {
+          "index": 17,
+          "text": "Un document externe (norme, texte reglementaire, exigence client) est enregistre dans le meme referentiel documentaire que les documents internes, avec mention de sa source et de sa date de derniere verification aupres de l'emetteur. Sa revision n'est pas planifiee : elle est dec",
+          "contains_required_terms": false
+        },
+        {
+          "index": 18,
+          "text": "ision n'est pas planifiee : elle est declenchee par la publication d'une nouvelle version par l'emetteur.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 19,
+          "text": "## 8. Documents associes\n\n- PR-QA-MRD-009 - Gestion des non-conformites et des actions correctives (CAPA)\n\n- PR-QA-MRD-012 - Maitrise du changement\n\n- PR-QA-MRD-017 - Maitrise des enregistrements qualite\n\n## Historique des revisions",
+          "contains_required_terms": false
+        },
+        {
+          "index": 20,
+          "text": "nts qualite\n\n## Historique des revisions\n\n| Version | Date | Objet de la revision |\n|---|---|---|\n| V6 | 2025-02-10 | Delai d'auto-formation porte de 10 a 15 jours ouvres |\n| V5 | 2024-04-22 | Ajout du seuil de 90 pour cent d'accuse de reception |\n| V4 | 2023-01-30 | Revision periodique alignee sur 3 ans |",
+          "contains_required_terms": false
+        },
+        {
+          "index": 21,
+          "text": " Revision periodique alignee sur 3 ans |\n\n_Document fictif genere pour une demonstration technique. Meridian Labs est une organisation imaginaire._",
+          "contains_required_terms": false
+        }
+      ]
+    },
+    {
+      "reference": "PR-QA-MRD-009",
+      "source_path": "corpus\\md\\PR-QA-MRD-009.md",
+      "window_count": 17,
+      "score": {
+        "evidence_identity_windows": [],
+        "evidence_identity_rate": 0.0
+      },
+      "windows": [
+        {
+          "index": 1,
+          "text": "# PR-QA-MRD-009 - Gestion des non-conformites et des actions correctives (CAPA)",
+          "contains_required_terms": false
+        },
+        {
+          "index": 2,
+          "text": "| Champ | Valeur | Champ | Valeur |\n|---|---|---|---|\n| Reference | PR-QA-MRD-009 | Version | V4 |\n| Type | Procedure | Mise en activite | 2025-03-03 |\n| Entite | Meridian Labs - Assurance Qualite | Redacteur | Sarah Delaunay |\n| Statut | En activite | Approbateur | Marc Villeneu",
+          "contains_required_terms": false
+        },
+        {
+          "index": 3,
+          "text": "n activite | Approbateur | Marc Villeneuve |",
+          "contains_required_terms": false
+        },
+        {
+          "index": 4,
+          "text": "## 1. Objet\n\nCette procedure definit le traitement des non-conformites detectees en interne ou signalees par un client, ainsi que la conduite des plans d'action correctifs et preventifs.\n\n## 2. Classification",
+          "contains_required_terms": false
+        },
+        {
+          "index": 5,
+          "text": "ifs et preventifs.\n\n## 2. Classification\n\nToute non-conformite est classee majeure ou mineure par le Responsable Assurance Qualite dans les 2 jours ouvres suivant sa detection. Les criteres de classification sont definis dans l'annexe AN-QA-MRD-000.\n\n## 3. Information du client",
+          "contains_required_terms": false
+        },
+        {
+          "index": 6,
+          "text": "QA-MRD-000.\n\n## 3. Information du client\n\nEn cas de non-conformite majeure, le client concerne est informe dans un delai maximum de 24 heures apres la classification. L'information est transmise par ecrit et tracee dans le dossier de la non-conformite.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 7,
+          "text": "ee dans le dossier de la non-conformite.\n\nPour une non-conformite mineure, l'information du client est realisee dans le cadre du reporting mensuel.\n\n## 4. Delais de cloture des plans d'action",
+          "contains_required_terms": false
+        },
+        {
+          "index": 8,
+          "text": " 4. Delais de cloture des plans d'action\n\n| Classification | Delai de cloture | Validation |\n|---|---|---|\n| Non-conformite majeure | 45 jours calendaires | Responsable AQ + Direction |\n| Non-conformite mineure | 90 jours calendaires | Responsable AQ |\n| Observation | Sans delai contraignant | Pilote de processus |",
+          "contains_required_terms": true
+        },
+        {
+          "index": 9,
+          "text": "lai contraignant | Pilote de processus |\n\nTout depassement de delai fait l'objet d'une demande de prolongation motivee, soumise au Responsable Assurance Qualite avant l'echeance initiale.\n\n## 5. Verification d'efficacite",
+          "contains_required_terms": false
+        },
+        {
+          "index": 10,
+          "text": "itiale.\n\n## 5. Verification d'efficacite\n\nL'efficacite de chaque action corrective est verifiee 3 mois apres la cloture du plan d'action. Une action jugee inefficace donne lieu a la reouverture de la non-conformite.\n\n## 6. Escalade",
+          "contains_required_terms": false
+        },
+        {
+          "index": 11,
+          "text": "re de la non-conformite.\n\n## 6. Escalade\n\nLa survenue de plus de 2 non-conformites majeures sur un meme trimestre pour un meme processus declenche une revue exceptionnelle par la Direction et l'ouverture d'un audit interne cible selon PR-QA-MRD-010.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 12,
+          "text": "audit interne cible selon PR-QA-MRD-010.\n\n## 7. Non-conformites d'origine externe",
+          "contains_required_terms": false
+        },
+        {
+          "index": 13,
+          "text": "Une non-conformite peut etre ouverte a partir d'une reclamation client qualifiee selon PR-CLI-MRD-013, d'un ecart releve lors d'un audit fournisseur conduit selon PR-ACH-MRD-007, ou d'une anomalie detectee lors d'une revue de pistes d'audit selon SOP-QA-MRD-015. Le circuit de cla",
+          "contains_required_terms": false
+        },
+        {
+          "index": 14,
+          "text": " selon SOP-QA-MRD-015. Le circuit de classification et de cloture reste identique quelle que soit son origine.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 15,
+          "text": "## 8. Documents associes\n\n- PR-QA-MRD-010 - Programme d'audits internes\n\n- PR-CLI-MRD-013 - Gestion des reclamations clients\n\n- PR-QA-MRD-011 - Revue de direction\n\n## Historique des revisions",
+          "contains_required_terms": false
+        },
+        {
+          "index": 16,
+          "text": "e direction\n\n## Historique des revisions\n\n| Version | Date | Objet de la revision |\n|---|---|---|\n| V4 | 2025-03-03 | Delai de cloture majeur ramene de 60 a 45 jours calendaires |\n| V3 | 2024-02-19 | Ajout de la verification d'efficacite a 3 mois |\n| V2 | 2022-11-08 | Ajout du critere d'escalade trimestriel |",
+          "contains_required_terms": false
+        },
+        {
+          "index": 17,
+          "text": "jout du critere d'escalade trimestriel |\n\n_Document fictif genere pour une demonstration technique. Meridian Labs est une organisation imaginaire._",
+          "contains_required_terms": false
+        }
+      ]
+    }
+  ]
+}

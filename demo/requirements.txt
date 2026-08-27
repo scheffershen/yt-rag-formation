@@ -1,0 +1,6 @@
+# Demo + evaluation tooling. Deliberately independent of api's dependencies so
+# it can run from any interpreter, including one outside the project venv.
+httpx>=0.27
+PyYAML>=6.0
+reportlab>=4.0      # PDF corpus generation only
+rich>=13.0          # optional - console tables degrade to plain text without it

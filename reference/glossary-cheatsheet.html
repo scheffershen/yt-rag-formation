@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG Terminology Glossary — EN/ZH</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Reference · rag-formation course</p>
+    <h1>Terminology glossary — EN / 中文</h1>
+    <p class="dek">Locked English/Chinese term pairs for this course. Every lesson, cheatsheet, and animation uses the exact Chinese wording below — not a synonym — for these five terms.</p>
+    <p class="zh"><span class="zh-label">中文</span> 本課程鎖定的英文/中文對照詞彙。每一課、每份速查表、每支動畫用到下列五個詞時，必須用完全相同的中文措辞，不能用近義詞替換。</p>
+
+    <section class="card accent">
+      <h2>Why this exists</h2>
+      <p>Terminology drift compounds: once a lesson translates "grounding" one way, every later lesson that reuses the concept either repeats the mistake or introduces a second, inconsistent translation. This page is the single source every lesson, cheatsheet, and animation must match. It is a living document — extend it before writing new Chinese content that introduces a term not yet listed here, rather than inventing wording ad hoc.</p>
+      <p class="zh">術語一旦在某一課翻譯定調，後面的課要嘛延用同一個（可能有問題的）譯法，要嘛另創一個不一致的版本，問題會越滾越大。這份表格是所有課程內容、速查表、動畫都必須對齊的唯一依據。它會持續擴充——遇到表格裡還沒收錄的新詞，應該先補進來，再寫進課程內容，而不是臨時自己翻。</p>
+    </section>
+
+    <section>
+      <h2>Locked terms</h2>
+      <p class="zh">鎖定詞彙</p>
+      <table>
+        <thead><tr><th>English</th><th>中文</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Chunking</strong></td>
+            <td>分块</td>
+            <td>Splitting a source document into retrievable windows, with overlap to avoid cutting a fact away from its identifying context (see <a href="../lessons/0006-chunking-and-document-structure.html">Lesson 6</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Reranking</strong></td>
+            <td>重排序</td>
+            <td>Re-sorting a retriever's coarse candidate list using harder signals — exact-ID hits, metadata, cross-encoder scores (see <a href="../lessons/0008-query-handling-and-reranking.html">Lesson 8</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Hallucination</strong></td>
+            <td>幻觉</td>
+            <td>The system answers a question the corpus does not support, instead of refusing or saying it doesn't know (see <a href="../lessons/0012-refusal-uncertainty-and-hallucination-control.html">Lesson 12</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Grounding / grounded</strong></td>
+            <td>有依据</td>
+            <td>An answer is grounded when every claim in it is backed by retrieved evidence the model actually saw (see <a href="../lessons/0001-from-question-to-cited-answer.html">Lesson 1</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Refusal</strong></td>
+            <td>拒答</td>
+            <td>The system declining to answer because the corpus lacks sufficient evidence, rather than guessing (see <a href="../lessons/0003-build-a-trustworthy-evaluation-set.html">Lesson 3</a>, <a href="../lessons/0012-refusal-uncertainty-and-hallucination-control.html">Lesson 12</a>).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Scope and status</h2>
+      <p class="zh">範圍與現狀</p>
+      <ul>
+        <li>Sourced from current usage already committed across lessons 1, 3, 6, 8, and 12 — this page locks existing wording, it does not introduce new translations.</li>
+        <li>English/Chinese only. French is paused course-wide (see <code>rag-formation/CLAUDE.md</code> — "Sequencing"); a French column will be added when French rollout resumes.</li>
+        <li>Five terms today because these are the ones flagged as highest drift-risk (reused across many lessons, and now also baked into animation captions per <code>animations/ANIMATIONS-PLAN.md</code>). Extend this table — don't start a second glossary file — when another term shows the same reuse pattern.</li>
+      </ul>
+    </section>
+
+    <footer><a href="../lessons/0001-from-question-to-cited-answer.html">Lesson 1</a> · <a href="../MISSION.md">Mission</a> · <a href="../RESOURCES.md">Resources</a></footer>
+  </main>
+</body>
+</html>

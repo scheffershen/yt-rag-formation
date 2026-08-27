@@ -1,0 +1,126 @@
+# Isolated demo stack for the Meridian Labs corpus.
+#
+# Deliberately NOT the project stack. Differences that matter for recording:
+#
+#   * its own data directories under ./.data, so demo indexing can never write
+#     into the production volumes at ../../docker/.data
+#   * its own container names, network and datastore ports, so it can run
+#     without colliding with the project stack
+#   * demo-only datastore credentials; the ONLY real secret it consumes is
+#     OPENAI_API_KEY, substituted from demo/.env.demo.local at `up` time (never
+#     from demo/.env, which is a copy of the production Symfony env)
+#
+# The Qdrant dashboard and Meilisearch both serve an empty instance here, so
+# screen-sharing them cannot expose production collection names.
+#
+#   docker compose -f docker-compose.demo.yml up -d --build
+#   docker compose -f docker-compose.demo.yml down          # keeps ./.data
+#   docker compose -f docker-compose.demo.yml down -v       # also drops volumes
+
+name: meridian-demo
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.16.3
+    container_name: meridian-qdrant
+    restart: unless-stopped
+    environment:
+      QDRANT__SERVICE__API_KEY: meridian_demo_key
+    volumes:
+      - ./.data/qdrant:/qdrant/storage
+    ports:
+      - "6433:6333"
+    networks:
+      - meridian
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.11
+    container_name: meridian-meilisearch
+    restart: unless-stopped
+    environment:
+      MEILI_MASTER_KEY: meridian_demo_key
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - ./.data/meilisearch:/meili_data
+    ports:
+      - "7800:7700"
+    networks:
+      - meridian
+
+  postgres:
+    image: apecloud/pgvector:pg16
+    container_name: meridian-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: meridian_demo
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5533:5432"
+    networks:
+      - meridian
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: meridian-redis
+    restart: unless-stopped
+    ports:
+      - "6479:6379"
+    networks:
+      - meridian
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # One-shot: creates the LightRAG tables, then exits. Idempotent, so it is
+  # safe on every `up`. The API waits for it to finish successfully.
+  init-db:
+    build: ../api
+    image: meridian-demo-api:latest
+    container_name: meridian-init-db
+    restart: "no"
+    command: ["uv", "run", "python", "init_db.py"]
+    env_file:
+      - .env.demo
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?set OPENAI_API_KEY in demo/.env.demo.local}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - meridian
+
+  api:
+    build: ../api
+    image: meridian-demo-api:latest
+    container_name: meridian-api
+    restart: unless-stopped
+    env_file:
+      - .env.demo
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?set OPENAI_API_KEY in demo/.env.demo.local}
+    volumes:
+      # Read-only so an in-container ingest run can never modify the corpus.
+      - ./corpus:/corpus:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+    networks:
+      - meridian
+
+networks:
+  meridian:
+    driver: bridge

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trustworthy RAG Evaluation Set</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Reference · QualioBot course</p>
+    <h1>Trustworthy RAG evaluation sets</h1>
+    <p class="dek">A practical checklist for measuring a company chatbot without fooling yourself.</p>
+    <p class="zh"><span class="zh-label">中文</span> 一份可靠的 RAG 评估集：在不自欺的前提下衡量企业聊天机器人。</p>
+
+    <section class="card accent">
+      <h2>The evaluation tuple / 评估五元组</h2>
+      <p><strong>Question + category + expected sources + required facts + expected behavior</strong></p>
+      <p class="zh"><strong>问题 + 类别 + 预期来源 + 必需事实 + 预期行为</strong></p>
+      <p>For an answerable question, the system should give a correct answer grounded in the evidence. For an unanswerable question, it should refuse.</p>
+      <p class="zh">对于可回答问题，预期行为是正确且有依据的答案；对于不可回答问题，预期行为是拒答。</p>
+    </section>
+
+    <section>
+      <h2>What a good set tests</h2>
+      <table>
+        <thead><tr><th>Dimension</th><th>Why it matters</th><th>Meridian demo</th></tr></thead>
+        <tbody>
+          <tr><td>Factual lookup</td><td>Find a precise number, name, date, or requirement.</td><td>35 questions</td></tr>
+          <tr><td>Reference lookup</td><td>Find the exact SOP or document identifier.</td><td>7 questions</td></tr>
+          <tr><td>Multi-hop</td><td>Pull together evidence from more than one document.</td><td>9 questions</td></tr>
+          <tr><td>Cross-lingual</td><td>Match a question with a source written in another language.</td><td>5 questions</td></tr>
+          <tr><td>Acronym</td><td>Resolve domain terms and abbreviations.</td><td>3 questions</td></tr>
+          <tr><td>Unanswerable</td><td>Measure whether the system refuses instead of rewarding a hallucination.</td><td>6 questions</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Ground truth rules</h2>
+      <ol>
+        <li>Every expected source must be present in the corpus.</li>
+        <li>Every required fact must appear literally in an expected source.</li>
+        <li>An unanswerable question must have neither an expected source nor a required fact.</li>
+        <li>Match retrieved sources by metadata, not by arbitrary text in a chunk.</li>
+        <li>Keep the evaluation set unchanged while comparing system changes.</li>
+      </ol>
+      <p class="zh">基本规则：预期来源必须存在；必需事实必须出现在来源中；不可回答问题不能有来源或必需事实；检索匹配应使用元数据而不是任意正文；比较系统改动时保持评估集稳定。</p>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Bad measurement</h3><p>Count a vector result as a hit just because its chunk text mentions the expected document ID.</p><p class="zh">因为向量结果的正文提到了预期文档编号，就把它算作检索成功。</p></div>
+      <div class="card"><h3>Better measurement</h3><p>Count it as a hit only when the source metadata identifies the expected document.</p><p class="zh">只有当结果的来源元数据标识了预期文档时，才算检索成功。</p></div>
+    </section>
+
+    <section>
+      <h2>Trust boundary</h2>
+      <p>An evaluation harness can be wrong and still print a confident-looking percentage. Test the scorer itself with accents, multi-source questions, body-text cross-references, missing citations, and refusals.</p>
+      <p class="zh">评估工具可能是错误的，却仍然输出看似自信的百分比。因此要测试评分器本身：重音符号、多来源问题、正文交叉引用、缺失引用和拒答。</p>
+    </section>
+
+    <footer><a href="../lessons/0003-build-a-trustworthy-evaluation-set.html">Lesson 3</a> · <a href="request-path-cheatsheet.html">Request-path reference</a> · <a href="../MISSION.md">Mission</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+!.env.demo.local.example
+
+# Docker runtime volumes
+demo/.data/
+api/.data/
+
+# Tool caches
+.codebase-memory/
+
+# OS
+.DS_Store
+Thumbs.db

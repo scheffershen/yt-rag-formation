@@ -1,0 +1,610 @@
+# Meridian Labs demo evaluation set
+#
+# Ground truth for the synthetic corpus produced by build_corpus.py.
+# Run `python eval.py verify` after any corpus change - it checks that every
+# expect_sources file exists and that every must_include token really appears
+# in it, so the eval set cannot silently drift away from the documents.
+# 这是由 build_corpus.py 生成的合成语料库的“真值”（ground truth）。
+# 每次修改语料库后，请运行 `python eval.py verify`；该命令会检查
+# 每个 expect_sources 文件是否存在，并确认其中确实包含了所有
+# must_include 标记，从而确保评估集不会在无意间与源文档脱节。
+
+# Fields
+#   id              stable identifier, used in reports
+#   category        factual | reference_lookup | multi_hop | cross_lingual |
+#                   acronym | unanswerable
+#   lang            language of the question (fr / en)
+#   question        the question sent to /api/v1/qa
+#   expect_sources  document references that must be retrieved (empty = none)
+#   must_include    short high-signal tokens expected in a correct answer
+#   expect_answer   reference answer shown to the LLM judge
+#   expect_refusal  true when the system should decline to answer
+
+meta:
+  name: meridian-demo-v1
+  version: 1.1.0
+  corpus: corpus/md
+  notes: >
+    65 questions over 25 synthetic quality-management documents.
+    Six of them are deliberately unanswerable and measure refusal
+    rather than recall.
+  revision_notes:
+    - >
+      1.1.0: narrowed q29 and q56 reference answers to the facts their
+      questions ask for, removing grading-only details that caused unstable
+      judge verdicts for identical system answers.
+
+questions:
+  # ---------------------------------------------------------------- factual
+  - id: q01
+    category: factual
+    lang: fr
+    question: Quel est le delai de cloture d'un plan d'action pour une non-conformite majeure ?
+    expect_sources: [PR-QA-MRD-009]
+    must_include: ["45 jours"]
+    expect_answer: 45 jours calendaires, avec validation du Responsable AQ et de la Direction.
+
+  - id: q02
+    category: factual
+    lang: fr
+    question: Sous quel delai le client doit-il etre informe en cas de non-conformite majeure ?
+    expect_sources: [PR-QA-MRD-009]
+    must_include: ["24 heures"]
+    expect_answer: Dans un delai maximum de 24 heures apres la classification de la non-conformite.
+
+  - id: q03
+    category: factual
+    lang: fr
+    question: Combien de temps les collaborateurs ont-ils pour accuser reception d'un document avant sa mise en activite ?
+    expect_sources: [PR-QA-MRD-001]
+    must_include: ["15 jours"]
+    expect_answer: Un delai d'auto-formation de 15 jours ouvres apres diffusion du document.
+
+  - id: q04
+    category: factual
+    lang: fr
+    question: Quel antivirus est deploye sur le parc informatique ?
+    expect_sources: [PR-EXM-MRD-003]
+    must_include: ["Bitdefender"]
+    expect_answer: Bitdefender GravityZone, administre de facon centralisee par l'equipe Exploitation.
+
+  - id: q05
+    category: factual
+    lang: fr
+    question: Quels sont les prerequis pour etre habilite auditeur interne ?
+    expect_sources: [PR-QA-MRD-010]
+    must_include: ["ISO 19011", "2 audits"]
+    expect_answer: >
+      Formation a l'audit conforme a ISO 19011, participation a 2 audits en observation,
+      independance vis-a-vis du processus audite, et 12 mois d'anciennete minimum.
+
+  - id: q06
+    category: factual
+    lang: fr
+    question: Quels sont les indicateurs de performance du processus d'information medicale ?
+    expect_sources: [PR-MI-MRD-001]
+    must_include: ["95", "8 heures"]
+    expect_answer: >
+      Taux de reponse sous 24 heures superieur ou egal a 95 pour cent, delai moyen de reponse
+      inferieur ou egal a 8 heures, taux de reclamation inferieur a 2 pour cent, tracabilite
+      100 pour cent, satisfaction superieure ou egale a 4,2 sur 5.
+
+  - id: q07
+    category: factual
+    lang: fr
+    question: Quelle est la longueur minimale exigee pour un mot de passe ?
+    expect_sources: [PR-EXM-MRD-003]
+    must_include: ["14 caracteres"]
+    expect_answer: 14 caracteres minimum, avec rotation tous les 12 mois et MFA sur les acces distants.
+
+  - id: q08
+    category: factual
+    lang: fr
+    question: Sous quel delai les acces d'un collaborateur sont-ils supprimes apres son depart ?
+    expect_sources: [PR-ITS-MRD-004]
+    must_include: ["24 heures"]
+    expect_answer: Dans un delai maximum de 24 heures apres le depart effectif.
+
+  - id: q09
+    category: factual
+    lang: fr
+    question: A quelle frequence la revue des habilitations est-elle realisee ?
+    expect_sources: [PR-ITS-MRD-004]
+    must_include: ["6 mois"]
+    expect_answer: Tous les 6 mois, par les proprietaires d'application sous le controle du RSSI.
+
+  - id: q10
+    category: factual
+    lang: fr
+    question: Quelle est la duree de retention des sauvegardes ?
+    expect_sources: [PR-EXM-MRD-003]
+    must_include: ["35 jours"]
+    expect_answer: 35 jours, avec sauvegarde quotidienne incrementale et complete hebdomadaire.
+
+  - id: q11
+    category: factual
+    lang: fr
+    question: Sous quel delai un cas grave de pharmacovigilance doit-il etre transmis a l'autorite competente ?
+    expect_sources: [PR-PV-MRD-002]
+    must_include: ["15 jours"]
+    expect_answer: 15 jours calendaires a compter de la premiere reception de l'information.
+
+  - id: q12
+    category: factual
+    lang: fr
+    question: Quelle version du dictionnaire MedDRA est utilisee pour la codification ?
+    expect_sources: [PR-PV-MRD-002]
+    must_include: ["27.0"]
+    expect_answer: MedDRA version 27.0.
+
+  - id: q13
+    category: factual
+    lang: fr
+    question: Qui est le lead developer de l'equipe Systemes d'Information ?
+    expect_sources: [TEAM-ITS-MRD-001]
+    must_include: ["Camille Renard"]
+    expect_answer: Camille Renard, avec Ines Bouziane comme suppleante.
+
+  - id: q14
+    category: factual
+    lang: fr
+    question: Combien de personnes composent l'equipe Systemes d'Information ?
+    expect_sources: [TEAM-ITS-MRD-001]
+    must_include: ["9 collaborateurs"]
+    expect_answer: 9 collaborateurs au 2 juin 2025.
+
+  - id: q15
+    category: factual
+    lang: fr
+    question: Quels sont le RTO et le RPO retenus pour la plateforme MeridianCore ?
+    expect_sources: [DR_RISKA-ITS-MRD-005]
+    must_include: ["4 heures", "1 heure"]
+    expect_answer: Un RTO de 4 heures et un RPO de 1 heure.
+
+  - id: q16
+    category: factual
+    lang: fr
+    question: Combien de risques ont ete identifies dans l'analyse de risques de MeridianCore, et combien sont majeurs ?
+    expect_sources: [DR_RISKA-ITS-MRD-005]
+    must_include: ["29 risques"]
+    expect_answer: 29 risques identifies, dont 3 majeurs et 7 non bloquants.
+
+  - id: q17
+    category: factual
+    lang: fr
+    question: Quel volume horaire minimal de formation chaque collaborateur doit-il suivre chaque annee ?
+    expect_sources: [PR-RH-MRD-006]
+    must_include: ["21 heures"]
+    expect_answer: 21 heures par an, dont au moins 7 heures consacrees au systeme qualite.
+
+  - id: q18
+    category: factual
+    lang: fr
+    question: Quelle quantite de memoire vive est requise au minimum pour un poste client MeridianCore ?
+    expect_sources: [FT-EXM-MRD-008]
+    must_include: ["16 Go"]
+    expect_answer: 16 Go de memoire vive au minimum, 32 Go recommandes.
+
+  - id: q19
+    category: factual
+    lang: fr
+    question: Combien de temps un acces exceptionnel peut-il rester actif ?
+    expect_sources: [PR-ITS-MRD-004]
+    must_include: ["72 heures"]
+    expect_answer: 72 heures maximum, sur validation du RSSI, avec revocation automatique a echeance.
+
+  - id: q20
+    category: factual
+    lang: fr
+    question: Quand la verification d'efficacite d'une action corrective est-elle realisee ?
+    expect_sources: [PR-QA-MRD-009]
+    must_include: ["3 mois"]
+    expect_answer: 3 mois apres la cloture du plan d'action.
+
+  # ------------------------------------------------------- reference_lookup
+  # Exact-identifier queries: the case where pure vector search degrades,
+  # because embeddings blur alphanumeric document references.
+  - id: q21
+    category: reference_lookup
+    lang: fr
+    question: Que couvre la procedure PR-QA-MRD-010 ?
+    expect_sources: [PR-QA-MRD-010]
+    must_include: ["audit"]
+    expect_answer: Le programme d'audits internes - planification, realisation et suivi.
+
+  - id: q22
+    category: reference_lookup
+    lang: fr
+    question: Quelle est la version en vigueur du document TEAM-ITS-MRD-001 ?
+    expect_sources: [TEAM-ITS-MRD-001]
+    must_include: ["V8"]
+    expect_answer: La version V8, en activite depuis le 2 juin 2025.
+
+  - id: q23
+    category: reference_lookup
+    lang: fr
+    question: Y a-t-il une analyse de risque pour MeridianCore ? Si oui, de quand date-t-elle ?
+    expect_sources: [DR_RISKA-ITS-MRD-005]
+    must_include: ["12 mars 2025"]
+    expect_answer: Oui, le dossier DR_RISKA-ITS-MRD-005, conduit le 12 mars 2025.
+
+  - id: q24
+    category: reference_lookup
+    lang: fr
+    question: Qu'est-ce qui a change entre la V3 et la V4 de PR-QA-MRD-009 ?
+    expect_sources: [PR-QA-MRD-009]
+    must_include: ["45"]
+    expect_answer: Le delai de cloture d'une non-conformite majeure est passe de 60 a 45 jours calendaires.
+
+  - id: q25
+    category: reference_lookup
+    lang: fr
+    question: Quelle procedure decrit la gestion des acces et des habilitations ?
+    expect_sources: [PR-ITS-MRD-004]
+    must_include: ["PR-ITS-MRD-004"]
+    expect_answer: La procedure PR-ITS-MRD-004.
+
+  # --------------------------------------------------------------- multi_hop
+  - id: q26
+    category: multi_hop
+    lang: fr
+    question: >
+      Quelle est la duree de conservation des documents qualite, et celle des dossiers de
+      formation d'un collaborateur ?
+    expect_sources: [PR-QA-MRD-001, PR-EXM-MRD-003]
+    must_include: ["10 ans", "5 ans"]
+    expect_answer: >
+      Les documents qualite sont archives 10 ans a compter de leur retrait (PR-QA-MRD-001) ;
+      les dossiers de formation des collaborateurs sont conserves 5 ans apres le depart
+      du collaborateur (PR-EXM-MRD-003).
+
+  - id: q27
+    category: multi_hop
+    lang: fr
+    question: Que se passe-t-il si un meme processus accumule plus de deux non-conformites majeures dans un trimestre ?
+    expect_sources: [PR-QA-MRD-009, PR-QA-MRD-010]
+    must_include: ["audit"]
+    expect_answer: >
+      Une revue exceptionnelle par la Direction est declenchee et un audit interne cible est
+      ouvert selon PR-QA-MRD-010.
+
+  - id: q28
+    category: multi_hop
+    lang: fr
+    question: Une demande d'information medicale decrivant un effet indesirable - quel circuit suit-elle et sous quel delai ?
+    expect_sources: [PR-MI-MRD-001, PR-PV-MRD-002]
+    must_include: ["pharmacovigilance", "15 jours"]
+    expect_answer: >
+      Elle est transmise sans delai au service de pharmacovigilance (PR-MI-MRD-001) puis
+      traitee selon PR-PV-MRD-002 : accuse de reception sous 2 jours ouvres et transmission
+      a l'autorite sous 15 jours calendaires si le cas est grave.
+
+  - id: q29
+    category: multi_hop
+    lang: fr
+    question: Quelle mesure technique couvre le risque de perte de disponibilite de la base de donnees, et ou est-elle decrite ?
+    expect_sources: [DR_RISKA-ITS-MRD-005, PR-EXM-MRD-003]
+    must_include: ["restauration"]
+    expect_answer: Un test de restauration trimestriel, decrit dans PR-EXM-MRD-003.
+
+  - id: q30
+    category: multi_hop
+    lang: fr
+    question: Un taux d'accuse de reception de 85 pour cent a la mise en activite - est-ce un probleme, et sous quel delai doit-il etre traite ?
+    expect_sources: [PR-QA-MRD-001, PR-QA-MRD-009]
+    must_include: ["90 jours"]
+    expect_answer: >
+      Oui : en dessous de 90 pour cent c'est une non-conformite mineure (PR-QA-MRD-001),
+      dont le plan d'action doit etre clos sous 90 jours calendaires (PR-QA-MRD-009).
+
+  - id: q31
+    category: multi_hop
+    lang: fr
+    question: Quelles anomalies detectees lors de la revue des pistes d'audit doivent-elles etre traitees, et selon quelle procedure ?
+    expect_sources: [SOP-QA-MRD-015, PR-QA-MRD-009]
+    must_include: ["PR-QA-MRD-009"]
+    expect_answer: >
+      Toute anomalie relevee lors de la revue mensuelle des pistes d'audit est ouverte en
+      non-conformite et traitee selon PR-QA-MRD-009.
+
+  # ----------------------------------------------------------- cross_lingual
+  - id: q32
+    category: cross_lingual
+    lang: en
+    question: Which antivirus solution protects the workstations, and how often are its signatures updated?
+    expect_sources: [PR-EXM-MRD-003]
+    must_include: ["Bitdefender", "4 heures"]
+    expect_answer: Bitdefender GravityZone, with signatures updated automatically every 4 hours.
+
+  - id: q33
+    category: cross_lingual
+    lang: en
+    question: How long must a corrective action plan for a major non-conformity take to close?
+    expect_sources: [PR-QA-MRD-009]
+    must_include: ["45"]
+    expect_answer: 45 calendar days.
+
+  - id: q34
+    category: cross_lingual
+    lang: fr
+    question: Pendant combien de temps les enregistrements electroniques GxP sont-ils conserves ?
+    expect_sources: [SOP-QA-MRD-015]
+    must_include: ["15 years"]
+    expect_answer: 15 ans a compter de leur creation (15 years from the date of creation).
+
+  - id: q35
+    category: cross_lingual
+    lang: fr
+    question: A quelle frequence les pistes d'audit des systemes GxP sont-elles revues ?
+    expect_sources: [SOP-QA-MRD-015]
+    must_include: ["monthly"]
+    expect_answer: Mensuellement, par le proprietaire du systeme (monthly audit trail review).
+
+  # ----------------------------------------------------------------- acronym
+  - id: q36
+    category: acronym
+    lang: fr
+    question: Que signifie l'acronyme CAPA ?
+    expect_sources: [AN-QA-MRD-000]
+    must_include: ["Corrective"]
+    expect_answer: Corrective And Preventive Action.
+
+  - id: q37
+    category: acronym
+    lang: fr
+    question: Que veut dire RSSI, et qui occupe ce role ?
+    expect_sources: [AN-QA-MRD-000, TEAM-ITS-MRD-001]
+    must_include: ["Julien Kessler"]
+    expect_answer: >
+      Responsable de la Securite des Systemes d'Information ; le role est porte par
+      Julien Kessler, egalement Directeur des Systemes d'Information.
+
+  - id: q38
+    category: acronym
+    lang: en
+    question: What does ALCOA+ stand for in the data integrity procedure?
+    expect_sources: [SOP-QA-MRD-015, AN-QA-MRD-000]
+    must_include: ["Attributable"]
+    expect_answer: >
+      Attributable, Legible, Contemporaneous, Original, Accurate, plus Complete, Consistent,
+      Enduring and Available.
+
+  # ------------------------------------------------------------ unanswerable
+  # Nothing in the corpus supports these. A correct system declines.
+  - id: q39
+    category: unanswerable
+    lang: fr
+    question: Quel est le montant du budget informatique 2025 de Meridian Labs ?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that the indexed documents do not contain this information.
+
+  - id: q40
+    category: unanswerable
+    lang: fr
+    question: Combien de jours de conges payes un collaborateur acquiert-il par an ?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that the indexed documents do not contain this information.
+
+  - id: q41
+    category: unanswerable
+    lang: fr
+    question: Quelle est la procedure de rappel de lot en cas de defaut produit ?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that no recall procedure is present in the indexed documents.
+
+  - id: q42
+    category: unanswerable
+    lang: en
+    question: Who is the Chief Financial Officer of Meridian Labs?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that the indexed documents do not name a CFO.
+
+  - id: q43
+    category: unanswerable
+    lang: fr
+    question: Quel est le tarif facture pour une prestation d'information medicale ?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that pricing information is not in the indexed documents.
+
+  - id: q44
+    category: unanswerable
+    lang: fr
+    question: Quelle est la duree de garantie constructeur du materiel informatique fourni aux collaborateurs ?
+    expect_sources: []
+    must_include: []
+    expect_refusal: true
+    expect_answer: The system should state that warranty terms are not covered by the indexed documents.
+
+  # ---------------------------------------------------- new documents (q45+)
+  # Cover the 12 documents added when the corpus was expanded beyond the
+  # original 13, so every document is reachable by at least one question.
+
+  - id: q45
+    category: factual
+    lang: fr
+    question: A quelle frequence un fournisseur classe critique est-il reevalue ?
+    expect_sources: [PR-ACH-MRD-007]
+    must_include: ["Annuelle"]
+    expect_answer: Annuellement, contre tous les 3 ans pour un fournisseur standard.
+
+  - id: q46
+    category: factual
+    lang: fr
+    question: Sous quel delai un fournisseur critique doit-il notifier un incident de securite a Meridian Labs ?
+    expect_sources: [PR-ACH-MRD-007]
+    must_include: ["48 heures"]
+    expect_answer: 48 heures, clause contractuelle obligatoire pour tout fournisseur critique.
+
+  - id: q47
+    category: factual
+    lang: fr
+    question: Sous quel delai une reclamation client critique doit-elle etre accusee reception ?
+    expect_sources: [PR-CLI-MRD-013]
+    must_include: ["4 heures"]
+    expect_answer: 4 heures.
+
+  - id: q48
+    category: factual
+    lang: fr
+    question: Sous quel delai le client recoit-il une reponse formelle a une reclamation critique ?
+    expect_sources: [PR-CLI-MRD-013]
+    must_include: ["10 jours"]
+    expect_answer: 10 jours ouvres.
+
+  - id: q49
+    category: factual
+    lang: fr
+    question: A quelle frequence se tient la revue de direction du systeme qualite ?
+    expect_sources: [PR-QA-MRD-011]
+    must_include: ["semestrielle"]
+    expect_answer: Semestrielle, soit deux fois par an.
+
+  - id: q50
+    category: factual
+    lang: fr
+    question: Sous quel delai l'efficacite d'un changement majeur est-elle verifiee apres sa mise en oeuvre ?
+    expect_sources: [PR-QA-MRD-012]
+    must_include: ["60 jours"]
+    expect_answer: 60 jours calendaires apres la mise en oeuvre.
+
+  - id: q51
+    category: factual
+    lang: fr
+    question: Combien de temps un compte-rendu d'audit interne est-il conserve ?
+    expect_sources: [PR-QA-MRD-017]
+    must_include: ["10 ans"]
+    expect_answer: 10 ans.
+
+  - id: q52
+    category: factual
+    lang: fr
+    question: Quel est l'objectif de reprise (RTO) retenu pour la messagerie et les outils collaboratifs ?
+    expect_sources: [PR-EXM-MRD-014]
+    must_include: ["8 heures"]
+    expect_answer: 8 heures, avec un RPO de 4 heures.
+
+  - id: q53
+    category: factual
+    lang: fr
+    question: Sous quel delai un incident de securite critique doit-il etre pris en charge ?
+    expect_sources: [PR-ITS-MRD-016]
+    must_include: ["1 heure"]
+    expect_answer: 1 heure.
+
+  - id: q54
+    category: factual
+    lang: fr
+    question: Sous quel delai le Delegue a la Protection des Donnees doit-il etre notifie d'un incident impliquant des donnees personnelles ?
+    expect_sources: [PR-ITS-MRD-016]
+    must_include: ["24 heures"]
+    expect_answer: 24 heures.
+
+  - id: q55
+    category: factual
+    lang: fr
+    question: Combien de temps avant l'arrivee d'un nouveau collaborateur ses acces doivent-ils etre demandes ?
+    expect_sources: [PR-RH-MRD-018]
+    must_include: ["5 jours"]
+    expect_answer: Au moins 5 jours ouvres avant l'arrivee.
+
+  - id: q56
+    category: factual
+    lang: fr
+    question: Combien de personnes composent l'equipe Assurance Qualite de Meridian Labs ?
+    expect_sources: [TEAM-QA-MRD-020]
+    must_include: ["4 collaborateurs"]
+    expect_answer: 4 collaborateurs.
+
+  - id: q57
+    category: factual
+    lang: fr
+    question: Qui occupe le poste de qualiticien processus au sein de l'equipe Assurance Qualite ?
+    expect_sources: [TEAM-QA-MRD-020]
+    must_include: ["Farid Amrani"]
+    expect_answer: Farid Amrani.
+
+  - id: q58
+    category: factual
+    lang: fr
+    question: Combien de risques ont ete identifies dans l'analyse de risques du processus de gestion documentaire ?
+    expect_sources: [DR_RISKA-QA-MRD-022]
+    must_include: ["14 risques"]
+    expect_answer: 14 risques identifies, dont 2 majeurs.
+
+  - id: q59
+    category: factual
+    lang: fr
+    question: Combien de categories compte la base de connaissances medicale de Meridian Labs ?
+    expect_sources: [PR-MI-MRD-023]
+    must_include: ["4 categories"]
+    expect_answer: 4 categories.
+
+  - id: q60
+    category: reference_lookup
+    lang: fr
+    question: Que couvre la procedure PR-QA-MRD-012 ?
+    expect_sources: [PR-QA-MRD-012]
+    must_include: ["changement"]
+    expect_answer: La maitrise du changement - classification, analyse d'impact et circuit de validation.
+
+  - id: q61
+    category: reference_lookup
+    lang: fr
+    question: Quelle procedure decrit la qualification et l'evaluation des fournisseurs chez Meridian Labs ?
+    expect_sources: [PR-ACH-MRD-007]
+    must_include: ["PR-ACH-MRD-007"]
+    expect_answer: La procedure PR-ACH-MRD-007.
+
+  - id: q62
+    category: multi_hop
+    lang: fr
+    question: >
+      Un fournisseur critique est note en dessous de 5 sur 10 deux annees consecutives - que
+      se passe-t-il, et quelle instance valide la decision ?
+    expect_sources: [PR-ACH-MRD-007, PR-QA-MRD-011]
+    must_include: ["revue de direction"]
+    expect_answer: >
+      Il peut etre suspendu de la liste des fournisseurs qualifies (PR-ACH-MRD-007) ; la
+      decision est validee en revue de direction (PR-QA-MRD-011).
+
+  - id: q63
+    category: multi_hop
+    lang: fr
+    question: >
+      Une reclamation client critique donne-t-elle lieu a une non-conformite, et sous quel
+      delai le client recoit-il une reponse ?
+    expect_sources: [PR-CLI-MRD-013, PR-QA-MRD-009]
+    must_include: ["10 jours"]
+    expect_answer: >
+      Oui, elle donne lieu a l'ouverture d'une non-conformite (PR-QA-MRD-009) ; la reponse
+      formelle au client est transmise sous 10 jours ouvres (PR-CLI-MRD-013).
+
+  - id: q64
+    category: multi_hop
+    lang: fr
+    question: >
+      Un incident de securite critique impliquant des donnees personnelles - sous quel delai
+      le DPO est-il notifie, et cet incident donne-t-il lieu a une non-conformite ?
+    expect_sources: [PR-ITS-MRD-016, PR-QA-MRD-009]
+    must_include: ["24 heures"]
+    expect_answer: >
+      Le DPO est notifie sous 24 heures (PR-ITS-MRD-016) ; l'incident donne lieu a une
+      non-conformite lorsqu'il revele une defaillance de controle (PR-QA-MRD-009).
+
+  - id: q65
+    category: cross_lingual
+    lang: fr
+    question: En combien de jours ouvres un signal de securite potentiel doit-il etre evalue par la pharmacovigilance ?
+    expect_sources: [SOP-PV-MRD-019]
+    must_include: ["5 working days"]
+    expect_answer: 5 working days (5 jours ouvres) apres detection du signal.

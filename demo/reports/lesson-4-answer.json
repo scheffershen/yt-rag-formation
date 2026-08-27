@@ -1,0 +1,3533 @@
+{
+  "tag": "lesson-4-answer",
+  "run_at": "2026-08-15T19:28:55+00:00",
+  "config": {
+    "api": "http://localhost:8000",
+    "workspace": "meridian_demo",
+    "mode": "answer",
+    "topk": 5,
+    "graph_topk": 20,
+    "similarity_threshold": 0.2,
+    "summary_threshold": 0.2,
+    "model": null,
+    "judge_model": "gpt-4o-mini",
+    "eval_set": "eval_set.yaml"
+  },
+  "summary": {
+    "questions": 65,
+    "answerable": 59,
+    "unanswerable": 6,
+    "answer": {
+      "scored": 65,
+      "errors": 0,
+      "verdicts": {
+        "correct": 43,
+        "partial": 15,
+        "incorrect": 7,
+        "error": 0,
+        "skipped": 0
+      },
+      "strict_accuracy_pct": 66.2,
+      "lenient_accuracy_pct": 89.2,
+      "source_hit_pct": 91.5,
+      "keyword_pct": 72.0,
+      "refusal_accuracy_pct": 83.3,
+      "hallucination_pct": 16.7,
+      "latency_p50_s": 3.41,
+      "latency_p95_s": 4.95,
+      "by_category": {
+        "acronym": {
+          "n": 3,
+          "correct": 3,
+          "pct": 100.0
+        },
+        "cross_lingual": {
+          "n": 5,
+          "correct": 5,
+          "pct": 100.0
+        },
+        "factual": {
+          "n": 35,
+          "correct": 22,
+          "pct": 62.9
+        },
+        "multi_hop": {
+          "n": 9,
+          "correct": 3,
+          "pct": 33.3
+        },
+        "reference_lookup": {
+          "n": 7,
+          "correct": 5,
+          "pct": 71.4
+        },
+        "unanswerable": {
+          "n": 6,
+          "correct": 5,
+          "pct": 83.3
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "q01",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel est le delai de cloture d'un plan d'action pour une non-conformite majeure ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le délai de clôture d'un plan d'action pour une non-conformité majeure est de 45 jours calendaires [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 2.615,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-010.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing validation requirement from the Responsible AQ and Direction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 5,
+          "graph_context_chars": 74067,
+          "total_context_chars": 20750,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2605,
+            "vector": 5819,
+            "fulltext": 6172,
+            "graph": 6019
+          },
+          "context_items_included": 16
+        }
+      }
+    },
+    {
+      "id": "q02",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai le client doit-il etre informe en cas de non-conformite majeure ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le client doit être informé en cas de non-conformité majeure dans un délai maximum de 24 heures après la classification de celle-ci [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 2.515,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact accurately without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 65110,
+          "total_context_chars": 14575,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2643,
+            "vector": 5819,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q03",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps les collaborateurs ont-ils pour accuser reception d'un document avant sa mise en activite ?",
+      "expect_sources": [
+        "PR-QA-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les collaborateurs ont un délai de 15 jours pour accuser réception d'un document avant sa mise en activité [Source: PR-QA-MRD-001.pdf].",
+        "latency_s": 2.773,
+        "sources": [
+          "PR-QA-MRD-001.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-QA-MRD-017.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of a 15-day deadline accurately."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 5,
+          "graph_context_chars": 68805,
+          "total_context_chars": 21186,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2701,
+            "vector": 6162,
+            "fulltext": 6169,
+            "graph": 6019
+          },
+          "context_items_included": 16
+        }
+      }
+    },
+    {
+      "id": "q04",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel antivirus est deploye sur le parc informatique ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'antivirus déployé sur le parc informatique est Bitdefender GravityZone, qui est administré de manière centralisée par l'équipe Exploitation [Source: PR-EXM-MRD-003.pdf].",
+        "latency_s": 3.362,
+        "sources": [
+          "PR-EXM-MRD-003.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-QA-MRD-017.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key facts without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 60605,
+          "total_context_chars": 14993,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2697,
+            "vector": 4915,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q05",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont les prerequis pour etre habilite auditeur interne ?",
+      "expect_sources": [
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Pour être habilité auditeur interne chez Meridian Labs, un collaborateur doit satisfaire aux prérequis suivants :\n\n1. Avoir suivi une formation à l'audit conforme à la norme ISO 19011.\n2. Avoir participé à 2 audits en observation auprès d'un auditeur habilité.\n3. Être indépendant du processus audité, sans lien hiérarchique avec les audits.\n4. Avoir une ancienneté minimale de 12 mois dans l'organisation.\n\nL'habilitation d'auditeur interne est valable 3 ans, et son maintien est conditionné à la réalisation d'au moins un audit par an [Source: PR-QA-MRD-010.pdf].",
+        "latency_s": 2.954,
+        "sources": [
+          "PR-QA-MRD-010.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "All key prerequisites are accurately stated without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 63192,
+          "total_context_chars": 16185,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2645,
+            "vector": 6161,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q06",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont les indicateurs de performance du processus d'information medicale ?",
+      "expect_sources": [
+        "PR-MI-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les indicateurs de performance du processus d'information médicale chez Meridian Labs incluent :\n\n1. Taux de réponse sous 24 heures : supérieur ou égal à 95 %.\n2. Délai moyen de réponse : inférieur ou égal à 8 heures.\n3. Taux de réclamation : inférieur à 2 %.\n4. Taux de traçabilité des demandes : 100 %.\n5. Satisfaction déclarée des demandeurs : à évaluer.\n\nCes indicateurs sont revus mensuellement en comité qualité [Source: PR-MI-MRD-001.pdf].",
+        "latency_s": 3.327,
+        "sources": [
+          "PR-MI-MRD-001.pdf",
+          "PR-MI-MRD-023.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-QA-MRD-011.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing satisfaction score of 4.2 on 5."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 3,
+          "graph_context_chars": 65759,
+          "total_context_chars": 18666,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2647,
+            "vector": 6166,
+            "fulltext": 3703,
+            "graph": 6019
+          },
+          "context_items_included": 14
+        }
+      }
+    },
+    {
+      "id": "q07",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle est la longueur minimale exigee pour un mot de passe ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La longueur minimale exigée pour un mot de passe est de 14 caractères [Source: PR-EXM-MRD-003.pdf].",
+        "latency_s": 3.428,
+        "sources": [
+          "PR-EXM-MRD-003.pdf",
+          "FT-EXM-MRD-008.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing details on rotation and MFA requirements."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 59126,
+          "total_context_chars": 16078,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2744,
+            "vector": 5955,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q08",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai les acces d'un collaborateur sont-ils supprimes apres son depart ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les accès d'un collaborateur quittant l'organisation sont supprimés dans un délai maximum de 24 heures après son départ effectif [Source: PR-ITS-MRD-004.pdf].",
+        "latency_s": 3.104,
+        "sources": [
+          "PR-ITS-MRD-004.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-017.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact with no contradictions."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 5,
+          "graph_context_chars": 59793,
+          "total_context_chars": 19910,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2689,
+            "vector": 6162,
+            "fulltext": 4905,
+            "graph": 6019
+          },
+          "context_items_included": 16
+        }
+      }
+    },
+    {
+      "id": "q09",
+      "category": "factual",
+      "lang": "fr",
+      "question": "A quelle frequence la revue des habilitations est-elle realisee ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La revue des habilitations est réalisée tous les 6 mois [Source: PR-ITS-MRD-004.pdf].",
+        "latency_s": 2.106,
+        "sources": [
+          "PR-RH-MRD-006.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-MI-MRD-023.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of application owners and RSSI control."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 64420,
+          "total_context_chars": 16151,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2610,
+            "vector": 6161,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q10",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle est la duree de retention des sauvegardes ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La durée de conservation des enregistrements qualité de Meridian Labs est spécifiée dans la procédure PR-QA-MRD-017, mais le contexte ne fournit pas de détails précis sur cette durée. Je ne sais pas basée sur les données indexées.",
+        "latency_s": 4.113,
+        "sources": [
+          "PR-QA-MRD-017.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-CLI-MRD-013.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "35 jours"
+          ]
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "Does not provide the specified duration of retention."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 67598,
+          "total_context_chars": 16022,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2691,
+            "vector": 5952,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q11",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai un cas grave de pharmacovigilance doit-il etre transmis a l'autorite competente ?",
+      "expect_sources": [
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un cas grave de pharmacovigilance doit être transmis à l'autorité compétente dans un délai de 15 jours calendaires. Si le cas est grave et inattendu, le délai est réduit à 7 jours calendaires [Source: PR-PV-MRD-002.pdf].",
+        "latency_s": 3.273,
+        "sources": [
+          "PR-PV-MRD-002.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "SOP-PV-MRD-019.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Correctly states 15 days but adds unnecessary detail about unexpected cases."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 60737,
+          "total_context_chars": 16153,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2611,
+            "vector": 6162,
+            "fulltext": 1235,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q12",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle version du dictionnaire MedDRA est utilisee pour la codification ?",
+      "expect_sources": [
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La version du dictionnaire MedDRA utilisée pour la codification est la version 27.0 [Source: PR-PV-MRD-002.pdf].",
+        "latency_s": 2.457,
+        "sources": [
+          "PR-PV-MRD-002.pdf",
+          "PR-MI-MRD-023.pdf",
+          "PR-MI-MRD-001.pdf",
+          "AN-QA-MRD-000.pdf",
+          "PR-CLI-MRD-013.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly states the MedDRA version as 27.0 without contradictions."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 63855,
+          "total_context_chars": 13888,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2484,
+            "vector": 5291,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q13",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Qui est le lead developer de l'equipe Systemes d'Information ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le lead developer de l'équipe Systèmes d'Information est Camille Renard [Source: TEAM-ITS-MRD-001.pdf].",
+        "latency_s": 3.084,
+        "sources": [
+          "TEAM-ITS-MRD-001.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-EXM-MRD-003.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of Ines Bouziane as supplante."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 96345,
+          "total_context_chars": 13972,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2556,
+            "vector": 5303,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q14",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de personnes composent l'equipe Systemes d'Information ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'équipe Systèmes d'Information de Meridian Labs compte 9 collaborateurs au 2 juin 2025 [Source: TEAM-ITS-MRD-001.pdf].",
+        "latency_s": 3.866,
+        "sources": [
+          "TEAM-ITS-MRD-001.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "SOP-PV-MRD-019.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 9 collaborators without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 90366,
+          "total_context_chars": 17342,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2556,
+            "vector": 6168,
+            "fulltext": 2470,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q15",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont le RTO et le RPO retenus pour la plateforme MeridianCore ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le RTO (Recovery Time Objective) retenu pour la plateforme MeridianCore est de 4 heures, et le RPO (Recovery Point Objective) est de 1 heure, ces objectifs étant vérifiés annuellement [Source: DR_RISKA-ITS-MRD-005.pdf].",
+        "latency_s": 3.413,
+        "sources": [
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "FT-EXM-MRD-008.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "AN-QA-MRD-000.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States both RTO and RPO accurately without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 66160,
+          "total_context_chars": 16768,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2695,
+            "vector": 5449,
+            "fulltext": 2476,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q16",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de risques ont ete identifies dans l'analyse de risques de MeridianCore, et combien sont majeurs ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Dans l'analyse de risques de la plateforme MeridianCore, 29 risques ont été identifiés, dont 3 sont considérés comme majeurs [Source: DR_RISKA-ITS-MRD-005.pdf].",
+        "latency_s": 3.114,
+        "sources": [
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly states the number of identified risks and major risks."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 53588,
+          "total_context_chars": 14833,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2545,
+            "vector": 4901,
+            "fulltext": 1241,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q17",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel volume horaire minimal de formation chaque collaborateur doit-il suivre chaque annee ?",
+      "expect_sources": [
+        "PR-RH-MRD-006"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Chaque collaborateur doit suivre un volume horaire minimal de 21 heures de formation par an, dont au moins 7 heures consacrées au système qualité [Source: PR-RH-MRD-006.pdf].",
+        "latency_s": 3.774,
+        "sources": [
+          "PR-RH-MRD-006.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-QA-MRD-001.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the required training hours and quality system hours accurately."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 57484,
+          "total_context_chars": 14879,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2604,
+            "vector": 6162,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q18",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle quantite de memoire vive est requise au minimum pour un poste client MeridianCore ?",
+      "expect_sources": [
+        "FT-EXM-MRD-008"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La quantité de mémoire vive requise au minimum pour un poste client MeridianCore est de 16 Go [Source: FT-EXM-MRD-008.pdf].",
+        "latency_s": 3.713,
+        "sources": [
+          "FT-EXM-MRD-008.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing the recommended 32 Go of mémoire vive."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 62368,
+          "total_context_chars": 12770,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2575,
+            "vector": 4082,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q19",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps un acces exceptionnel peut-il rester actif ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un accès exceptionnel peut rester actif pendant 72 heures avec validation du RSSI [Source: PR-ITS-MRD-004.pdf].",
+        "latency_s": 4.124,
+        "sources": [
+          "PR-ITS-MRD-004.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "FT-EXM-MRD-008.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of automatic revocation after expiration."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 72388,
+          "total_context_chars": 14795,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2727,
+            "vector": 5955,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q20",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quand la verification d'efficacite d'une action corrective est-elle realisee ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La vérification de l'efficacité des actions correctives est réalisée trois mois après leur clôture [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 3.401,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-011.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "3 mois"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 4,
+          "graph_context_chars": 76537,
+          "total_context_chars": 19234,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2671,
+            "vector": 5818,
+            "fulltext": 4593,
+            "graph": 6019
+          },
+          "context_items_included": 15
+        }
+      }
+    },
+    {
+      "id": "q21",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Que couvre la procedure PR-QA-MRD-010 ?",
+      "expect_sources": [
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La procédure PR-QA-MRD-010 couvre la planification, la réalisation et le suivi des audits internes du système qualité de Meridian Labs. Elle stipule qu'un programme d'audit annuel doit être établi par le Responsable Assurance Qualité avant le 30 novembre de l'année précédente, et chaque processus critique doit être audité au moins une fois tous les deux ans [Source: PR-QA-MRD-010.pdf].",
+        "latency_s": 4.095,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-017.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact about internal audit program planning, execution, and follow-up."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 4,
+          "graph_context_chars": 75354,
+          "total_context_chars": 18673,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2567,
+            "vector": 5017,
+            "fulltext": 4937,
+            "graph": 6019
+          },
+          "context_items_included": 15
+        }
+      }
+    },
+    {
+      "id": "q22",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Quelle est la version en vigueur du document TEAM-ITS-MRD-001 ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La version en vigueur du document TEAM-ITS-MRD-001 est la version V8, mise en activité le 2 juin 2025 [Source: TEAM-ITS-MRD-001.pdf].",
+        "latency_s": 2.936,
+        "sources": [
+          "PR-QA-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-MI-MRD-023.pdf",
+          "AN-QA-MRD-000.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-017.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the version and activation date accurately without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 71875,
+          "total_context_chars": 12742,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2569,
+            "vector": 4061,
+            "graph": 6018
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q23",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Y a-t-il une analyse de risque pour MeridianCore ? Si oui, de quand date-t-elle ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Oui, il y a une analyse de risque pour MeridianCore. Elle a été conduite le 12 mars 2025 [Source: DR_RISKA-ITS-MRD-005.pdf].",
+        "latency_s": 2.864,
+        "sources": [
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-EXM-MRD-003.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key facts without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 61852,
+          "total_context_chars": 13577,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2563,
+            "vector": 4901,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q24",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Qu'est-ce qui a change entre la V3 et la V4 de PR-QA-MRD-009 ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Je ne sais pas basé sur les données indexées.",
+        "latency_s": 3.952,
+        "sources": [
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-017.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-ACH-MRD-007.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "45"
+          ]
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "Fails to provide any relevant information about the changes."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 72659,
+          "total_context_chars": 12472,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2567,
+            "vector": 2524,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q25",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Quelle procedure decrit la gestion des acces et des habilitations ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La procédure qui décrit la gestion des accès et des habilitations est la PR-ITS-MRD-004. Elle traite de l'attribution, de la revue et de la suppression des accès aux applications et infrastructures de Meridian Labs, en appliquant le principe du moindre privilège et en séparant les environnements de production et de recette. Une revue des habilitations est effectuée tous les 6 mois, et les accès des collaborateurs quittant l'organisation sont supprimés dans un délai de 24 heures [Source: PR-ITS-MRD-004.pdf].",
+        "latency_s": 3.815,
+        "sources": [
+          "PR-ITS-MRD-004.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly identifies the procedure PR-ITS-MRD-004 without contradictions."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 50159,
+          "total_context_chars": 16230,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2687,
+            "vector": 6163,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q26",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelle est la duree de conservation des documents qualite, et celle des dossiers de formation d'un collaborateur ?",
+      "expect_sources": [
+        "PR-QA-MRD-001",
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La durée de conservation des documents qualité est de 10 ans, tandis que les dossiers de formation d'un collaborateur sont conservés pendant 5 ans [Source: PR-QA-MRD-001.pdf; PR-EXM-MRD-003.pdf].",
+        "latency_s": 3.481,
+        "sources": [
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-017.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key facts accurately without contradictions."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 80500,
+          "total_context_chars": 15487,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2494,
+            "vector": 5614,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q27",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Que se passe-t-il si un meme processus accumule plus de deux non-conformites majeures dans un trimestre ?",
+      "expect_sources": [
+        "PR-QA-MRD-009",
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Si un même processus accumule plus de deux non-conformités majeures dans un trimestre, cela déclenche une revue exceptionnelle par la Direction [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 2.656,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-QA-MRD-017.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": true,
+          "missing": [
+            "PR-QA-MRD-010"
+          ]
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "audit"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of the internal audit target opening."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 65446,
+          "total_context_chars": 15650,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2451,
+            "vector": 5818,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q28",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Une demande d'information medicale decrivant un effet indesirable - quel circuit suit-elle et sous quel delai ?",
+      "expect_sources": [
+        "PR-MI-MRD-001",
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Une demande d'information médicale décrivant un effet indésirable suit le circuit de traitement des cas de pharmacovigilance, tel que décrit dans la procédure PR-PV-MRD-002. Lorsqu'un effet indésirable est signalé, il fait l'objet d'un accusé de réception envoyé au notificateur dans un délai de 2 jours ouvrés. Ensuite, les délais de transmission aux autorités compétentes sont de 15 jours calendaires pour les cas graves et de 90 jours calendaires pour les cas non graves [Source: PR-PV-MRD-002.pdf].",
+        "latency_s": 3.195,
+        "sources": [
+          "PR-MI-MRD-001.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-MI-MRD-023.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of transmission to pharmacovigilance without delay."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 58398,
+          "total_context_chars": 17288,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2512,
+            "vector": 6161,
+            "fulltext": 2468,
+            "graph": 6018
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q29",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelle mesure technique couvre le risque de perte de disponibilite de la base de donnees, et ou est-elle decrite ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005",
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La mesure technique qui couvre le risque de perte de disponibilité de la base de données est la réplication synchrone. Cette mesure est décrite dans le dossier d'analyse de risques de la plateforme MeridianCore, référencé sous DR_RISKA-ITS-MRD-005 [Source: DR_RISKA-ITS-MRD-005.pdf].",
+        "latency_s": 3.749,
+        "sources": [
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "restauration"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "Mentions a different measure and source, contradicting the reference answer."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 66222,
+          "total_context_chars": 16119,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2563,
+            "vector": 6176,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q30",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Un taux d'accuse de reception de 85 pour cent a la mise en activite - est-ce un probleme, et sous quel delai doit-il etre traite ?",
+      "expect_sources": [
+        "PR-QA-MRD-001",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un taux d'accusé de réception de 85 % à la mise en activité peut être considéré comme un problème, surtout si cela affecte la qualité du service rendu. Selon la procédure PR-CLI-MRD-013, les réclamations doivent être traitées dans des délais spécifiques, avec une réponse formelle fournie dans les 10 à 20 jours ouvrés selon la criticité de la réclamation [Source: PR-CLI-MRD-013.pdf]. Il est donc important de surveiller ce taux et de prendre des mesures correctives si nécessaire.",
+        "latency_s": 5.975,
+        "sources": [
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": true,
+          "missing": [
+            "PR-QA-MRD-001"
+          ]
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "90 jours"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Mentions a problem but lacks specific non-conformity classification and 90-day action plan."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 62301,
+          "total_context_chars": 15982,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2783,
+            "vector": 6162,
+            "fulltext": 891,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q31",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelles anomalies detectees lors de la revue des pistes d'audit doivent-elles etre traitees, et selon quelle procedure ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les anomalies détectées lors de la revue des pistes d'audit doivent être traitées selon la procédure PR-QA-MRD-009, qui définit le traitement des non-conformités détectées en interne ou signalées par un client. Ces non-conformités sont classées comme majeures ou mineures, avec des délais de clôture respectifs de 45 jours pour les majeures et 90 jours pour les mineures. Une vérification de l'efficacité des actions est effectuée trois mois après leur clôture. De plus, si plus de deux non-conformités majeures surviennent dans un même trimestre, cela déclenche une revue exceptionnelle par la Direction et l'ouverture d'un audit interne ciblé selon la procédure PR-QA-MRD-010 [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 4.119,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-012.pdf",
+          "DR_RISKA-QA-MRD-022.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": true,
+          "missing": [
+            "SOP-QA-MRD-015"
+          ]
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Mentions procedure but lacks the specific opening of non-conformity."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 68011,
+          "total_context_chars": 16199,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2658,
+            "vector": 6162,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q32",
+      "category": "cross_lingual",
+      "lang": "en",
+      "question": "Which antivirus solution protects the workstations, and how often are its signatures updated?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "The antivirus solution that protects the workstations is Bitdefender GravityZone, and its signatures are updated automatically every 4 hours [Source: PR-EXM-MRD-003.pdf].",
+        "latency_s": 3.516,
+        "sources": [
+          "PR-EXM-MRD-003.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "SOP-PV-MRD-019.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-QA-MRD-001.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.5,
+          "missing": [
+            "4 heures"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly states the antivirus solution and signature update frequency."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 92801,
+          "total_context_chars": 14188,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2615,
+            "vector": 5460,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q33",
+      "category": "cross_lingual",
+      "lang": "en",
+      "question": "How long must a corrective action plan for a major non-conformity take to close?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un plan d'action correctif pour une non-conformité majeure doit être clôturé dans un délai de 45 jours calendaires [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 3.758,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "SOP-QA-MRD-015.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 45 calendar days without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 72929,
+          "total_context_chars": 15701,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2501,
+            "vector": 5819,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q34",
+      "category": "cross_lingual",
+      "lang": "fr",
+      "question": "Pendant combien de temps les enregistrements electroniques GxP sont-ils conserves ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les enregistrements électroniques GxP sont conservés pendant 15 ans selon la politique de conservation des dossiers de Meridian Labs [Source: SOP-QA-MRD-015.pdf].",
+        "latency_s": 3.461,
+        "sources": [
+          "PR-QA-MRD-017.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-PV-MRD-002.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "15 years"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the retention period of 15 years without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 66350,
+          "total_context_chars": 15984,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2441,
+            "vector": 6162,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q35",
+      "category": "cross_lingual",
+      "lang": "fr",
+      "question": "A quelle frequence les pistes d'audit des systemes GxP sont-elles revues ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les pistes d'audit des systèmes GxP sont revues mensuellement par le propriétaire du système. Toute anomalie détectée lors de cette revue est signalée comme une non-conformité selon la procédure PR-QA-MRD-009 [Source: SOP-QA-MRD-015.pdf].",
+        "latency_s": 4.112,
+        "sources": [
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-012.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-001.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "PR-ACH-MRD-007.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "monthly"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of monthly reviews without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 72305,
+          "total_context_chars": 14885,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2610,
+            "vector": 6162,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q36",
+      "category": "acronym",
+      "lang": "fr",
+      "question": "Que signifie l'acronyme CAPA ?",
+      "expect_sources": [
+        "AN-QA-MRD-000"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'acronyme CAPA signifie \"Corrective And Preventive Action\" [Source: AN-QA-MRD-000.pdf].",
+        "latency_s": 3.289,
+        "sources": [
+          "AN-QA-MRD-000.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-PV-MRD-002.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 4,
+          "graph_context_chars": 83759,
+          "total_context_chars": 18717,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2578,
+            "vector": 5050,
+            "fulltext": 4937,
+            "graph": 6019
+          },
+          "context_items_included": 15
+        }
+      }
+    },
+    {
+      "id": "q37",
+      "category": "acronym",
+      "lang": "fr",
+      "question": "Que veut dire RSSI, et qui occupe ce role ?",
+      "expect_sources": [
+        "AN-QA-MRD-000",
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "RSSI signifie \"Responsable de la Sécurité des Systèmes d'Information\". Ce rôle est occupé par Julien Kessler, qui est également le Directeur des Systèmes d'Information chez Meridian Labs [Source: TEAM-ITS-MRD-001.pdf].",
+        "latency_s": 2.95,
+        "sources": [
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-011.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-RH-MRD-006.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": true,
+          "missing": [
+            "AN-QA-MRD-000"
+          ]
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly states the meaning of RSSI and identifies Julien Kessler."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 60006,
+          "total_context_chars": 16134,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2582,
+            "vector": 6172,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q38",
+      "category": "acronym",
+      "lang": "en",
+      "question": "What does ALCOA+ stand for in the data integrity procedure?",
+      "expect_sources": [
+        "SOP-QA-MRD-015",
+        "AN-QA-MRD-000"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "ALCOA+ stands for Attributable, Legible, Contemporaneous, Original, Accurate, Complete, Consistent, Enduring, and Available [Source: SOP-QA-MRD-015.pdf].",
+        "latency_s": 3.025,
+        "sources": [
+          "SOP-QA-MRD-015.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-017.pdf",
+          "AN-QA-MRD-000.pdf",
+          "PR-QA-MRD-010.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Includes all elements of ALCOA+ as per the reference answer."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 77351,
+          "total_context_chars": 15232,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2413,
+            "vector": 5438,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q39",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quel est le montant du budget informatique 2025 de Meridian Labs ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "Je ne sais pas basé sur les données indexées.",
+        "latency_s": 2.621,
+        "sources": [
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "FT-EXM-MRD-008.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "correct",
+          "reason": "The system correctly states it does not know the information."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 5,
+          "graph_context_chars": 65998,
+          "total_context_chars": 18013,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2555,
+            "vector": 3681,
+            "fulltext": 5623,
+            "graph": 6019
+          },
+          "context_items_included": 16
+        }
+      }
+    },
+    {
+      "id": "q40",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Combien de jours de conges payes un collaborateur acquiert-il par an ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "I do not know based on the indexed data.",
+        "latency_s": 2.801,
+        "sources": [
+          "PR-ITS-MRD-004.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-RH-MRD-006.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "correct",
+          "reason": "The system correctly states it does not know the information."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 53803,
+          "total_context_chars": 16168,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2624,
+            "vector": 6163,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q41",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quelle est la procedure de rappel de lot en cas de defaut produit ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "La procédure de rappel de lot en cas de défaut produit est définie dans la procédure PR-QA-MRD-009, qui traite des non-conformités détectées en interne ou signalées par un client. En cas de non-conformité majeure, le client concerné est informé dans un délai maximum de 24 heures après la classification. Les non-conformités sont classées majeures ou mineures, avec des délais de clôture respectifs de 45 et 90 jours calendaires. Une vérification de l'efficacité des actions est effectuée trois mois après leur clôture. Si plus de deux non-conformités majeures surviennent dans un même trimestre, une revue exceptionnelle par la Direction est déclenchée [Source: PR-QA-MRD-009.pdf].",
+        "latency_s": 4.625,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-ACH-MRD-007.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "The answer provides details not found in the indexed documents."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 70760,
+          "total_context_chars": 16146,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2603,
+            "vector": 6163,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q42",
+      "category": "unanswerable",
+      "lang": "en",
+      "question": "Who is the Chief Financial Officer of Meridian Labs?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "I do not know based on the indexed data.",
+        "latency_s": 4.523,
+        "sources": [
+          "TEAM-ITS-MRD-001.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "SOP-PV-MRD-019.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-RH-MRD-006.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "correct",
+          "reason": "The system appropriately states it does not know the answer."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 111050,
+          "total_context_chars": 12232,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2342,
+            "vector": 1272,
+            "fulltext": 2470,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q43",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quel est le tarif facture pour une prestation d'information medicale ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "Je ne sais pas basé sur les données indexées.",
+        "latency_s": 3.263,
+        "sources": [
+          "PR-MI-MRD-001.pdf",
+          "PR-MI-MRD-023.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-RH-MRD-018.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "correct",
+          "reason": "The system appropriately states it does not know based on indexed data."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 90199,
+          "total_context_chars": 16757,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2582,
+            "vector": 5558,
+            "fulltext": 2469,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q44",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quelle est la duree de garantie constructeur du materiel informatique fourni aux collaborateurs ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "answer": {
+        "text": "Je ne sais pas en me basant sur les données indexées.",
+        "latency_s": 2.071,
+        "sources": [
+          "PR-EXM-MRD-003.pdf",
+          "PR-QA-MRD-001.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": false,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": null,
+          "missing": []
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "correct",
+          "reason": "The system appropriately states it does not know the information."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 67418,
+          "total_context_chars": 16023,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2689,
+            "vector": 5954,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q45",
+      "category": "factual",
+      "lang": "fr",
+      "question": "A quelle frequence un fournisseur classe critique est-il reevalue ?",
+      "expect_sources": [
+        "PR-ACH-MRD-007"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un fournisseur classé critique est réévalué annuellement [Source: PR-ACH-MRD-007.pdf].",
+        "latency_s": 2.403,
+        "sources": [
+          "PR-ACH-MRD-007.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of annual reevaluation without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 68457,
+          "total_context_chars": 14933,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2656,
+            "vector": 6164,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q46",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai un fournisseur critique doit-il notifier un incident de securite a Meridian Labs ?",
+      "expect_sources": [
+        "PR-ACH-MRD-007"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un fournisseur critique doit notifier un incident de sécurité à Meridian Labs dans un délai de 24 heures [Source: PR-ITS-MRD-016.pdf].",
+        "latency_s": 4.797,
+        "sources": [
+          "PR-ITS-MRD-016.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "48 heures"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "States 24 hours instead of the correct 48 hours."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 66716,
+          "total_context_chars": 15847,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2645,
+            "vector": 5821,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q47",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai une reclamation client critique doit-elle etre accusee reception ?",
+      "expect_sources": [
+        "PR-CLI-MRD-013"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Une réclamation client critique doit être accusée réception dans un délai de 4 heures [Source: PR-CLI-MRD-013.pdf].",
+        "latency_s": 3.592,
+        "sources": [
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-MI-MRD-001.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ACH-MRD-007.pdf",
+          "PR-QA-MRD-010.pdf",
+          "FT-EXM-MRD-008.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 4 heures without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 52111,
+          "total_context_chars": 17622,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2841,
+            "vector": 6164,
+            "fulltext": 2469,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q48",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai le client recoit-il une reponse formelle a une reclamation critique ?",
+      "expect_sources": [
+        "PR-CLI-MRD-013"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le client reçoit une réponse formelle à une réclamation critique dans un délai de 10 jours ouvrés [Source: PR-CLI-MRD-013.pdf].",
+        "latency_s": 2.899,
+        "sources": [
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of the reference answer accurately."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 54648,
+          "total_context_chars": 16373,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2829,
+            "vector": 6163,
+            "fulltext": 1235,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q49",
+      "category": "factual",
+      "lang": "fr",
+      "question": "A quelle frequence se tient la revue de direction du systeme qualite ?",
+      "expect_sources": [
+        "PR-QA-MRD-011"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La revue de direction du système qualité se tient à une fréquence semestrielle [Source: PR-QA-MRD-011.pdf].",
+        "latency_s": 4.945,
+        "sources": [
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf",
+          "DR_RISKA-QA-MRD-022.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the frequency as semestrielle, matching the reference answer."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 81191,
+          "total_context_chars": 14990,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2718,
+            "vector": 6160,
+            "graph": 6018
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q50",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai l'efficacite d'un changement majeur est-elle verifiee apres sa mise en oeuvre ?",
+      "expect_sources": [
+        "PR-QA-MRD-012"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'efficacité d'un changement majeur est vérifiée dans un délai de 60 jours calendaires après sa mise en œuvre [Source: PR-QA-MRD-012.pdf].",
+        "latency_s": 5.52,
+        "sources": [
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-001.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-011.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact accurately without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 4,
+          "graph_context_chars": 66544,
+          "total_context_chars": 19337,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2774,
+            "vector": 5818,
+            "fulltext": 4593,
+            "graph": 6019
+          },
+          "context_items_included": 15
+        }
+      }
+    },
+    {
+      "id": "q51",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps un compte-rendu d'audit interne est-il conserve ?",
+      "expect_sources": [
+        "PR-QA-MRD-017"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Je ne sais pas en fonction des données indexées.",
+        "latency_s": 3.995,
+        "sources": [
+          "PR-QA-MRD-017.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-009.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-RH-MRD-018.pdf",
+          "PR-ACH-MRD-007.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "10 ans"
+          ]
+        },
+        "refusal_detected": true,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "Fails to provide the requested fact about the duration of retention."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 5,
+          "graph_context_chars": 64720,
+          "total_context_chars": 21122,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2637,
+            "vector": 6161,
+            "fulltext": 6171,
+            "graph": 6018
+          },
+          "context_items_included": 16
+        }
+      }
+    },
+    {
+      "id": "q52",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel est l'objectif de reprise (RTO) retenu pour la messagerie et les outils collaboratifs ?",
+      "expect_sources": [
+        "PR-EXM-MRD-014"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'objectif de reprise (RTO) retenu pour la messagerie et les outils collaboratifs est de 4 heures, avec un objectif de point de reprise (RPO) de 1 heure, vérifiés annuellement [Source: DR_RISKA-ITS-MRD-005.pdf].",
+        "latency_s": 3.064,
+        "sources": [
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "FT-EXM-MRD-008.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "8 heures"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "incorrect",
+          "reason": "RTO stated as 4 hours instead of 8 hours."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 3,
+          "graph_context_chars": 60812,
+          "total_context_chars": 17968,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2621,
+            "vector": 6171,
+            "fulltext": 3026,
+            "graph": 6019
+          },
+          "context_items_included": 14
+        }
+      }
+    },
+    {
+      "id": "q53",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai un incident de securite critique doit-il etre pris en charge ?",
+      "expect_sources": [
+        "PR-ITS-MRD-016"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un incident de sécurité critique doit être pris en charge dans un délai d'une heure [Source: PR-ITS-MRD-016.pdf].",
+        "latency_s": 3.139,
+        "sources": [
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-EXM-MRD-014.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-ITS-MRD-004.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "1 heure"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of the reference answer accurately."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 63739,
+          "total_context_chars": 15921,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2721,
+            "vector": 5820,
+            "fulltext": 1235,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q54",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai le Delegue a la Protection des Donnees doit-il etre notifie d'un incident impliquant des donnees personnelles ?",
+      "expect_sources": [
+        "PR-ITS-MRD-016"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le Délégué à la Protection des Données doit être notifié d'un incident impliquant des données personnelles dans un délai de 24 heures [Source: PR-ITS-MRD-016.pdf].",
+        "latency_s": 3.944,
+        "sources": [
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-PV-MRD-002.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf",
+          "AN-QA-MRD-000.pdf",
+          "TEAM-ITS-MRD-001.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of a 24-hour notification period."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 3,
+          "graph_context_chars": 60606,
+          "total_context_chars": 18720,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2701,
+            "vector": 6163,
+            "fulltext": 3706,
+            "graph": 6019
+          },
+          "context_items_included": 14
+        }
+      }
+    },
+    {
+      "id": "q55",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps avant l'arrivee d'un nouveau collaborateur ses acces doivent-ils etre demandes ?",
+      "expect_sources": [
+        "PR-RH-MRD-018"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Les accès nécessaires au poste doivent être demandés par le manager au moins 5 jours ouvrés avant l'arrivée du nouveau collaborateur [Source: PR-RH-MRD-018.pdf].",
+        "latency_s": 4.473,
+        "sources": [
+          "PR-RH-MRD-018.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-RH-MRD-006.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-EXM-MRD-003.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 5 jours ouvrés before arrival."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 56924,
+          "total_context_chars": 16189,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2646,
+            "vector": 6163,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q56",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de personnes composent l'equipe Assurance Qualite de Meridian Labs ?",
+      "expect_sources": [
+        "TEAM-QA-MRD-020"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "L'équipe Assurance Qualité de Meridian Labs est composée de quatre collaborateurs [Source: TEAM-QA-MRD-020.pdf].",
+        "latency_s": 2.351,
+        "sources": [
+          "TEAM-QA-MRD-020.pdf",
+          "TEAM-ITS-MRD-001.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-001.pdf",
+          "SOP-QA-MRD-015.pdf",
+          "SOP-PV-MRD-019.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "4 collaborateurs"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 4 collaborators without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 67846,
+          "total_context_chars": 15614,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2542,
+            "vector": 4454,
+            "fulltext": 2470,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    },
+    {
+      "id": "q57",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Qui occupe le poste de qualiticien processus au sein de l'equipe Assurance Qualite ?",
+      "expect_sources": [
+        "TEAM-QA-MRD-020"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Le poste de qualiticien processus au sein de l'équipe Assurance Qualité est occupé par Farid Amrani [Source: TEAM-QA-MRD-020.pdf].",
+        "latency_s": 3.086,
+        "sources": [
+          "PR-QA-MRD-011.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-QA-MRD-001.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly identifies Farid Amrani as the qualiticien processus."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 78176,
+          "total_context_chars": 14830,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2555,
+            "vector": 6162,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q58",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de risques ont ete identifies dans l'analyse de risques du processus de gestion documentaire ?",
+      "expect_sources": [
+        "DR_RISKA-QA-MRD-022"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Quatorze risques ont été identifiés dans l'analyse de risques du processus de gestion documentaire [Source: DR_RISKA-QA-MRD-022.pdf].",
+        "latency_s": 4.191,
+        "sources": [
+          "DR_RISKA-QA-MRD-022.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "14 risques"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of the 2 majeurs risks identified."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 78512,
+          "total_context_chars": 15741,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2673,
+            "vector": 5681,
+            "fulltext": 1241,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q59",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de categories compte la base de connaissances medicale de Meridian Labs ?",
+      "expect_sources": [
+        "PR-MI-MRD-023"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La base de connaissances médicale de Meridian Labs compte quatre catégories : posologie et modalités d'administration, interactions et contre-indications, effets indésirables connus, et questions administratives fréquentes [Source: PR-MI-MRD-023.pdf].",
+        "latency_s": 3.083,
+        "sources": [
+          "PR-MI-MRD-023.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-PV-MRD-002.pdf",
+          "TEAM-QA-MRD-020.pdf",
+          "AN-QA-MRD-000.pdf",
+          "DR_RISKA-ITS-MRD-005.pdf",
+          "DR_RISKA-QA-MRD-022.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "4 categories"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the correct number of categories without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 3,
+          "graph_context_chars": 57221,
+          "total_context_chars": 16952,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2390,
+            "vector": 4697,
+            "fulltext": 3715,
+            "graph": 6019
+          },
+          "context_items_included": 14
+        }
+      }
+    },
+    {
+      "id": "q60",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Que couvre la procedure PR-QA-MRD-012 ?",
+      "expect_sources": [
+        "PR-QA-MRD-012"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La procédure PR-QA-MRD-012 couvre l'analyse d'impact et le circuit de validation pour tout changement affectant les processus, systèmes ou organisation de Meridian Labs, en mettant l'accent sur la qualité et la conformité. Les changements sont classés en mineurs, majeurs et urgents, chacun ayant des exigences spécifiques de validation et d'analyse d'impact, avec une vérification post-implémentation prévue dans les 60 jours suivant la mise en œuvre [Source: PR-QA-MRD-012.pdf].",
+        "latency_s": 6.757,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-017.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-010.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing mention of classification in the system answer."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 74978,
+          "total_context_chars": 14963,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2567,
+            "vector": 5017,
+            "fulltext": 1234,
+            "graph": 6018
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q61",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Quelle procedure decrit la qualification et l'evaluation des fournisseurs chez Meridian Labs ?",
+      "expect_sources": [
+        "PR-ACH-MRD-007"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "La procédure qui décrit la qualification et l'évaluation des fournisseurs chez Meridian Labs est la PR-ACH-MRD-007. Cette procédure couvre la qualification initiale et l'évaluation continue des fournisseurs, en tenant compte de leur impact potentiel sur la qualité des services et la conformité réglementaire. Les fournisseurs sont classés selon leur criticité, avec des critères d'évaluation annuelle et des clauses contractuelles obligatoires, y compris des mesures de suspension en cas de non-conformité [Source: PR-ACH-MRD-007.pdf].",
+        "latency_s": 6.676,
+        "sources": [
+          "PR-ACH-MRD-007.pdf",
+          "PR-QA-MRD-010.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-QA-MRD-001.pdf",
+          "PR-QA-MRD-011.pdf",
+          "PR-QA-MRD-009.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "Correctly states the procedure number and provides relevant context."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 1,
+          "graph_context_chars": 95431,
+          "total_context_chars": 14988,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2557,
+            "vector": 5051,
+            "fulltext": 1234,
+            "graph": 6019
+          },
+          "context_items_included": 12
+        }
+      }
+    },
+    {
+      "id": "q62",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Un fournisseur critique est note en dessous de 5 sur 10 deux annees consecutives - que se passe-t-il, et quelle instance valide la decision ?",
+      "expect_sources": [
+        "PR-ACH-MRD-007",
+        "PR-QA-MRD-011"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Lorsqu'un fournisseur critique est noté en dessous de 5 sur 10 pendant deux années consécutives, il peut être suspendu de la liste des fournisseurs qualifiés. Cette décision est validée lors d'une revue de direction, conformément à la procédure PR-QA-MRD-011 [Source: PR-ACH-MRD-007.pdf].",
+        "latency_s": 4.449,
+        "sources": [
+          "PR-ACH-MRD-007.pdf",
+          "DR_RISKA-QA-MRD-022.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-QA-MRD-012.pdf"
+        ],
+        "source_hit": {
+          "all": false,
+          "any": true,
+          "missing": [
+            "PR-QA-MRD-011"
+          ]
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States key facts accurately without contradictions."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 3,
+          "graph_context_chars": 62431,
+          "total_context_chars": 18673,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2655,
+            "vector": 6164,
+            "fulltext": 3704,
+            "graph": 6019
+          },
+          "context_items_included": 14
+        }
+      }
+    },
+    {
+      "id": "q63",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Une reclamation client critique donne-t-elle lieu a une non-conformite, et sous quel delai le client recoit-il une reponse ?",
+      "expect_sources": [
+        "PR-CLI-MRD-013",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Une réclamation client critique peut donner lieu à une non-conformité si elle révèle une défaillance de contrôle, selon la procédure PR-QA-MRD-009. Le client reçoit une réponse formelle dans un délai de 10 jours ouvrés pour une réclamation critique [Source: PR-CLI-MRD-013.pdf].",
+        "latency_s": 3.099,
+        "sources": [
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-QA-MRD-012.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-ITS-MRD-016.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "partial",
+          "reason": "Missing explicit mention of non-conformity opening and lacks clarity on the procedure reference."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 67775,
+          "total_context_chars": 15075,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2799,
+            "vector": 6163,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q64",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Un incident de securite critique impliquant des donnees personnelles - sous quel delai le DPO est-il notifie, et cet incident donne-t-il lieu a une non-conformite ?",
+      "expect_sources": [
+        "PR-ITS-MRD-016",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un incident de sécurité critique impliquant des données personnelles doit être notifié au Délégué à la Protection des Données (DPO) dans un délai de 24 heures. Cet incident peut également donner lieu à une non-conformité si l'incident révèle une défaillance de contrôle, conformément à la procédure PR-QA-MRD-009 [Source: PR-ITS-MRD-016.pdf].",
+        "latency_s": 4.815,
+        "sources": [
+          "PR-QA-MRD-009.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ITS-MRD-004.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-EXM-MRD-003.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 1.0,
+          "missing": []
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States key facts accurately without contradiction."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 0,
+          "graph_context_chars": 65734,
+          "total_context_chars": 15146,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2869,
+            "vector": 6164,
+            "graph": 6019
+          },
+          "context_items_included": 11
+        }
+      }
+    },
+    {
+      "id": "q65",
+      "category": "cross_lingual",
+      "lang": "fr",
+      "question": "En combien de jours ouvres un signal de securite potentiel doit-il etre evalue par la pharmacovigilance ?",
+      "expect_sources": [
+        "SOP-PV-MRD-019"
+      ],
+      "expect_refusal": false,
+      "answer": {
+        "text": "Un signal de sécurité potentiel doit être évalué par la pharmacovigilance dans un délai de 5 jours ouvrés après sa détection [Source: SOP-PV-MRD-019.pdf].",
+        "latency_s": 4.098,
+        "sources": [
+          "PR-PV-MRD-002.pdf",
+          "SOP-PV-MRD-019.pdf",
+          "PR-MI-MRD-001.pdf",
+          "PR-CLI-MRD-013.pdf",
+          "PR-QA-MRD-009.pdf",
+          "PR-ITS-MRD-016.pdf",
+          "PR-ACH-MRD-007.pdf"
+        ],
+        "source_hit": {
+          "all": true,
+          "any": true,
+          "missing": []
+        },
+        "keywords": {
+          "ratio": 0.0,
+          "missing": [
+            "5 working days"
+          ]
+        },
+        "refusal_detected": false,
+        "judge": {
+          "verdict": "correct",
+          "reason": "States the key fact of 5 working days after detection."
+        },
+        "stats": {
+          "model": "gpt-4o-mini",
+          "vector_results": 5,
+          "summary_results": 5,
+          "fulltext_results": 2,
+          "graph_context_chars": 71012,
+          "total_context_chars": 17392,
+          "max_context_chars": 32000,
+          "context_chars_by_index": {
+            "summary": 2611,
+            "vector": 6163,
+            "fulltext": 2470,
+            "graph": 6019
+          },
+          "context_items_included": 13
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "document_count": 25,
+  "company": "Meridian Labs",
+  "departments": [
+    "Achats",
+    "Assurance Qualite",
+    "Exploitation et Maintenance",
+    "Information Medicale",
+    "Pharmacovigilance",
+    "Quality Assurance",
+    "Relation Client",
+    "Ressources Humaines",
+    "Systemes d'Information"
+  ],
+  "document_types": [
+    "Annexe",
+    "Dossier de risques",
+    "Fiche d'organisation",
+    "Fiche technique",
+    "Procedure",
+    "Standard Operating Procedure"
+  ],
+  "references": [
+    "AN-QA-MRD-000",
+    "DR_RISKA-ITS-MRD-005",
+    "DR_RISKA-QA-MRD-022",
+    "FT-EXM-MRD-008",
+    "PR-ACH-MRD-007",
+    "PR-CLI-MRD-013",
+    "PR-EXM-MRD-003",
+    "PR-EXM-MRD-014",
+    "PR-ITS-MRD-004",
+    "PR-ITS-MRD-016",
+    "PR-MI-MRD-001",
+    "PR-MI-MRD-023",
+    "PR-PV-MRD-002",
+    "PR-QA-MRD-001",
+    "PR-QA-MRD-009",
+    "PR-QA-MRD-010",
+    "PR-QA-MRD-011",
+    "PR-QA-MRD-012",
+    "PR-QA-MRD-017",
+    "PR-RH-MRD-006",
+    "PR-RH-MRD-018",
+    "SOP-PV-MRD-019",
+    "SOP-QA-MRD-015",
+    "TEAM-ITS-MRD-001",
+    "TEAM-QA-MRD-020"
+  ],
+  "metadata_fields": [
+    "company",
+    "department",
+    "document type",
+    "document reference"
+  ],
+  "enforcement_status": "metadata available",
+  "limitation": "This inventory does not implement or prove role-based authorization."
+}

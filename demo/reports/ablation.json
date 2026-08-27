@@ -1,0 +1,2633 @@
+{
+  "tag": "ablation",
+  "run_at": "2026-08-13T16:05:10+00:00",
+  "config": {
+    "api": "http://localhost:8000",
+    "workspace": "meridian_demo",
+    "mode": "retrieval",
+    "topk": 5,
+    "graph_topk": 20,
+    "similarity_threshold": 0.2,
+    "summary_threshold": 0.2,
+    "model": null,
+    "judge_model": "gpt-4o-mini",
+    "eval_set": "eval_set.yaml"
+  },
+  "summary": {
+    "questions": 44,
+    "answerable": 38,
+    "unanswerable": 6,
+    "retrieval": {
+      "scored": 38,
+      "errors": 0,
+      "per_index_pct": {
+        "vector": 94.7,
+        "summary": 89.5,
+        "fulltext": 5.3,
+        "graph": 100.0
+      },
+      "cumulative_pct": {
+        "vector": 94.7,
+        "vector+fulltext": 94.7,
+        "vector+fulltext+summary": 97.4,
+        "vector+fulltext+summary+graph": 100.0
+      },
+      "union_pct": 100.0,
+      "latency_p50_s": 2.28
+    }
+  },
+  "results": [
+    {
+      "id": "q01",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel est le delai de cloture d'un plan d'action pour une non-conformite majeure ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 53420
+        },
+        "latency_s": 2.172
+      }
+    },
+    {
+      "id": "q02",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai le client doit-il etre informe en cas de non-conformite majeure ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 3,
+          "graph_chars": 45710
+        },
+        "latency_s": 2.156
+      }
+    },
+    {
+      "id": "q03",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps les collaborateurs ont-ils pour accuser reception d'un document avant sa mise en activite ?",
+      "expect_sources": [
+        "PR-QA-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51266
+        },
+        "latency_s": 2.422
+      }
+    },
+    {
+      "id": "q04",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel antivirus est deploye sur le parc informatique ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 71682
+        },
+        "latency_s": 2.375
+      }
+    },
+    {
+      "id": "q05",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont les prerequis pour etre habilite auditeur interne ?",
+      "expect_sources": [
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 53437
+        },
+        "latency_s": 1.922
+      }
+    },
+    {
+      "id": "q06",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont les indicateurs de performance du processus d'information medicale ?",
+      "expect_sources": [
+        "PR-MI-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 53305
+        },
+        "latency_s": 5.031
+      }
+    },
+    {
+      "id": "q07",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle est la longueur minimale exigee pour un mot de passe ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51853
+        },
+        "latency_s": 3.172
+      }
+    },
+    {
+      "id": "q08",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai les acces d'un collaborateur sont-ils supprimes apres son depart ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": true,
+            "any": true
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 3,
+          "graph_chars": 56776
+        },
+        "latency_s": 2.11
+      }
+    },
+    {
+      "id": "q09",
+      "category": "factual",
+      "lang": "fr",
+      "question": "A quelle frequence la revue des habilitations est-elle realisee ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 5,
+          "graph_chars": 52823
+        },
+        "latency_s": 2.625
+      }
+    },
+    {
+      "id": "q10",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle est la duree de retention des sauvegardes ?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 52249
+        },
+        "latency_s": 2.171
+      }
+    },
+    {
+      "id": "q11",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Sous quel delai un cas grave de pharmacovigilance doit-il etre transmis a l'autorite competente ?",
+      "expect_sources": [
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 3,
+          "graph_chars": 61257
+        },
+        "latency_s": 5.359
+      }
+    },
+    {
+      "id": "q12",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle version du dictionnaire MedDRA est utilisee pour la codification ?",
+      "expect_sources": [
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 69480
+        },
+        "latency_s": 2.938
+      }
+    },
+    {
+      "id": "q13",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Qui est le lead developer de l'equipe Systemes d'Information ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 74940
+        },
+        "latency_s": 2.469
+      }
+    },
+    {
+      "id": "q14",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de personnes composent l'equipe Systemes d'Information ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 68560
+        },
+        "latency_s": 2.234
+      }
+    },
+    {
+      "id": "q15",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quels sont le RTO et le RPO retenus pour la plateforme MeridianCore ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 67343
+        },
+        "latency_s": 2.672
+      }
+    },
+    {
+      "id": "q16",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de risques ont ete identifies dans l'analyse de risques de MeridianCore, et combien sont majeurs ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 48725
+        },
+        "latency_s": 1.953
+      }
+    },
+    {
+      "id": "q17",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quel volume horaire minimal de formation chaque collaborateur doit-il suivre chaque annee ?",
+      "expect_sources": [
+        "PR-RH-MRD-006"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51521
+        },
+        "latency_s": 2.0
+      }
+    },
+    {
+      "id": "q18",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quelle quantite de memoire vive est requise au minimum pour un poste client MeridianCore ?",
+      "expect_sources": [
+        "FT-EXM-MRD-008"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 57136
+        },
+        "latency_s": 2.0
+      }
+    },
+    {
+      "id": "q19",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Combien de temps un acces exceptionnel peut-il rester actif ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 65037
+        },
+        "latency_s": 2.062
+      }
+    },
+    {
+      "id": "q20",
+      "category": "factual",
+      "lang": "fr",
+      "question": "Quand la verification d'efficacite d'une action corrective est-elle realisee ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51403
+        },
+        "latency_s": 2.032
+      }
+    },
+    {
+      "id": "q21",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Que couvre la procedure PR-QA-MRD-010 ?",
+      "expect_sources": [
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 51644
+        },
+        "latency_s": 1.844
+      }
+    },
+    {
+      "id": "q22",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Quelle est la version en vigueur du document TEAM-ITS-MRD-001 ?",
+      "expect_sources": [
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 53407
+        },
+        "latency_s": 4.734
+      }
+    },
+    {
+      "id": "q23",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Y a-t-il une analyse de risque pour MeridianCore ? Si oui, de quand date-t-elle ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 45345
+        },
+        "latency_s": 2.172
+      }
+    },
+    {
+      "id": "q24",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Qu'est-ce qui a change entre la V3 et la V4 de PR-QA-MRD-009 ?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 55599
+        },
+        "latency_s": 2.672
+      }
+    },
+    {
+      "id": "q25",
+      "category": "reference_lookup",
+      "lang": "fr",
+      "question": "Quelle procedure decrit la gestion des acces et des habilitations ?",
+      "expect_sources": [
+        "PR-ITS-MRD-004"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 65939
+        },
+        "latency_s": 2.5
+      }
+    },
+    {
+      "id": "q26",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelle est la duree de conservation des documents qualite, et celle des dossiers de formation d'un collaborateur ?",
+      "expect_sources": [
+        "PR-QA-MRD-001",
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 63981
+        },
+        "latency_s": 2.609
+      }
+    },
+    {
+      "id": "q27",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Que se passe-t-il si un meme processus accumule plus de deux non-conformites majeures dans un trimestre ?",
+      "expect_sources": [
+        "PR-QA-MRD-009",
+        "PR-QA-MRD-010"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": true
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 50153
+        },
+        "latency_s": 2.203
+      }
+    },
+    {
+      "id": "q28",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Une demande d'information medicale decrivant un effet indesirable - quel circuit suit-elle et sous quel delai ?",
+      "expect_sources": [
+        "PR-MI-MRD-001",
+        "PR-PV-MRD-002"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": true
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 5,
+          "graph_chars": 66846
+        },
+        "latency_s": 2.359
+      }
+    },
+    {
+      "id": "q29",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelle mesure technique couvre le risque de perte de disponibilite de la base de donnees, et ou est-elle decrite ?",
+      "expect_sources": [
+        "DR_RISKA-ITS-MRD-005",
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 69125
+        },
+        "latency_s": 2.359
+      }
+    },
+    {
+      "id": "q30",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Un taux d'accuse de reception de 85 pour cent a la mise en activite - est-ce un probleme, et sous quel delai doit-il etre traite ?",
+      "expect_sources": [
+        "PR-QA-MRD-001",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": true,
+            "any": true
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 5,
+          "graph_chars": 43925
+        },
+        "latency_s": 2.328
+      }
+    },
+    {
+      "id": "q31",
+      "category": "multi_hop",
+      "lang": "fr",
+      "question": "Quelles anomalies detectees lors de la revue des pistes d'audit doivent-elles etre traitees, et selon quelle procedure ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015",
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": true
+          },
+          "summary": {
+            "all": false,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 52734
+        },
+        "latency_s": 2.297
+      }
+    },
+    {
+      "id": "q32",
+      "category": "cross_lingual",
+      "lang": "en",
+      "question": "Which antivirus solution protects the workstations, and how often are its signatures updated?",
+      "expect_sources": [
+        "PR-EXM-MRD-003"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 79166
+        },
+        "latency_s": 2.125
+      }
+    },
+    {
+      "id": "q33",
+      "category": "cross_lingual",
+      "lang": "en",
+      "question": "How long must a corrective action plan for a major non-conformity take to close?",
+      "expect_sources": [
+        "PR-QA-MRD-009"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 72853
+        },
+        "latency_s": 1.922
+      }
+    },
+    {
+      "id": "q34",
+      "category": "cross_lingual",
+      "lang": "fr",
+      "question": "Pendant combien de temps les enregistrements electroniques GxP sont-ils conserves ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 46596
+        },
+        "latency_s": 3.953
+      }
+    },
+    {
+      "id": "q35",
+      "category": "cross_lingual",
+      "lang": "fr",
+      "question": "A quelle frequence les pistes d'audit des systemes GxP sont-elles revues ?",
+      "expect_sources": [
+        "SOP-QA-MRD-015"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 5,
+          "graph_chars": 55673
+        },
+        "latency_s": 2.828
+      }
+    },
+    {
+      "id": "q36",
+      "category": "acronym",
+      "lang": "fr",
+      "question": "Que signifie l'acronyme CAPA ?",
+      "expect_sources": [
+        "AN-QA-MRD-000"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 58735
+        },
+        "latency_s": 2.265
+      }
+    },
+    {
+      "id": "q37",
+      "category": "acronym",
+      "lang": "fr",
+      "question": "Que veut dire RSSI, et qui occupe ce role ?",
+      "expect_sources": [
+        "AN-QA-MRD-000",
+        "TEAM-ITS-MRD-001"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": false,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 1,
+          "graph_chars": 69774
+        },
+        "latency_s": 2.063
+      }
+    },
+    {
+      "id": "q38",
+      "category": "acronym",
+      "lang": "en",
+      "question": "What does ALCOA+ stand for in the data integrity procedure?",
+      "expect_sources": [
+        "SOP-QA-MRD-015",
+        "AN-QA-MRD-000"
+      ],
+      "expect_refusal": false,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "summary": {
+            "all": true,
+            "any": true
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary": {
+            "all": true,
+            "any": true
+          },
+          "vector+fulltext+summary+graph": {
+            "all": true,
+            "any": true
+          }
+        },
+        "union": {
+          "all": true,
+          "any": true
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51758
+        },
+        "latency_s": 1.921
+      }
+    },
+    {
+      "id": "q39",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quel est le montant du budget informatique 2025 de Meridian Labs ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 67031
+        },
+        "latency_s": 1.812
+      }
+    },
+    {
+      "id": "q40",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Combien de jours de conges payes un collaborateur acquiert-il par an ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 51207
+        },
+        "latency_s": 2.016
+      }
+    },
+    {
+      "id": "q41",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quelle est la procedure de rappel de lot en cas de defaut produit ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 66482
+        },
+        "latency_s": 2.203
+      }
+    },
+    {
+      "id": "q42",
+      "category": "unanswerable",
+      "lang": "en",
+      "question": "Who is the Chief Financial Officer of Meridian Labs?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 73210
+        },
+        "latency_s": 1.938
+      }
+    },
+    {
+      "id": "q43",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quel est le tarif facture pour une prestation d'information medicale ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 72207
+        },
+        "latency_s": 2.078
+      }
+    },
+    {
+      "id": "q44",
+      "category": "unanswerable",
+      "lang": "fr",
+      "question": "Quelle est la duree de garantie constructeur du materiel informatique fourni aux collaborateurs ?",
+      "expect_sources": [],
+      "expect_refusal": true,
+      "retrieval": {
+        "indexes": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "summary": {
+            "all": false,
+            "any": false
+          },
+          "fulltext": {
+            "all": false,
+            "any": false
+          },
+          "graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "cumulative": {
+          "vector": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary": {
+            "all": false,
+            "any": false
+          },
+          "vector+fulltext+summary+graph": {
+            "all": false,
+            "any": false
+          }
+        },
+        "union": {
+          "all": false,
+          "any": false
+        },
+        "counts": {
+          "vector": 5,
+          "summary": 5,
+          "fulltext": 0,
+          "graph_chars": 56683
+        },
+        "latency_s": 1.797
+      }
+    }
+  ]
+}

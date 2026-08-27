@@ -1,0 +1,112 @@
+{
+  "question_id": "q24",
+  "question": "Qu'est-ce qui a change entre la V3 et la V4 de PR-QA-MRD-009 ?",
+  "expected_sources": [
+    "PR-QA-MRD-009"
+  ],
+  "must_include": [
+    "45"
+  ],
+  "window_chars": 280,
+  "overlap_chars": 40,
+  "metric": "source-window proxy: windows containing both the source reference and every required fact term",
+  "limitation": "This inspects synthetic Markdown source windows. It does not query, change, or reindex the live demo stack.",
+  "source_reports": [
+    {
+      "reference": "PR-QA-MRD-009",
+      "source_path": "corpus\\md\\PR-QA-MRD-009.md",
+      "window_count": 17,
+      "score": {
+        "evidence_identity_windows": [],
+        "evidence_identity_rate": 0.0
+      },
+      "windows": [
+        {
+          "index": 1,
+          "text": "# PR-QA-MRD-009 - Gestion des non-conformites et des actions correctives (CAPA)",
+          "contains_required_terms": false
+        },
+        {
+          "index": 2,
+          "text": "| Champ | Valeur | Champ | Valeur |\n|---|---|---|---|\n| Reference | PR-QA-MRD-009 | Version | V4 |\n| Type | Procedure | Mise en activite | 2025-03-03 |\n| Entite | Meridian Labs - Assurance Qualite | Redacteur | Sarah Delaunay |\n| Statut | En activite | Approbateur | Marc Villeneu",
+          "contains_required_terms": false
+        },
+        {
+          "index": 3,
+          "text": "n activite | Approbateur | Marc Villeneuve |",
+          "contains_required_terms": false
+        },
+        {
+          "index": 4,
+          "text": "## 1. Objet\n\nCette procedure definit le traitement des non-conformites detectees en interne ou signalees par un client, ainsi que la conduite des plans d'action correctifs et preventifs.\n\n## 2. Classification",
+          "contains_required_terms": false
+        },
+        {
+          "index": 5,
+          "text": "ifs et preventifs.\n\n## 2. Classification\n\nToute non-conformite est classee majeure ou mineure par le Responsable Assurance Qualite dans les 2 jours ouvres suivant sa detection. Les criteres de classification sont definis dans l'annexe AN-QA-MRD-000.\n\n## 3. Information du client",
+          "contains_required_terms": false
+        },
+        {
+          "index": 6,
+          "text": "QA-MRD-000.\n\n## 3. Information du client\n\nEn cas de non-conformite majeure, le client concerne est informe dans un delai maximum de 24 heures apres la classification. L'information est transmise par ecrit et tracee dans le dossier de la non-conformite.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 7,
+          "text": "ee dans le dossier de la non-conformite.\n\nPour une non-conformite mineure, l'information du client est realisee dans le cadre du reporting mensuel.\n\n## 4. Delais de cloture des plans d'action",
+          "contains_required_terms": false
+        },
+        {
+          "index": 8,
+          "text": " 4. Delais de cloture des plans d'action\n\n| Classification | Delai de cloture | Validation |\n|---|---|---|\n| Non-conformite majeure | 45 jours calendaires | Responsable AQ + Direction |\n| Non-conformite mineure | 90 jours calendaires | Responsable AQ |\n| Observation | Sans delai contraignant | Pilote de processus |",
+          "contains_required_terms": true
+        },
+        {
+          "index": 9,
+          "text": "lai contraignant | Pilote de processus |\n\nTout depassement de delai fait l'objet d'une demande de prolongation motivee, soumise au Responsable Assurance Qualite avant l'echeance initiale.\n\n## 5. Verification d'efficacite",
+          "contains_required_terms": false
+        },
+        {
+          "index": 10,
+          "text": "itiale.\n\n## 5. Verification d'efficacite\n\nL'efficacite de chaque action corrective est verifiee 3 mois apres la cloture du plan d'action. Une action jugee inefficace donne lieu a la reouverture de la non-conformite.\n\n## 6. Escalade",
+          "contains_required_terms": false
+        },
+        {
+          "index": 11,
+          "text": "re de la non-conformite.\n\n## 6. Escalade\n\nLa survenue de plus de 2 non-conformites majeures sur un meme trimestre pour un meme processus declenche une revue exceptionnelle par la Direction et l'ouverture d'un audit interne cible selon PR-QA-MRD-010.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 12,
+          "text": "audit interne cible selon PR-QA-MRD-010.\n\n## 7. Non-conformites d'origine externe",
+          "contains_required_terms": false
+        },
+        {
+          "index": 13,
+          "text": "Une non-conformite peut etre ouverte a partir d'une reclamation client qualifiee selon PR-CLI-MRD-013, d'un ecart releve lors d'un audit fournisseur conduit selon PR-ACH-MRD-007, ou d'une anomalie detectee lors d'une revue de pistes d'audit selon SOP-QA-MRD-015. Le circuit de cla",
+          "contains_required_terms": false
+        },
+        {
+          "index": 14,
+          "text": " selon SOP-QA-MRD-015. Le circuit de classification et de cloture reste identique quelle que soit son origine.",
+          "contains_required_terms": false
+        },
+        {
+          "index": 15,
+          "text": "## 8. Documents associes\n\n- PR-QA-MRD-010 - Programme d'audits internes\n\n- PR-CLI-MRD-013 - Gestion des reclamations clients\n\n- PR-QA-MRD-011 - Revue de direction\n\n## Historique des revisions",
+          "contains_required_terms": false
+        },
+        {
+          "index": 16,
+          "text": "e direction\n\n## Historique des revisions\n\n| Version | Date | Objet de la revision |\n|---|---|---|\n| V4 | 2025-03-03 | Delai de cloture majeur ramene de 60 a 45 jours calendaires |\n| V3 | 2024-02-19 | Ajout de la verification d'efficacite a 3 mois |\n| V2 | 2022-11-08 | Ajout du critere d'escalade trimestriel |",
+          "contains_required_terms": true
+        },
+        {
+          "index": 17,
+          "text": "jout du critere d'escalade trimestriel |\n\n_Document fictif genere pour une demonstration technique. Meridian Labs est une organisation imaginaire._",
+          "contains_required_terms": false
+        }
+      ]
+    }
+  ]
+}

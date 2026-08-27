@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG QA Quality Cheat Sheet</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Reference · QualioBot course</p>
+    <h1>RAG QA quality cheat sheet</h1>
+    <p class="dek">A reliable RAG chatbot is a whole pipeline—not just a clever prompt.</p>
+    <p class="zh"><span class="zh-label">中文</span> 一个可靠的 RAG 聊天机器人是一条完整的流水线，而不是一个提示词。</p>
+
+    <section class="card accent">
+      <h2>The pipeline</h2>
+      <p><strong>Question → retrieve evidence → assemble context → generate answer → cite sources → evaluate.</strong></p>
+      <p class="zh"><strong>问题 → 检索证据 → 组装上下文 → 生成答案 → 引用来源 → 评估。</strong></p>
+      <p>When an answer goes wrong, ask one question first: <em>Was the evidence missing, or was it there but used incorrectly?</em></p>
+      <p class="zh">答案出错时，首先要问：<em>证据缺失了，还是证据存在但没有被正确使用？</em></p>
+    </section>
+
+    <section>
+      <h2>Two quality layers</h2>
+      <p class="zh">两个质量层次</p>
+      <table>
+        <thead><tr><th>Layer</th><th>Question</th><th>Demo signal</th></tr></thead>
+        <tbody>
+          <tr><td>Retrieval</td><td>Did the system return every expected source?</td><td>Retrieval union / per-index hit rates</td></tr>
+          <tr><td>Generation</td><td>Did the answer state the requested fact without contradiction?</td><td>Strict and lenient judge accuracy</td></tr>
+          <tr><td>Grounding</td><td>Did it cite the documents supporting the answer?</td><td>Source hit rate</td></tr>
+          <tr><td>Safety</td><td>Did it refuse questions absent from the corpus?</td><td>Refusal accuracy and hallucination rate</td></tr>
+          <tr><td>Operations</td><td>Can users get answers quickly and consistently?</td><td>Latency p50 / p95 and API errors</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>How to read the current demo</h2>
+      <p class="zh">正确理解当前演示系统的指标</p>
+      <ul>
+        <li><strong>Strict accuracy:</strong> count only a judge verdict of <code>correct</code>. Use this as the headline number.</li>
+        <li><strong>Lenient accuracy:</strong> count <code>correct + partial</code>. It helps with diagnosis, but it does not replace strict accuracy.</li>
+        <li><strong>Source hit rate:</strong> check that the final answer cites every expected source document.</li>
+        <li><strong>Refusal accuracy:</strong> check that the system correctly declines questions it cannot answer.</li>
+        <li><strong>Hallucination rate:</strong> count how often the system answers an unanswerable question anyway.</li>
+      </ul>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Retrieval failure</h3><p>The right document never makes it into the answer prompt. Look at chunking, metadata, query handling, hybrid retrieval, filters, and ranking.</p><p class="zh">正确的文档没有进入答案提示词。改进分块、元数据、查询处理、混合检索、过滤器或排序。</p></div>
+      <div class="card"><h3>Generation failure</h3><p>The right evidence is there, but the answer leaves it out, mixes it up, or contradicts it. Look at context assembly, instructions, answer structure, and model choice.</p><p class="zh">正确的证据已经存在，但答案遗漏、混淆或违背了证据。改进上下文组装、指令、答案结构或模型选择。</p></div>
+    </section>
+
+    <section>
+      <h2>Course rule</h2>
+      <p>Do not call a prompt improvement a success because of one impressive answer. Run the evaluation harness, inspect the failures, and compare the same metrics with the previous run.</p>
+      <p class="zh"><strong>课程规则：</strong> 不要因为一个令人印象深刻的答案，就声称提示词改进有效。应该运行评估工具、检查失败案例，并把相同指标与上一次运行进行比较。</p>
+    </section>
+
+    <footer><a href="../lessons/0001-from-question-to-cited-answer.html">Lesson 1</a> · <a href="../MISSION.md">Mission</a> · <a href="../RESOURCES.md">Resources</a></footer>
+  </main>
+</body>
+</html>

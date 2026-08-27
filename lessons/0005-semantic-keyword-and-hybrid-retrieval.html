@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 5 · Semantic search, keyword search, and hybrid retrieval</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Lesson 05 · 20–30 minutes plus runtime</p>
+    <h1>Semantic search, keyword search, and hybrid retrieval</h1>
+    <p class="dek">Before you call a system “hybrid,” measure what vector search and full-text search are each actually contributing.</p>
+    <p class="zh"><span class="zh-label">中文</span> 别急着说系统是“混合检索”——先测清楚向量检索和全文检索各自到底贡献了多少。</p>
+
+    <!-- <video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-05-retrieval.mp4">
+      <track kind="captions" src="../animations/audio-scripts/lesson-05-retrieval.en.vtt" srclang="en" label="English" default>
+      <track kind="captions" src="../animations/audio-scripts/lesson-05-retrieval.fr.vtt" srclang="fr" label="Français">
+      <track kind="captions" src="../animations/audio-scripts/lesson-05-retrieval.zh.vtt" srclang="zh" label="中文">
+    </video> -->
+
+    <section class="card accent">
+      <h2>Today’s tangible win</h2>
+      <p>By the end of this lesson, you will have filled in a question-by-question comparison table and picked one retrieval improvement the evidence actually supports.</p>
+      <p class="zh"><strong>本课的具体收获：</strong> 填完一张逐题对比表，并选出一个真正有证据支持的检索改进点。</p>
+    </section>
+
+    <section>
+      <h2>1 · The smallest useful model</h2>
+      <ul>
+        <li><strong>Vector search:</strong> Works off embedding similarity, so it catches meaning and paraphrases rather than exact words. How well it holds up across languages depends on the embedding model — do not assume, measure it.</li>
+        <li><strong>Full-text search:</strong> Matches the literal string — identifiers, names, acronyms, numbers. When exact spelling is what carries the meaning, this is what saves you.</li>
+        <li><strong>Cumulative union:</strong> For this experiment, a source counts as found the moment it turns up in either the vector results or the full-text results. That tells you about retrieval contribution — nothing about whether the eventual answer is correct.</li>
+        <li><strong>Hybrid retrieval:</strong> A production hybrid path might fuse or rerank both signals together. Here we start with the simpler vector-plus-full-text union, so each one's contribution stays visible.</li>
+      </ul>
+      <p><a href="https://qdrant.tech/documentation/search/text-search/hybrid-search" target="_blank" rel="noreferrer">Primary reading: Qdrant Hybrid Search</a> — pay attention to how it combines multiple search representations, and why that combination needs to be evaluated rather than just assumed to work.</p>
+      <p class="zh">这节课我们先只测“向量结果 ∪ 全文结果”覆盖了多少来源——来源被检索到，不等于答案就是对的，这两件事别混在一起。</p>
+    </section>
+
+    <section>
+      <h2>2 · Run one controlled experiment</h2>
+      <p>Reuse the same isolated demo and evaluation set from Lesson 4. Retrieval mode hits <code>/api/v1/search</code> directly with no LLM judge in the loop, which is what keeps this a clean read on retrieval by itself.</p>
+      <pre><code>cd demo
+python3 eval.py verify
+python3 eval.py run --mode retrieval --workspace meridian_demo --tag lesson-05-experiment</code></pre>
+      <p>This gives you two files: an aggregate report, and a per-question JSON report.</p>
+      <pre><code>reports/lesson-05-experiment.md
+reports/lesson-05-experiment.json</code></pre>
+      <p>For each question you are checking, look at:</p>
+      <ul>
+        <li><code>results[].retrieval.indexes.vector.all</code></li>
+        <li><code>results[].retrieval.indexes.fulltext.all</code></li>
+        <li><code>results[].retrieval.cumulative["vector+fulltext"].all</code></li>
+      </ul>
+      <p class="callout">Judge a hit by source metadata, not by text matching — a document ID that merely shows up inside another document’s body text does not count as a retrieval hit.</p>
+      <p class="zh">判断文档有没有被检索到，看的是来源元数据，不是文字匹配。某个编号只是碰巧出现在另一份文档正文里，不能算这份文档被检索到了。</p>
+    </section>
+
+    <section>
+      <h2>3 · Fill the comparison table</h2>
+      <p>Fill the three result columns with <code>all</code>, <code>partial</code>, or <code>miss</code> — use <code>partial</code> when a multi-document question only turns up some of its expected sources. Then, for each row, add one line of interpretation and one specific next step.</p>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>Question ID</th><th>Query type</th><th>Expected source</th><th>Vector result</th><th>Full-text result</th><th>Cumulative union</th><th>Interpretation</th><th>Next action</th></tr></thead>
+          <tbody><tr><td>q21</td><td>Reference lookup</td><td>PR-QA-MRD-010</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q24</td><td>Reference lookup / revision</td><td>PR-QA-MRD-009</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q32</td><td>Cross-lingual factual</td><td>PR-EXM-MRD-003</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q46</td><td>Literal factual</td><td>PR-ACH-MRD-007</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q63</td><td>Multi-hop</td><td>PR-CLI-MRD-013 + PR-QA-MRD-009</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr></tbody>
+        </table>
+      </div>
+      <p class="zh">三个结果栏分别填 <code>all</code>、<code>partial</code> 或 <code>miss</code>；多文档问题只找到部分来源时，就填 <code>partial</code>。每一行再补一句解释，加一个具体的下一步。</p>
+    </section>
+
+    <section>
+      <h2>4 · Interpret before changing code</h2>
+      <div class="quiz">
+        <p><strong>Case A:</strong> For q21, vector comes back <code>miss</code>, full-text comes back <code>all</code>, and the cumulative union is <code>all</code>. What does that actually justify?</p>
+        <button onclick="answer(this,'q1','Correct — add exact-reference extraction or boosting, then rerun retrieval.')">Lexical fix</button>
+        <button onclick="answer(this,'q1','Not quite — the evidence points to exact-reference handling instead.')">Chunk rewrite</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Case B:</strong> Vector and full-text both land on <code>all</code>, so the union isn't adding a new source here. What's the honest read?</p>
+        <button onclick="answer(this,'q2','Correct — full-text is not adding any retrieval coverage on this row.')">Duplicate</button>
+        <button onclick="answer(this,'q2','Not quite — the union did not pick up a new source here.')">Improvement</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Case C:</strong> q63's cumulative result is <code>all</code>, yet the final answer is still wrong. Where do you look next?</p>
+        <button onclick="answer(this,'q3','Correct — the right sources got through, so look at context assembly and generation next.')">Generation</button>
+        <button onclick="answer(this,'q3','Not the first stop — retrieval already found every expected source.')">Ingestion</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mission connection</h2>
+      <p>A chatbot for a regulated company has to nail both ends — a precisely worded procedure lookup and a policy question phrased the way a real person would ask it. This table is what turns that reliability goal into an actual, traceable retrieval decision.</p>
+      <p class="zh">这正是我们要做的事：无论是员工、QA、法规、供应商还是审计人员来提问，机器人给出的答案都要可验证、可引用，并且清楚自己的边界在哪里。</p>
+    </section>
+
+    <section>
+      <h2>5 · Deliverable and next action</h2>
+      <ol>
+        <li>Fill in all five rows of the comparison table.</li>
+        <li>Write one paragraph: which signal added a source, for which type of query, and what's the evidence for that?</li>
+        <li>Pick one next action, and name the metric you'll rerun to check it worked.</li>
+      </ol>
+      <p><strong>Next:</strong> Lesson 6 — Chunking and document structure. Hang onto this table — it's your retrieval baseline for the chunking and query-handling experiments still to come.</p>
+      <p class="zh"><strong>下一步：</strong> 把五行对比表填完，写一条有证据支撑的检索结论，再定一个带明确指标的后续实验。</p>
+      <p><strong>Ask me anything</strong> about the report fields, metadata matching, query categories, or any row that isn't clicking for you. I'm your teacher for this course — that's exactly what I'm here for.</p>
+      <p class="zh"><strong>报告字段、元数据匹配、问题类别，或者哪一行看不懂，随时问我——这门课我就是负责给你答疑解惑的。</strong></p>
+    </section>
+
+    <footer><a href="0004-establish-the-mvp-baseline.html">Lesson 4</a> · <a href="0006-chunking-and-document-structure.html">Next lesson</a> · <a href="../reference/semantic-keyword-and-hybrid-retrieval-cheatsheet.html">Reference</a> · <a href="../RESOURCES.md">Resources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>
