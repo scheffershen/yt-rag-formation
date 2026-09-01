@@ -1,10 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lesson 11 · Citation design and source fidelity</title><link rel="stylesheet" href="../assets/course.css"></head><body><main class="page">
 <p class="eyebrow">Lesson 11 · 25–35 minutes</p><h1>Citation design and source fidelity</h1><p class="dek">Build citations that are stable, genuinely useful, and point straight back at the evidence that backed the answer.</p><p class="zh"><span class="zh-label">中文</span> 引用不是摆设：稳定、好用，还得真正指向撑住这个答案的证据。</p>
-<!-- <video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-11-citations.mp4">
+<video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-11-citations.mp4">
   <track kind="captions" src="../animations/audio-scripts/lesson-11-citations.en.vtt" srclang="en" label="English" default>
   <track kind="captions" src="../animations/audio-scripts/lesson-11-citations.fr.vtt" srclang="fr" label="Français">
   <track kind="captions" src="../animations/audio-scripts/lesson-11-citations.zh.vtt" srclang="zh" label="中文">
-</video> -->
+</video>
 <section class="card accent"><h2>Today’s tangible win</h2><p>By the end of this lesson: a citation contract that nails down document identity, chunk/page identity, claim mapping, and deduplication rules.</p><p class="zh"><strong>本课的具体收获：</strong> 写一份引用契约，讲清楚文档身份、片段/页码身份、主张映射和去重规则。</p></section>
 <section><h2>1 · The skill</h2><p>Pick one of q28, q30, q46, or q63 and audit it — trace every material claim in the answer back to the source that actually backs it up.</p><ul><li><strong>Citation fidelity:</strong> the source you cited actually contains or backs up the claim, not just something adjacent to it.</li><li><strong>Citation completeness:</strong> every material claim has a solid source behind it — this matters even more once an answer chains several hops together.</li><li><strong>Citation identity:</strong> a stable document and chunk reference a user can actually look up and reproduce.</li></ul><p><a href="https://docs.anthropic.com/en/docs/build-with-claude/search-results" target="_blank" rel="noreferrer">Primary reading: Anthropic — Search Results with Citations</a></p><p class="zh">引用忠实度：你引用的来源得真的包含或支持这条主张，不是随便挂个相关文档凑数。引用完整性：每一个重要主张都要有站得住脚的来源撑着，答案要是跨了好几跳推理，这一条更不能少。引用身份：给用户一个稳定、可查、可复现的文档和片段编号。</p></section>
 <section><h2>2 · Run the evidence loop</h2><pre><code>cd demo

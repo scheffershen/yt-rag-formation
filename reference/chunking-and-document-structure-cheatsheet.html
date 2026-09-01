@@ -24,21 +24,22 @@
       <div class="table-scroll"><table class="comparison-table"><thead><tr><th>Term</th><th>Meaning</th><th>中文</th></tr></thead><tbody>
         <tr><td><strong>Source window</strong></td><td>A repeatable, bounded slice of synthetic Markdown used in the offline lab.</td><td>源窗口：用于离线实验的、可重复生成的合成 Markdown 片段。</td></tr>
         <tr><td><strong>Chunk size</strong></td><td>The maximum number of characters allowed in one source window.</td><td>窗口大小：一个源窗口允许的最大字符数。</td></tr>
+        <tr><td><strong>Chunk-size profile</strong></td><td>Not one universal setting — Qdrant/Meilisearch index at ~500 tokens, LightRAG deliberately uses ~1200 for better entity extraction. <code>--profile chunk</code>/<code>graph</code> approximate the two in characters.</td><td>分块尺寸档位：不是统一设置——Qdrant/Meilisearch 用约 500 token，LightRAG 为了更好的实体抽取故意用约 1200 token。<code>--profile chunk</code>/<code>graph</code> 分别用字符数近似这两个值。</td></tr>
         <tr><td><strong>Overlap</strong></td><td>Characters copied from the end of one window into the next.</td><td>重叠：从前一窗口末尾复制到下一窗口的字符。</td></tr>
         <tr><td><strong>Co-location</strong></td><td>The expected reference and every required fact term appear in the same window.</td><td>同位：预期文档编号和所有必需事实词同时出现在同一窗口。</td></tr>
-        <tr><td><strong>Proxy metric</strong></td><td>A directional signal—not a live retrieval or answer-quality result.</td><td>代理指标：方向性证据，不是线上检索或答案质量结果。</td></tr>
+        <tr><td><strong>Proxy metric</strong></td><td>A directional signal—not a live retrieval or answer-quality result. The graph profile's rate looks better almost by construction, since a big enough window trivially fits the whole document.</td><td>代理指标：方向性证据，不是线上检索或答案质量结果。graph 档位的比例天然会更好看，因为足够大的窗口本来就能装下整篇文档。</td></tr>
       </tbody></table></div>
     </section>
 
     <section>
       <h2>Controlled experiment card</h2>
       <div class="table-scroll"><table class="comparison-table"><thead><tr><th>Step</th><th>Do</th><th>Don't claim</th></tr></thead><tbody>
-        <tr><td>Baseline</td><td>Run q24 with 280 characters and 40 characters of overlap.</td><td>That this is the best production setting.</td></tr>
-        <tr><td>One change</td><td>Keep the overlap at 40 and rerun q24 with 420 characters.</td><td>That several changes caused the result.</td></tr>
-        <tr><td>Measure</td><td>Compare the co-location count/rate and the readable window text.</td><td>That the live index has improved.</td></tr>
+        <tr><td>Baseline</td><td>Run q24 with <code>--profile chunk</code> (~500 tokens, the Qdrant/Meilisearch size).</td><td>That this is the best production setting.</td></tr>
+        <tr><td>One change</td><td>Keep everything else and rerun q24 with <code>--profile graph</code> (~1200 tokens, LightRAG's size).</td><td>That several changes caused the result.</td></tr>
+        <tr><td>Measure</td><td>Compare the co-location count/rate and the readable window text.</td><td>That the live index has improved, or that the bigger window is simply better.</td></tr>
         <tr><td>Verify</td><td>Reindex the isolated demo, then run the retrieval evaluation again.</td><td>That a source-window proxy can replace evaluation.</td></tr>
       </tbody></table></div>
-      <p class="zh">实验卡：先在 280/40 下建立基线；只把窗口改为 420；比较同位数量/比例和窗口文本；最后在隔离演示环境中重新索引并重跑检索评估。</p>
+      <p class="zh">实验卡：先用 <code>--profile chunk</code>（约 500 token，Qdrant/Meilisearch 的尺寸）建立基线；其余不变，改用 <code>--profile graph</code>（约 1200 token，LightRAG 的尺寸）重跑；比较同位数量/比例和窗口文本——但这不代表线上索引已经变好，也不代表窗口越大越好；最后在隔离演示环境中重新索引并重跑检索评估。</p>
     </section>
 
     <section>
@@ -54,10 +55,10 @@
     <section>
       <h2>Commands and conclusion frame</h2>
       <pre><code>cd demo
-python3 chunk_lab.py --question q24 --window-chars 280 --overlap-chars 40 --output-dir reports/lesson-06-baseline
-python3 chunk_lab.py --question q24 --window-chars 420 --overlap-chars 40 --output-dir reports/lesson-06-larger-window</code></pre>
-      <p><strong>Conclusion frame:</strong> “With ___ characters and ___ overlap, ___ of ___ windows kept the required fact and source identity together. This supports the hypothesis that ___. It does not prove live retrieval quality; next, I would reindex and run the retrieval evaluation again.”</p>
-      <p class="zh"><strong>结论句式：</strong>“当窗口为 ___ 字符、重叠为 ___ 字符时，___ / ___ 个窗口同时包含必需事实和来源身份。这支持 ___ 的假设；它不能证明线上检索质量。下一步是在隔离环境中重新索引并重跑检索评估。”</p>
+python3 chunk_lab.py --question q24 --profile chunk --output-dir reports/lesson-06-chunk-profile
+python3 chunk_lab.py --question q24 --profile graph --output-dir reports/lesson-06-graph-profile</code></pre>
+      <p><strong>Conclusion frame:</strong> “With the ___ profile (___ characters, ___ overlap), ___ of ___ windows kept the required fact and source identity together. This supports the hypothesis that ___. It does not prove live retrieval quality, and it does not mean the bigger window is simply better; next, I would weigh that against LightRAG's real extraction cost and reindex-plus-retrieval check.”</p>
+      <p class="zh"><strong>结论句式：</strong>“用 ___ 档位（___ 字符、重叠 ___ 字符）时，___ / ___ 个窗口同时包含必需事实和来源身份。这支持 ___ 的假设；它不能证明线上检索质量，也不代表窗口越大越好。下一步是权衡 LightRAG 真实的抽取成本，再重新索引并重跑检索评估。”</p>
     </section>
 
     <section>

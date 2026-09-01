@@ -1,10 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lesson 12 · Refusal, uncertainty, and hallucination control</title><link rel="stylesheet" href="../assets/course.css"></head><body><main class="page">
 <p class="eyebrow">Lesson 12 · 25–35 minutes</p><h1>Refusal, uncertainty, and hallucination control</h1><p class="dek">Teach the bot that ‘I don’t know’ is sometimes the best possible answer — not a failure, but exactly right when the corpus doesn’t back up a claim.</p><p class="zh"><span class="zh-label">中文</span> 让机器人学会说“我不知道”——把这句话变成一种可以测量、可以审计的安全动作，而不是含糊搪塞。</p>
-<!--<video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-12-refusal.mp4">
+<video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-12-refusal.mp4">
   <track kind="captions" src="../animations/audio-scripts/lesson-12-refusal.en.vtt" srclang="en" label="English" default>
   <track kind="captions" src="../animations/audio-scripts/lesson-12-refusal.fr.vtt" srclang="fr" label="Français">
   <track kind="captions" src="../animations/audio-scripts/lesson-12-refusal.zh.vtt" srclang="zh" label="中文">
-</video> -->
+</video>
 <section class="card accent"><h2>Today’s tangible win</h2><p>By the end, you’ll have a refusal policy — with test cases covering no evidence, partial evidence, conflicting evidence, and ambiguous questions.</p><p class="zh"><strong>本课的具体收获：</strong> 写出一份拒答策略，配上四类测试用例——没有证据、证据不全、证据打架、问题本身模糊。</p></section>
 <section><h2>1 · The skill</h2><p>Take the six unanswerable eval questions and sort each response into one of three buckets: safe refusal, unsafe hedge, or outright hallucination.</p><ul><li><strong>Refusal:</strong> Says plainly that the indexed evidence doesn’t establish the fact being asked for.</li><li><strong>Uncertainty:</strong> Spells out — carefully — what the evidence does support, and what’s still an open question.</li><li><strong>Hallucination:</strong> A real, substantive claim that the allowed evidence just doesn’t back up.</li></ul><p><a href="https://platform.openai.com/docs/guides/evaluation-best-practices" target="_blank" rel="noreferrer">Primary reading: OpenAI — Evaluation Best Practices</a></p><p class="zh">拒答：直接说清楚——已索引的证据撑不起这个事实。不确定性：把证据能说明什么、还有哪些说不准，交代得明明白白。幻觉：证据根本不够，却还是抛出了一个实打实的结论。</p></section>
 <section><h2>2 · Run the evidence loop</h2><pre><code>cd demo

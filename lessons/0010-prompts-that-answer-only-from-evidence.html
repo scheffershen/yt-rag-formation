@@ -1,10 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lesson 10 · Prompts that answer only from evidence</title><link rel="stylesheet" href="../assets/course.css"></head><body><main class="page">
 <p class="eyebrow">Lesson 10 · 25–35 minutes</p><h1>Prompts that answer only from evidence</h1><p class="dek">Turn “only answer from evidence” into instructions precise enough that grounded answers, honest uncertainty, and clean refusals become things you can actually observe — not just hope for.</p><p class="zh"><span class="zh-label">中文</span> 这一课要把“只按证据回答”这条规矩，写成一份能落地检验的提示词契约。</p>
-<!-- <video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-10-prompt.mp4">
+<video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-10-prompt.mp4">
   <track kind="captions" src="../animations/audio-scripts/lesson-10-prompt.en.vtt" srclang="en" label="English" default>
   <track kind="captions" src="../animations/audio-scripts/lesson-10-prompt.fr.vtt" srclang="fr" label="Français">
   <track kind="captions" src="../animations/audio-scripts/lesson-10-prompt.zh.vtt" srclang="zh" label="中文">
-</video> -->
+</video>
 <section class="card accent"><h2>Today’s tangible win</h2><p>One versioned prompt rule that spells out how to use evidence, handle missing facts, cite sources, and know when to refuse.</p><p class="zh"><strong>本课的具体收获：</strong> 写出一条带版本号的提示词规则，把怎么用证据、事实缺了怎么办、怎么引用、什么时候该拒答都说清楚。</p></section>
 <section><h2>1 · The skill</h2><p>Take one wrong or half-right answer from Lesson 4, hold it against the current prompt, and write down exactly one rule that would have fixed it.</p><ul><li><strong>Grounded generation:</strong> the model answers from the evidence you gave it, not from whatever it already “knows.”</li><li><strong>Instruction hierarchy:</strong> your system and developer rules decide what the model is allowed to do when evidence is thin or contradictory.</li><li><strong>Prompt contract:</strong> a testable spec for answer format, when to refuse, how to cite, and how to handle conflicting evidence.</li></ul><p><a href="https://platform.openai.com/docs/guides/optimizing-llm-accuracy" target="_blank" rel="noreferrer">Primary reading: OpenAI — Optimizing LLM Accuracy</a></p><p class="zh">有据生成：模型只能顺着你给的证据往下答，不能夹带自己脑子里的“通用知识”。指令层级：证据不全或互相打架时，模型能做什么、不能做什么，得由系统规则和开发者规则说了算。提示词契约：把回答格式、什么时候该拒答、怎么引用、遇到证据冲突怎么处理，都写成能拿去测试的具体条款。</p></section>
 <section><h2>2 · Run the evidence loop</h2><pre><code>cd demo

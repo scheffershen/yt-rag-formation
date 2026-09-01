@@ -1,10 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lesson 16 · Pilot review and 30-day implementation plan</title><link rel="stylesheet" href="../assets/course.css"></head><body><main class="page">
 <p class="eyebrow">Lesson 16 · 25–35 minutes</p><h1>Pilot review and 30-day implementation plan</h1><p class="dek">Turn all that evaluation evidence into a prioritized backlog, an actual go/no-go call on the pilot, and a measurable month of engineering work ahead.</p><p class="zh"><span class="zh-label">中文</span> 把评估证据变成一份按优先级排好的任务清单，做出真正的试点上线/不上线决定，并规划出接下来这一个月看得见成果的工程工作。</p>
-<!-- <video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-16-roadmap.mp4">
+<video class="lesson-video" controls preload="metadata" src="../animations/render/lesson-16-roadmap.mp4">
   <track kind="captions" src="../animations/audio-scripts/lesson-16-roadmap.en.vtt" srclang="en" label="English" default>
   <track kind="captions" src="../animations/audio-scripts/lesson-16-roadmap.fr.vtt" srclang="fr" label="Français">
   <track kind="captions" src="../animations/audio-scripts/lesson-16-roadmap.zh.vtt" srclang="zh" label="中文">
-</video> -->
+</video>
 <section class="card accent"><h2>Today’s tangible win</h2><p>A prototype readiness report: clear go/no-go criteria, plus a prioritized 30-day backlog.</p><p class="zh"><strong>本课的具体收获：</strong> 一份原型就绪报告，里面有清晰的上线/不上线判定标准，外加一份按优先级排好的 30 天任务清单。</p></section>
 <section><h2>1 · The skill</h2><p>Pick the three highest-value fixes to come out of the prior lessons, then pin down the acceptance bar, the regression check, who owns it, and the exact command to rerun.</p><ul><li><strong>Readiness gate:</strong> a go/no-go call built on explicit thresholds for quality, safety, performance, and operations.</li><li><strong>Highest-value fix:</strong> a change you pick because it fixes a real, measured failure — not because it happens to be trendy.</li><li><strong>Pilot scope:</strong> a deliberately narrow slice of users, documents, and workflow, where the risks and the bar for success are already known.</li></ul><p><a href="https://developers.google.com/machine-learning/guides/rules-of-ml" target="_blank" rel="noreferrer">Primary reading: Google — Rules of Machine Learning</a></p><p class="zh">就绪门槛：质量、安全、性能、运维这几项阈值都写清楚了，能不能上线，看这个说了算。最高价值修复：选它是因为它解决了一个实测出来的重要问题，不是因为它看着时髦。试点范围：故意收窄的一小群用户、一批文档、一条工作流，风险和成功标准提前都摸清楚了。</p></section>
 <section><h2>2 · Run the evidence loop</h2><pre><code>cd demo
