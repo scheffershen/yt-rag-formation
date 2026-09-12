@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>参考资料 · 语义检索、关键词检索与混合检索</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · QualioBot 课程</p>
+    <h1>语义检索、关键词检索与混合检索</h1>
+    <p class="dek">用于阅读第 5 课检索对比结果的快速参考。</p>
+    <section class="card accent"><h2>一句话规则</h2><p><strong>一句话规则：</strong>先测量是哪个信号补上了预期来源，再决定是否改动检索架构。</p></section>
+    <section><h2>术语表</h2><table><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody>
+      <tr><td><strong>向量检索</strong></td><td>利用嵌入相似度来找含义和改写表达。跨语言效果取决于所用的嵌入模型。</td></tr>
+      <tr><td><strong>全文检索</strong></td><td>逐字匹配标识符、名称、缩写和数字。</td></tr>
+      <tr><td><strong>摘要检索</strong></td><td>每篇整体文档一条向量化摘要，而不是按分块——用于"这份文档讲的是什么"这类单个分块太窄、装不下的问题。</td></tr>
+      <tr><td><strong>图检索</strong></td><td>LightRAG 的实体/关系图谱，独立于分块检索构建和遍历——唯一能跨分块或跨文档关联事实的信号。</td></tr>
+      <tr><td><strong>累计并集</strong></td><td>在第 5 课中，只要预期来源的元数据出现在四个信号中的任意一个里，就算被找到。</td></tr>
+      <tr><td><strong>混合检索</strong></td><td>在这套系统里：四个信号并行运行，各自格式化后的结果被拼接在一起——不融合，也不重排。真正的融合只发生在 LightRAG 内部。</td></tr>
+    </tbody></table></section>
+    <section><h2>如何读这张表</h2><table><thead><tr><th>列</th><th>可以用来证明</th><th>不能声称</th></tr></thead><tbody>
+      <tr><td>向量结果</td><td><code>retrieval.indexes.vector.all</code></td><td>语义检索产出了正确答案。</td></tr>
+      <tr><td>全文结果</td><td><code>retrieval.indexes.fulltext.all</code></td><td>全文排序在所有查询上都胜出。</td></tr>
+      <tr><td>摘要结果</td><td><code>retrieval.indexes.summary.all</code></td><td>文档级摘要命中就意味着分块级答案也被找到了。</td></tr>
+      <tr><td>图谱结果</td><td><code>retrieval.indexes.graph.all</code></td><td>这是精确命中——这一列本身是近似值（见下方提示）。</td></tr>
+      <tr><td>累计并集</td><td><code>retrieval.cumulative["vector+fulltext+summary+graph"].all</code></td><td>任何超出"在四者中的某处被找到"之外的融合或排序结论。</td></tr>
+      <tr><td>解读</td><td>哪个预期来源被新增、被重复找到，或依然缺失。</td><td>基于单独一行就下一个通用的架构决策。</td></tr>
+    </tbody></table><p class="callout">务必用来源元数据去匹配预期文档编号，而不是用任意的分块文本去匹配。否则交叉引用可能造出假命中。</p><p class="callout">图谱这一列是近似值：LightRAG 返回的是一整段扁平的上下文字符串，而不是文档列表，所以那里的命中可能来自另一篇文档内部的交叉引用，而不是目标文档本身。</p></section>
+    <section><h2>决策提示</h2><table><thead><tr><th>题目形态</th><th>有用的初步假设</th><th>下一步实验</th></tr></thead><tbody>
+      <tr><td>精确文档编号</td><td>全文检索可能找回向量检索漏掉的内容。</td><td>提取编号，逐字检索，再合并去重。</td></tr>
+      <tr><td>跨语言概念</td><td>当嵌入模型支持多语言时，向量检索可能有帮助。</td><td>对比跨语言那一行，验证模型是否真的支持这个假设。</td></tr>
+      <tr><td>双文档（多跳）问题</td><td>即使答案质量差，并集的召回率也可能很高。</td><td>先看图谱这一列——它正是为跨文档关联两个事实而设计的信号——再检查上下文组装和生成环节。</td></tr>
+    </tbody></table></section>
+    <section><h2>本地入口</h2><ul><li><code>demo/eval.py</code></li><li><code>demo/eval_set.yaml</code></li><li><code>reports/lesson-05-experiment.json</code></li></ul></section>
+    <footer><a href="../../lessons/zh/0005-semantic-keyword-and-hybrid-retrieval.html">第 5 课</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+</body>
+</html>

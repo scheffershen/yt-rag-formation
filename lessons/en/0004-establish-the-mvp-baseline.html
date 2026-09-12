@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 4 · Establish the MVP baseline</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Lesson 04 · 20–30 minutes plus runtime</p>
+    <h1>Establish the MVP baseline</h1>
+    <p class="dek">Turn the demo stack into a repeatable measurement, then treat every failure it turns up as engineering evidence.</p>
+    <p><a href="https://platform.openai.com/docs/guides/evaluation-best-practices" target="_blank" rel="noreferrer">Primary reading: OpenAI — Evaluation Best Practices</a></p>
+<section class="card accent">
+      <h2>Today’s tangible win</h2>
+      <p>By the end of today you'll have a fresh, live baseline for the sanitized Meridian Labs system — and you'll know exactly what it proves, and just as importantly, what it doesn't.</p>
+    </section>
+
+    <section>
+      <h2>1 · Safety first: use the isolated demo</h2>
+      <p>Run every command from the demo directory — not from `api`:</p>
+      <pre><code>cd demo</code></pre>
+      <p>The demo stack is fully isolated: its own service names, ports, collections, workspaces, and data directories. It only reads the demo configuration and the one demo API key file. Never print or open the secret environment files.</p>
+      <p>Before you start, double-check:</p>
+      <ul>
+        <li>Docker is running.</li>
+        <li>The demo API key file exists and actually has a key in it.</li>
+        <li>Port `8000` isn't already taken by the production project.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2 · Run the baseline recipe</h2>
+      <p>Start with the offline checks:</p>
+      <pre><code>python3 eval.py verify
+python3 test_scoring.py</code></pre>
+      <p>Bring up the isolated stack:</p>
+      <pre><code>python3 setup_demo.py up</code></pre>
+      <p>Check the status any time with:</p>
+      <pre><code>python3 setup_demo.py status</code></pre>
+      <p>Now index the synthetic corpus:</p>
+      <pre><code>python3 setup_demo.py ingest</code></pre>
+      <p>Ingestion isn't instant — the graph and summary indexes both call the LLM, so budget real time for it. If the corpus is already indexed and you want to keep it that way, use the documented options carefully. Don't casually blow away production data.</p>
+    </section>
+
+    <section>
+      <h2>3 · Measure retrieval before answers</h2>
+      <p>Run the retrieval-only evaluation first — it skips the LLM judge entirely:</p>
+      <pre><code>python3 eval.py run \
+  --mode retrieval \
+  --workspace meridian_demo \
+  --tag lesson-4-retrieval</code></pre>
+      <p>This shows you exactly what each index is pulling its weight on:</p>
+      <ul>
+        <li>Vector only</li>
+        <li>Vector plus full-text</li>
+        <li>Vector plus full-text plus summary</li>
+        <li>All indexes, including approximate graph matching</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4 · Measure generated answers</h2>
+      <p>Next, run the answer evaluation:</p>
+      <pre><code>python3 eval.py run \
+  --mode answer \
+  --workspace meridian_demo \
+  --tag lesson-4-answer</code></pre>
+      <p>This run hits `/api/v1/qa`, checks the citations and required keywords, and lets a judge model sort each answer into `correct`, `partial`, or `incorrect`. It also tracks refusals and latency along the way.</p>
+      <p>Doing this for the first time? Limit the sample size:</p>
+      <pre><code>python3 eval.py run \
+  --mode both \
+  --workspace meridian_demo \
+  --limit 10 \
+  --tag lesson-4-smoke</code></pre>
+    </section>
+
+    <section>
+      <h2>5 · Read the report like an engineer</h2>
+      <p>Reports land here:</p>
+      <pre><code>demo/reports/</code></pre>
+      <p>Never quote a number without its definition attached. Write down:</p>
+      <table>
+        <thead><tr><th>Metric</th><th>Your value</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Retrieval union</td><td>_____</td><td>All expected sources found across the combined indexes</td></tr>
+          <tr><td>Strict accuracy</td><td>_____</td><td>Judge verdict is `correct`</td></tr>
+          <tr><td>Source hit rate</td><td>_____</td><td>Every expected source cited in the final answer</td></tr>
+          <tr><td>Refusal accuracy</td><td>_____</td><td>Unanswerable questions correctly declined</td></tr>
+          <tr><td>Hallucination rate</td><td>_____</td><td>Unanswerable questions answered anyway</td></tr>
+          <tr><td>Latency p50 / p95</td><td>_____</td><td>Typical and slow-tail response time</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>6 · Practice: baseline or overclaim?</h2>
+      <div class="quiz">
+        <p><strong>Statement A:</strong> “On the 65-question Meridian Labs eval set, using `gpt-4o-mini`, topk 5, in this workspace, strict answer accuracy came out to 70%.” Does that count as a solid baseline statement?</p>
+        <button onclick="answer(this,'q1','Right — it locks down the corpus, the configuration, and the metric definition.')">Yes</button>
+        <button onclick="answer(this,'q1','Not quite — those exact conditions and metric definition are what make it reproducible.')">No</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Statement B:</strong> “The chatbot is 70% accurate.” Would that fly in a technical report?</p>
+        <button onclick="answer(this,'q2','Correct — it hides the dataset, the metric, the model, the configuration, and how refusals get handled.')">No</button>
+        <button onclick="answer(this,'q2','Not enough — a number only means something when it’s tied to a reproducible setup.')">Yes</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Statement C:</strong> Retrieval union is high, but strict answer accuracy is low. Where do you look next?</p>
+        <button onclick="answer(this,'q3','Correct — the sources are already getting through, so look at context assembly, prompting, and generation.')">Generation path</button>
+        <button onclick="answer(this,'q3','Not first — retrieval is already doing its job and bringing back the expected sources.')">Ingestion only</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mission connection</h2>
+      <p>A QA or regulatory team can't do anything with a number they can't interpret or reproduce. A baseline is what keeps a prototype honest — it lays bare what's working, what isn't, and whether your next change actually moved the needle.</p>
+    </section>
+
+    <section>
+      <h2>Next action</h2>
+      <p>At minimum, run both the retrieval evaluation and the answer evaluation. Then send me:</p>
+      <ol>
+        <li>Both report tags.</li>
+        <li>The retrieval union percentage.</li>
+        <li>Strict answer accuracy.</li>
+        <li>Source hit rate.</li>
+        <li>Refusal accuracy and hallucination rate.</li>
+        <li>One failure you want to dig into first, along with its judge reason.</li>
+      </ol>
+      <p><strong>Ask follow-up questions</strong> anytime Docker, ingestion, the judge, or a metric doesn't make sense to you. I'll help you make sense of the live numbers before we call Lesson 4 done.</p>
+    </section>
+
+    <footer><a href="../../reference/en/baseline-evaluation-cheatsheet.html">Baseline reference</a> · <a href="../../reference/en/evaluation-set-cheatsheet.html">Evaluation-set reference</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES.md">Resources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

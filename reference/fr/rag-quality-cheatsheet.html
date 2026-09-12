@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche récapitulative qualité RAG QA</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Fiche récapitulative qualité RAG QA</h1>
+    <p class="dek">Un chatbot RAG fiable est un pipeline complet — pas seulement un prompt bien tourné.</p>
+
+    <section class="card accent">
+      <h2>Le pipeline</h2>
+      <p><strong>Question → récupération des preuves → assemblage du contexte → génération de la réponse → citation des sources → évaluation.</strong></p>
+      <p>Quand une réponse est mauvaise, posez d’abord une seule question : <em>la preuve manquait-elle, ou était-elle présente mais mal utilisée ?</em></p>
+    </section>
+
+    <section>
+      <h2>Deux niveaux de qualité</h2>
+      <table>
+        <thead><tr><th>Niveau</th><th>Question</th><th>Signal dans la démo</th></tr></thead>
+        <tbody>
+          <tr><td>Récupération</td><td>Le système a-t-il renvoyé toutes les sources attendues ?</td><td>Taux de couverture global / par index</td></tr>
+          <tr><td>Génération</td><td>La réponse énonce-t-elle le fait demandé sans contradiction ?</td><td>Exactitude du jugement strict et souple</td></tr>
+          <tr><td>Ancrage</td><td>A-t-elle cité les documents qui étayent la réponse ?</td><td>Taux de couverture des sources</td></tr>
+          <tr><td>Sécurité</td><td>A-t-elle refusé les questions absentes du corpus ?</td><td>Taux de bons refus et taux d’hallucination</td></tr>
+          <tr><td>Exploitation</td><td>Les utilisateurs obtiennent-ils des réponses rapides et régulières ?</td><td>Latence p50 / p95 et erreurs API</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Comment lire la démo actuelle</h2>
+      <ul>
+        <li><strong>Exactitude stricte :</strong> ne comptez qu’un verdict du juge égal à <code>correct</code>. Utilisez ce chiffre comme indicateur principal.</li>
+        <li><strong>Exactitude souple :</strong> comptez <code>correct + partial</code>. Cela aide au diagnostic, mais ne remplace pas l’exactitude stricte.</li>
+        <li><strong>Taux de couverture des sources :</strong> vérifiez que la réponse finale cite bien chaque document source attendu.</li>
+        <li><strong>Taux de bons refus :</strong> vérifiez que le système décline correctement les questions auxquelles il ne peut pas répondre.</li>
+        <li><strong>Taux d’hallucination :</strong> comptez la fréquence à laquelle le système répond quand même à une question sans réponse possible.</li>
+      </ul>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Échec de récupération</h3><p>Le bon document n’arrive jamais jusqu’au prompt de réponse. Examinez le découpage, les métadonnées, le traitement des requêtes, la récupération hybride, les filtres et le classement.</p></div>
+      <div class="card"><h3>Échec de génération</h3><p>La bonne preuve est présente, mais la réponse l’omet, la mélange ou la contredit. Examinez l’assemblage du contexte, les instructions, la structure de la réponse et le choix du modèle.</p></div>
+    </section>
+
+    <section>
+      <h2>Règle du cours</h2>
+      <p>Ne qualifiez pas une amélioration de prompt de réussite sur la base d’une seule réponse impressionnante. Lancez le dispositif d’évaluation, examinez les échecs, et comparez les mêmes indicateurs avec l’exécution précédente.</p>
+    </section>
+
+    <footer><a href="../../lessons/fr/0001-from-question-to-cited-answer.html">Leçon 1</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Référence · Recherche sémantique, recherche par mots-clés et récupération hybride</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Recherche sémantique, recherche par mots-clés et récupération hybride</h1>
+    <p class="dek">Un guide rapide pour lire le tableau comparatif de récupération de la Leçon 5.</p>
+    <section class="card accent"><h2>Règle en une ligne</h2><p><strong>Avant de modifier l'architecture de récupération, mesurez quel signal ajoute réellement la source attendue.</strong></p></section>
+    <section><h2>Glossaire</h2><table><thead><tr><th>Terme</th><th>Signification</th></tr></thead><tbody>
+      <tr><td><strong>Recherche vectorielle</strong></td><td>Utilise la similarité d'embeddings pour trouver le sens et les reformulations. Les résultats interlangues dépendent du modèle d'embedding.</td></tr>
+      <tr><td><strong>Recherche plein texte</strong></td><td>Fait correspondre littéralement identifiants, noms, sigles et chiffres.</td></tr>
+      <tr><td><strong>Récupération par résumé</strong></td><td>Un résumé vectorisé par document entier, pas par bloc — pour les questions « de quoi parle ce document », trop larges pour un seul bloc.</td></tr>
+      <tr><td><strong>Récupération par graphe</strong></td><td>Le graphe d'entités/relations de LightRAG, construit et parcouru séparément de la recherche par bloc — le seul signal qui relie des faits entre blocs ou entre documents.</td></tr>
+      <tr><td><strong>Union cumulée</strong></td><td>Dans la Leçon 5, la source attendue compte comme trouvée dès que ses métadonnées apparaissent dans l'un des quatre signaux.</td></tr>
+      <tr><td><strong>Récupération hybride</strong></td><td>Dans ce système : les quatre signaux tournent en parallèle et leurs résultats formatés sont concaténés — non fusionnés ni reclassés. La vraie fusion n'a lieu qu'à l'intérieur de LightRAG lui-même.</td></tr>
+    </tbody></table></section>
+    <section><h2>Comment lire le tableau</h2><table><thead><tr><th>Colonne</th><th>Utilisez cette preuve</th><th>Ne prétendez pas</th></tr></thead><tbody>
+      <tr><td>Résultat vecteur</td><td><code>retrieval.indexes.vector.all</code></td><td>Que la recherche sémantique a produit une réponse correcte.</td></tr>
+      <tr><td>Résultat plein texte</td><td><code>retrieval.indexes.fulltext.all</code></td><td>Que le classement plein texte l'emporte pour toutes les requêtes.</td></tr>
+      <tr><td>Résultat résumé</td><td><code>retrieval.indexes.summary.all</code></td><td>Qu'un succès au niveau du résumé signifie que la réponse au niveau du bloc a aussi été trouvée.</td></tr>
+      <tr><td>Résultat graphe</td><td><code>retrieval.indexes.graph.all</code></td><td>Un succès exact — cette colonne est approximative (voir l'encart ci-dessous).</td></tr>
+      <tr><td>Union cumulée</td><td><code>retrieval.cumulative["vector+fulltext+summary+graph"].all</code></td><td>Toute fusion ou tout classement au-delà de « trouvé quelque part parmi les quatre ».</td></tr>
+      <tr><td>Interprétation</td><td>Quelle source attendue a été ajoutée, dupliquée, ou manque encore.</td><td>Une décision d'architecture générale basée sur une seule ligne.</td></tr>
+    </tbody></table><p class="callout">Faites toujours correspondre les références de document attendues aux métadonnées de la source, pas à un texte de bloc arbitraire. Sinon, des renvois croisés peuvent créer de faux succès.</p><p class="callout">La colonne graphe est approximative : LightRAG renvoie une seule chaîne de contexte plate, pas une liste de documents, donc un succès à cet endroit peut provenir d'un renvoi croisé à l'intérieur d'un autre document plutôt que du document cible lui-même.</p></section>
+    <section><h2>Pistes de décision</h2><table><thead><tr><th>Forme de la question</th><th>Première hypothèse utile</th><th>Expérience suivante</th></tr></thead><tbody>
+      <tr><td>Identifiant de document exact</td><td>La recherche plein texte peut récupérer ce que la recherche vectorielle manque.</td><td>Extrayez l'identifiant, recherchez-le littéralement, puis fusionnez et dédupliquez.</td></tr>
+      <tr><td>Concept translinguistique</td><td>La recherche vectorielle peut aider quand le modèle d'embedding est multilingue.</td><td>Comparez la ligne translinguistique et vérifiez que le modèle soutient cette hypothèse.</td></tr>
+      <tr><td>Question à deux documents (multi-saut)</td><td>Le rappel de l'union peut être élevé même quand la qualité de la réponse est faible.</td><td>Vérifiez d'abord la colonne graphe — c'est le signal conçu pour relier deux faits entre documents — puis examinez l'assemblage du contexte et la génération.</td></tr>
+    </tbody></table></section>
+    <section><h2>Repères locaux</h2><ul><li><code>demo/eval.py</code></li><li><code>demo/eval_set.yaml</code></li><li><code>reports/lesson-05-experiment.json</code></li></ul></section>
+    <footer><a href="../../lessons/fr/0005-semantic-keyword-and-hybrid-retrieval.html">Leçon 5</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

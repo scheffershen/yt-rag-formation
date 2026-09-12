@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG 基线评估速查表</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · QualioBot 课程</p>
+    <h1>运行并解读一次 RAG 基线</h1>
+    <p class="dek">基线是一次测量快照，不是永远不变的真理。</p>
+
+    <section class="card accent">
+      <h2>基线流程</h2>
+      <p><strong>验证 → 启动隔离环境 → 索引 → 检索评估 → 答案评估 → 检查失败 → 保存配置。</strong></p>
+    </section>
+
+    <section>
+      <h2>要记录什么</h2>
+      <table>
+        <thead><tr><th>项目</th><th>原因</th></tr></thead>
+        <tbody>
+          <tr><td>标签</td><td>给这次运行打标签，例如 `lesson-4-baseline`。</td></tr>
+          <tr><td>语料库和评估集版本</td><td>避免把不同的测试数据当成同一份来比较。</td></tr>
+          <tr><td>工作区和索引名称</td><td>确认这次运行确实用的是隔离的演示数据。</td></tr>
+          <tr><td>topk 和阈值</td><td>这些检索设置会影响结果。</td></tr>
+          <tr><td>模型和评审模型</td><td>换掉任何一个模型，都可能改变答案或评审的判定。</td></tr>
+          <tr><td>并发数和超时时间</td><td>这些运行时设置会影响错误率和延迟。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>要分开阅读的指标</h2>
+      <ul>
+        <li><strong>检索覆盖率（并集）：</strong>综合索引有没有找回每一份预期文档？</li>
+        <li><strong>严格准确率：</strong>有多少被评审的答案是完全正确的？</li>
+        <li><strong>来源命中率：</strong>最终答案有没有引用每一个预期来源？</li>
+        <li><strong>拒答准确率：</strong>系统有没有对每一个不可回答的问题都拒答？</li>
+        <li><strong>幻觉率：</strong>有多少次，系统回答了证据根本支撑不了的问题？</li>
+        <li><strong>延迟 p50 / p95：</strong>典型响应时间，以及慢尾响应时间。</li>
+      </ul>
+      <p>必须分开阅读这些指标：检索覆盖、严格准确率、来源命中率、拒答准确率、幻觉率，以及 p50/p95 延迟。</p>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>好的基线陈述</h3><p>“在这份语料库、评估集、模型和配置下，系统达到 X。”</p></div>
+      <div class="card"><h3>糟糕的基线陈述</h3><p>“这个聊天机器人准确率是 90%。”</p></div>
+    </section>
+
+    <section>
+      <h2>解读失败的规则</h2>
+      <p>对于每个失败，记录三件事：预期来源、实际来源和评审原因。这样才能把百分比转化为工程假设。</p>
+    </section>
+
+    <footer><a href="../../lessons/zh/0004-establish-the-mvp-baseline.html">第 4 课</a> · <a href="evaluation-set-cheatsheet.html">评估集参考</a> · <a href="../../MISSION.md">使命</a></footer>
+  </main>
+</body>
+</html>

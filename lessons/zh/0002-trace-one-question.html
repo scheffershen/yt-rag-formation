@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第 2 课 · 顺着真实代码追踪一个问题</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">第 2 课 · 15 分钟</p>
+    <h1>顺着真实代码追踪一个问题</h1>
+    <p class="dek">把 RAG 的心智模型，变成一项你真能上手用的调试技能。</p>
+    <p><a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank" rel="noreferrer">首选阅读：Anthropic — 上下文检索（Contextual Retrieval）</a></p>
+<section class="card accent">
+      <h2>本课的具体收获</h2>
+      <p><strong>本课的具体收获：</strong> 学完之后，你能准确说出 `/api/v1/qa` 请求走到每个阶段时，究竟是哪个文件、哪个函数在处理。</p>
+    </section>
+
+    <section>
+      <h2>1 · 我们要追踪的这个问题</h2>
+      <div class="card">
+        <p><strong>问题：</strong><br>“Quel est le délai de clôture d'un plan d'action pour une non-conformité majeure ?”</p>
+        <p><strong>预期来源：</strong> `PR-QA-MRD-009`；<strong>预期事实：</strong> `45 天`。</p>
+      </div>
+      <p>我们不打算把所有文件从头看到尾，而是顺着请求从外到内一路跟下去，只在它真正调用到的函数那里停下来细看。</p>
+    </section>
+
+    <section>
+      <h2>2 · 调用链</h2>
+      <div class="card">
+        <p><strong>客户端</strong></p>
+        <p>↓ `POST /api/v1/qa`</p>
+        <p><strong>`routes/qa.py` → `ask_question(request)`</strong></p>
+        <p>↓ 转交给</p>
+        <p><strong>`qa_service.py` → `answer_question_internal(request)`</strong></p>
+        <p>↓ 运行四条检索路径</p>
+        <p><strong>`search_qdrant()` · `search_meilisearch()` · `query_lightrag_context()`</strong></p>
+        <p>↓ 组装证据（哪个函数决定哪些来源条目被保留？）</p>
+        <p><strong>`utils.build_context()`</strong></p>
+        <p>↓ 推导引用（哪个函数把保留下来的条目转换成引用？）</p>
+        <p><strong>`utils.sources_from_items()`</strong></p>
+        <p>↓ 构造提示词并生成</p>
+        <p><strong>`utils.build_prompt()` → `completion.generate()`</strong></p>
+        <p>↓ 返回</p>
+        <p><strong>`models.AnswerResponse`</strong></p>
+      </div>
+      <p><strong>调用链：</strong> 请求从客户端发出后，依次经过路由、QA 服务、四条检索路径、上下文组装、引用提取、提示词构造，最终由模型生成答案并返回响应。</p>
+      <p>学习时不妨在另一个标签页里打开<a href="../../reference/zh/request-path-cheatsheet.html">请求路径速查表</a>，边看边对照。</p>
+    </section>
+
+    <section>
+      <h2>3 · 每个阶段实际在做什么</h2>
+      <table>
+        <thead><tr><th>阶段</th><th>当前实现</th><th>为什么重要</th></tr></thead>
+        <tbody>
+          <tr><td>路由</td><td><code>routes/qa.py</code> 用 Pydantic 校验收到的请求，然后交给下一环节。</td><td>路由层刻意保持轻量；真正的逻辑在别处。</td></tr>
+          <tr><td>编排</td><td><code>qa_service.py</code> 检查各服务是否可用，清洗问题文本，读取后端配置，并启动检索。</td><td>它是整个请求的协调者，也是做端到端排查最好的起点。</td></tr>
+          <tr><td>检索</td><td>Qdrant 返回语义分块和摘要，Meilisearch 返回关键词命中，LightRAG 提供图检索上下文。</td><td>如果证据缺失，先查检索，再怀疑提示词。</td></tr>
+          <tr><td>组装</td><td><code>build_context()</code> 在各通道之间公平分配预算，遇到超出预算的条目会整条丢弃，而不是截断。</td><td>在这一步没能保留下来的内容，模型根本看不到。</td></tr>
+          <tr><td>引用</td><td><code>sources_from_items()</code> 只看真正进入提示词的条目。</td><td>引用绝不应该指向模型从未看到过的证据。</td></tr>
+          <tr><td>生成</td><td><code>build_prompt()</code> 要求模型只依据给定的上下文作答，遇到没有依据的内容就拒答；随后由生成服务写出答案。</td><td>哪怕证据明明就在那里，答案依然可能被遗漏、混淆或与之矛盾。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4 · 凭记忆重建调用链</h2>
+      <p>把第 2 步的调用链图关掉，不要往回翻，凭记忆填下面这张表——靠回忆比重新看一遍更能记住。</p>
+      <table>
+        <thead><tr><th>阶段</th><th>函数</th></tr></thead>
+        <tbody>
+          <tr><td>路由</td><td>__________</td></tr>
+          <tr><td>编排</td><td>__________</td></tr>
+          <tr><td>检索（三个函数）</td><td>__________</td></tr>
+          <tr><td>组装（决定哪些内容被保留）</td><td>__________</td></tr>
+          <tr><td>引用（绝不引用被丢弃的证据）</td><td>__________</td></tr>
+          <tr><td>生成</td><td>__________</td></tr>
+        </tbody>
+      </table>
+      <p>对照第 2 步检查答案。想不起来的地方，正是你该回去重看的地方——这正是"先凭记忆再核对"这个练习方式的意义所在。</p>
+    </section>
+
+    <section>
+      <h2>5 · 对照真实运行的系统验证</h2>
+      <pre><code>curl -s -X POST http://localhost:8000/api/v1/qa \
+  -H "Content-Type: application/json" \
+  -d "{\"question\": \"Quel est le délai de clôture d'un plan d'action pour une non-conformité majeure ?\", \"workspace\": \"meridian_demo\"}"</code></pre>
+      <p>调用链的代码在 <code>api/</code> 里，不属于这门免费课程——但通过 demo 环境跑起来的 API 本身是免费的。在 <code>demo/setup_demo.py up</code> 运行的情况下，直接向它提问，用真实返回结果核对你的推理。返回的 JSON 里，<code>sources</code> 应包含 <code>PR-QA-MRD-009</code>，<code>answer</code> 应提到 <code>45 jours</code>。少了任何一个，你就发现了一个真实的失败案例——该用第 4 步整理出的调用链去排查：到底是检索没找到，还是生成环节漏答了？</p>
+    </section>
+
+    <section>
+      <h2>6 · 检验你的重建结果</h2>
+      <div class="quiz">
+        <p>最终的上下文组装，到底是哪个函数在做？</p>
+        <button onclick="answer(this,'q1','回答正确。build_context() 决定了哪些内容能到达模型。')">`build_context()`</button>
+        <button onclick="answer(this,'q1','不完全对。search_qdrant() 只负责检索其中一个通道；上下文组装是在那之后才发生的。')">`search_qdrant()`</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p>`sources_from_items(context_items)` 这一步，为什么这么关键？</p>
+        <button onclick="answer(this,'q2','回答正确。它把汇报的来源限制在真正进入提示词的证据范围内。')">它只引用真正展示过的证据</button>
+        <button onclick="answer(this,'q2','不完全对。这个函数正是为了避免引用被丢弃的证据而设计的。')">它会列出所有检索到的结果</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p>如果 `/api/v1/search` 里找不到 `PR-QA-MRD-009`，你该先查哪一组函数？</p>
+        <button onclick="answer(this,'q3','回答正确。先从检索函数及其输入输出入手。')">`search_*()`</button>
+        <button onclick="answer(this,'q3','还不是这里。提示词生成是在检索之后才发生的。')">`build_prompt()`</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>与课程使命的关系</h2>
+      <p>对审计员或 QA 从业者来说，一个答案可不可信，就看你能不能讲清楚它是怎么来的。有了一张简单的调用地图，出问题时你就知道该往哪查——是索引、上下文预算、引用逻辑，还是模型输出本身。</p>
+    </section>
+
+    <section>
+      <h2>下一步行动</h2>
+      <p>把数据流表格里六个空格全部填完，然后用一句话回答下面这个问题：</p>
+      <p class="callout"><strong>为什么一个来源会出现在原始检索结果里，却没有出现在最终 API 返回的引用中？</strong></p>
+      <p><strong>哪个函数、哪个阶段没搞懂，随时问我。</strong> 等你填完六个空格、答完最后一个问题，第 2 课就算完成了——接下来想上哪一课都可以。</p>
+    </section>
+
+    <footer><a href="../../reference/zh/request-path-cheatsheet.html">请求路径参考</a> · <a href="../../reference/zh/rag-quality-cheatsheet.html">RAG 质量速查表</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

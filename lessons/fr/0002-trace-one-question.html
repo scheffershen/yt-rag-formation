@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 2 · Suivre une question dans le code réel</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 02 · 15 minutes</p>
+    <h1>Suivre une question à la trace dans le code réel</h1>
+    <p class="dek">Transformer le modèle mental du RAG en une compétence de débogage que vous pouvez vraiment utiliser.</p>
+    <p><a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank" rel="noreferrer">Lecture principale : Anthropic — Contextual Retrieval</a></p>
+<section class="card accent">
+      <h2>Le gain concret du jour</h2>
+      <p>À la fin de cette leçon, vous saurez pointer le fichier et la fonction exacts derrière chaque étape d’une requête `/api/v1/qa`.</p>
+    </section>
+
+    <section>
+      <h2>1 · La question que nous allons suivre</h2>
+      <div class="card">
+        <p><strong>Question :</strong><br>“Quel est le délai de clôture d'un plan d'action pour une non-conformité majeure ?”</p>
+        <p><strong>Source attendue :</strong> `PR-QA-MRD-009` ; <strong>fait attendu :</strong> `45 jours`.</p>
+      </div>
+      <p>Nous n’allons pas lire chaque fichier de bout en bout. Nous allons plutôt suivre la requête de l’extérieur vers l’intérieur, et ne nous arrêter que sur les fonctions qu’elle touche réellement.</p>
+    </section>
+
+    <section>
+      <h2>2 · La chaîne d’appels</h2>
+      <div class="card">
+        <p><strong>Client</strong></p>
+        <p>↓ `POST /api/v1/qa`</p>
+        <p><strong>`routes/qa.py` → `ask_question(request)`</strong></p>
+        <p>↓ délègue à</p>
+        <p><strong>`qa_service.py` → `answer_question_internal(request)`</strong></p>
+        <p>↓ exécute quatre chemins de récupération</p>
+        <p><strong>`search_qdrant()` · `search_meilisearch()` · `query_lightrag_context()`</strong></p>
+        <p>↓ assemble les preuves (quelle fonction décide quels éléments sources survivent ?)</p>
+        <p><strong>`utils.build_context()`</strong></p>
+        <p>↓ dérive les citations (quelle fonction convertit les éléments survivants en citations ?)</p>
+        <p><strong>`utils.sources_from_items()`</strong></p>
+        <p>↓ construit le prompt et génère</p>
+        <p><strong>`utils.build_prompt()` → `completion.generate()`</strong></p>
+        <p>↓ renvoie</p>
+        <p><strong>`models.AnswerResponse`</strong></p>
+      </div>
+      <p>Gardez la <a href="../../reference/fr/request-path-cheatsheet.html">fiche de référence du parcours de requête</a> ouverte dans un autre onglet pendant que vous avancez.</p>
+    </section>
+
+    <section>
+      <h2>3 · Ce que fait réellement chaque étape</h2>
+      <table>
+        <thead><tr><th>Étape</th><th>Implémentation actuelle</th><th>Pourquoi c’est important</th></tr></thead>
+        <tbody>
+          <tr><td>Route</td><td><code>routes/qa.py</code> valide la requête entrante avec Pydantic, puis la transmet.</td><td>Les routes restent volontairement minces ; la vraie logique vit ailleurs.</td></tr>
+          <tr><td>Orchestration</td><td><code>qa_service.py</code> vérifie que les services sont opérationnels, nettoie la question, lit la configuration du backend et lance la récupération.</td><td>C’est le coordinateur de toute la requête, et le meilleur point de départ pour un suivi de bout en bout.</td></tr>
+          <tr><td>Récupération</td><td>Qdrant renvoie des blocs et des résumés sémantiques, Meilisearch renvoie des correspondances mots-clés, et LightRAG fournit le contexte du graphe.</td><td>Si une preuve manque, vérifiez la récupération avant d’accuser le prompt.</td></tr>
+          <tr><td>Assemblage</td><td><code>build_context()</code> répartit équitablement le budget entre les canaux et supprime des éléments entiers plutôt que de les tronquer.</td><td>Tout ce qui ne survit pas à cette étape, le modèle ne le verra jamais.</td></tr>
+          <tr><td>Citation</td><td><code>sources_from_items()</code> ne regarde que les éléments réellement intégrés au prompt.</td><td>Une citation ne doit jamais pointer vers une preuve que le modèle n’a jamais vue.</td></tr>
+          <tr><td>Génération</td><td><code>build_prompt()</code> demande au modèle de s’en tenir au contexte fourni et de refuser tout ce qui n’est pas étayé ; le service de complétion rédige ensuite la réponse.</td><td>Même une preuve bien présente peut encore être ignorée, brouillée ou contredite.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4 · Reconstituer la chaîne d’appels — de mémoire</h2>
+      <p>Fermez le schéma de la chaîne d’appels de la section 2. Sans y
+      revenir, remplissez ce tableau pour la question que nous suivons — se
+      souvenir marque mieux les esprits que relire.</p>
+      <table>
+        <thead><tr><th>Étape</th><th>Fonction</th></tr></thead>
+        <tbody>
+          <tr><td>Route</td><td>__________</td></tr>
+          <tr><td>Orchestration</td><td>__________</td></tr>
+          <tr><td>Récupération (trois fonctions)</td><td>__________</td></tr>
+          <tr><td>Assemblage (décide ce qui survit)</td><td>__________</td></tr>
+          <tr><td>Citation (ne cite jamais une preuve écartée)</td><td>__________</td></tr>
+          <tr><td>Génération</td><td>__________</td></tr>
+        </tbody>
+      </table>
+      <p>Vérifiez-vous par rapport à la section 2. Tout ce que vous n’avez
+      pas pu retrouver est exactement ce qu’il faut relire avant d’avancer —
+      c’est tout l’intérêt de procéder dans ce sens.</p>
+    </section>
+
+    <section>
+      <h2>5 · Vérifier sur le système en fonctionnement</h2>
+      <p>La chaîne d’appels vit dans <code>api/</code>, qui ne fait pas
+      partie de ce cours gratuit — mais l’API <em>en fonctionnement</em>,
+      elle, en fait partie, via la stack de démonstration. Posez-lui
+      directement la question suivie et confrontez votre analyse à la
+      vraie réponse, avec <code>demo/setup_demo.py up</code> lancé :</p>
+      <pre><code>curl -s -X POST http://localhost:8000/api/v1/qa \
+  -H "Content-Type: application/json" \
+  -d "{\"question\": \"Quel est le délai de clôture d'un plan d'action pour une non-conformité majeure ?\", \"workspace\": \"meridian_demo\"}"</code></pre>
+      <p>Dans la réponse JSON : <code>sources</code> doit inclure
+      <code>PR-QA-MRD-009</code>, et <code>answer</code> doit indiquer
+      <code>45 jours</code>. Si l’un des deux manque, vous venez de trouver
+      un vrai échec à diagnostiquer avec le suivi construit à la section 4 —
+      était-ce un raté de récupération ou de génération ?</p>
+    </section>
+
+    <section>
+      <h2>6 · Vérifiez votre reconstitution</h2>
+      <div class="quiz">
+        <p><strong>Alors — quelle fonction fait réellement l’assemblage final du contexte ?</strong></p>
+        <button onclick="answer(this,'q1','Correct. build_context() choisit ce qui parvient jusqu’au modèle.')">`build_context()`</button>
+        <button onclick="answer(this,'q1','Pas tout à fait. search_qdrant() récupère un seul canal ; l’assemblage du contexte a lieu plus tard.')">`search_qdrant()`</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Pourquoi `sources_from_items(context_items)` compte-t-il autant ?</strong></p>
+        <button onclick="answer(this,'q2','Correct. Elle limite les sources rapportées aux preuves qui ont réellement atteint le prompt.')">Elle cite les preuves réellement montrées</button>
+        <button onclick="answer(this,'q2','Pas tout à fait. Elle est spécifiquement conçue pour éviter de citer une preuve écartée.')">Elle liste tous les résultats récupérés</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Si `/api/v1/search` ne fait pas apparaître `PR-QA-MRD-009`, quelle famille de fonctions faut-il examiner en premier ?</strong></p>
+        <button onclick="answer(this,'q3','Correct. Commencez par les fonctions de récupération et leurs entrées/résultats.')">`search_*()`</button>
+        <button onclick="answer(this,'q3','Pas en premier. La génération du prompt intervient après la récupération.')">`build_prompt()`</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>Pour un auditeur ou un professionnel qualité, une réponse n’est fiable qu’à la hauteur du chemin que vous pouvez expliquer derrière elle. C’est exactement pourquoi une simple carte des appels est si utile quand quelque chose casse : elle indique où regarder en premier — l’index, le budget de contexte, la logique de citation, ou la sortie du modèle.</p>
+    </section>
+
+    <section>
+      <h2>Prochaine action</h2>
+      <p>Remplissez les six blancs du tableau de flux de données. Puis répondez à ceci en une seule phrase :</p>
+      <p class="callout"><strong>Pourquoi une source pourrait-elle apparaître dans les résultats bruts de récupération sans jamais figurer dans les citations finales de l’API ?</strong></p>
+      <p><strong>Posez-moi vos questions</strong> sur tout ce qui reste flou — n’importe quelle fonction, n’importe quelle étape. Une fois les six blancs remplis et la question finale répondue, la Leçon 2 est terminée — passez à la leçon de votre choix.</p>
+    </section>
+
+    <footer><a href="../../reference/fr/request-path-cheatsheet.html">Référence du parcours de requête</a> · <a href="../../reference/fr/rag-quality-cheatsheet.html">Fiche récapitulative qualité RAG</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

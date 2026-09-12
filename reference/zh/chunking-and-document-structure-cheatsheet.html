@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>参考资料 · 分块与文档结构</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · QualioBot 课程</p>
+    <h1>分块与文档结构</h1>
+    <p class="dek">用源窗口证据提出有边界的分块假设的快速参考。</p>
+
+    <section class="card accent">
+      <h2>一句话规则</h2>
+      <p><strong>一句话规则：</strong>一次只改一个窗口参数，测量"事实与来源身份是否同在"，再用独立的线上检索评估验证假设。</p>
+    </section>
+
+    <section>
+      <h2>术语表</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody>
+        <tr><td><strong>源窗口</strong></td><td>用于离线实验的、可重复生成的合成 Markdown 片段。</td></tr>
+        <tr><td><strong>窗口大小</strong></td><td>一个源窗口允许的最大字符数。</td></tr>
+        <tr><td><strong>分块尺寸档位</strong></td><td>不是统一设置——Qdrant/Meilisearch 用约 500 token，LightRAG 为了更好的实体抽取故意用约 1200 token。<code>--profile chunk</code>/<code>graph</code> 分别用字符数近似这两个值。</td></tr>
+        <tr><td><strong>重叠</strong></td><td>从前一窗口末尾复制到下一窗口的字符。</td></tr>
+        <tr><td><strong>同位</strong></td><td>预期文档编号和所有必需事实词同时出现在同一窗口。</td></tr>
+        <tr><td><strong>代理指标</strong></td><td>方向性证据，不是线上检索或答案质量结果。graph 档位的比例天然会更好看，因为足够大的窗口本来就能装下整篇文档。</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section>
+      <h2>受控实验卡</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>步骤</th><th>要做的事</th><th>不能声称</th></tr></thead><tbody>
+        <tr><td>基线</td><td>用 <code>--profile chunk</code>（约 500 token，Qdrant/Meilisearch 的尺寸）跑 q24。</td><td>这是最佳的生产环境设置。</td></tr>
+        <tr><td>只改一处</td><td>其余保持不变，改用 <code>--profile graph</code>（约 1200 token，LightRAG 的尺寸）重跑 q24。</td><td>是多处改动共同导致了这个结果。</td></tr>
+        <tr><td>测量</td><td>对比同位数量/比例，以及可读的窗口文本。</td><td>线上索引已经变好了，或者窗口越大就越好。</td></tr>
+        <tr><td>验证</td><td>在隔离演示环境中重新索引，再重跑一次检索评估。</td><td>一个源窗口代理指标可以取代评估。</td></tr>
+      </tbody></table></div>
+      <p>实验卡：先用 <code>--profile chunk</code>（约 500 token，Qdrant/Meilisearch 的尺寸）建立基线；其余不变，改用 <code>--profile graph</code>（约 1200 token，LightRAG 的尺寸）重跑；比较同位数量/比例和窗口文本——但这不代表线上索引已经变好，也不代表窗口越大越好；最后在隔离演示环境中重新索引并重跑检索评估。</p>
+    </section>
+
+    <section>
+      <h2>问题地图</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>题目</th><th>为什么有用</th><th>来源</th></tr></thead><tbody>
+        <tr><td>q24</td><td>检查修订后的截止日期是否依然和现行程序的身份标识挂钩。</td><td>PR-QA-MRD-009</td></tr>
+        <tr><td>q30</td><td>说明单个窗口可能仍装不下一个需要两个来源的答案。</td><td>PR-QA-MRD-001 + PR-QA-MRD-009</td></tr>
+        <tr><td>q52</td><td>检查一个简短事实性答案是否与业务连续性计划的身份标识相符。</td><td>PR-EXM-MRD-014</td></tr>
+      </tbody></table></div>
+      <p>问题地图：q24 检查修订期限与当前程序身份；q30 说明多来源答案不能只看一个窗口；q52 检查简短事实是否仍与连续性计划身份相连。</p>
+    </section>
+
+    <section>
+      <h2>命令与结论句式</h2>
+      <pre><code>cd demo
+python3 chunk_lab.py --question q24 --profile chunk --output-dir reports/lesson-06-chunk-profile
+python3 chunk_lab.py --question q24 --profile graph --output-dir reports/lesson-06-graph-profile</code></pre>
+      <p><strong>结论句式：</strong>"用 ___ 档位（___ 字符、重叠 ___ 字符）时，___ / ___ 个窗口同时包含必需事实和来源身份。这支持 ___ 的假设；它不能证明线上检索质量，也不代表窗口越大越好。下一步是权衡 LightRAG 真实的抽取成本，再重新索引并重跑检索评估。"</p>
+    </section>
+
+    <section>
+      <h2>本地入口</h2>
+      <ul>
+        <li><code>demo/chunk_lab.py</code></li>
+        <li><code>demo/eval_set.yaml</code></li>
+        <li><code>demo/corpus/md/</code></li>
+      </ul>
+      <p>本地入口：源窗口工具、评估集和合成 Markdown 语料目录。</p>
+    </section>
+
+    <footer><a href="../../lessons/zh/0006-chunking-and-document-structure.html">第 6 课</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+</body>
+</html>

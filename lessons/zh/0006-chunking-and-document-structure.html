@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第 6 课 · 分块与文档结构</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">第 06 课 · 25–35 分钟</p>
+    <h1>分块与文档结构</h1>
+    <p class="dek">改动一个分块窗口设置，然后检查一个必需事实是否依然和它的文档身份绑在一起。</p>
+<section class="card accent">
+      <h2>本课的具体收获</h2>
+      <p>你会对比两种源窗口配置，最终得出一个有边界、有证据支撑的分块假设。</p>
+    </section>
+
+    <section>
+      <h2>1 · 最小可用模型</h2>
+      <ul>
+        <li><strong>分块/窗口：</strong> 源文本中一段有边界的切片。处理得好，它会把一个事实连同其标题和文档身份一起带走；处理得不好，两者就会被拆散。</li>
+        <li><strong>重叠：</strong> 跨越边界、重复出现在下一个窗口里的文本。它能挽救一个恰好横跨边界的事实——但重叠幅度加得太多，就只是制造出近乎重复的证据。</li>
+        <li><strong>分块大小是一个真实的设计选择，而不是一个放之四海而皆准的设置：</strong> Qdrant 和 Meilisearch 都按约 500 token 一个分块来建索引，而 LightRAG 则刻意用约 1200 token——更大的窗口能让它的实体抽取大模型每次调用拿到更多上下文，意味着调用次数更少、更省钱，代价是实体边界更粗糙。不存在唯一"正确"的窗口大小；合适的大小取决于这个索引是拿来做什么用的。</li>
+        <li><strong>证据与身份的同位：</strong> 本课依据的指标——一个源窗口是否同时包含预期的文档编号和每一个必需的事实词？</li>
+        <li><strong>有边界的结论：</strong> 一次源窗口实验的结果，只给你一个分块假设，仅此而已。它并不能证明线上索引的检索或回答效果真的更好。</li>
+      </ul>
+      <p><a href="https://docs.llamaindex.ai/en/stable/examples/node_postprocessor/MetadataReplacementDemo/" target="_blank" rel="noreferrer">首选阅读：LlamaIndex——句子窗口检索（Sentence Window Retrieval）</a>。留意一个检索到的窗口如何在不丢失来源信息的前提下，恢复某个事实周围的局部上下文。</p>
+    </section>
+
+    <section>
+      <h2>2 · 跑一次受控的源窗口实验</h2>
+      <p>离线工具 <code>chunk_lab.py</code> 只涉及两样东西：合成的 Markdown 语料库和 <code>eval_set.yaml</code>。它绝不会连接 Docker、读取任何密钥、调用 API，也不会重建任何索引。</p>
+      <pre><code>cd demo
+python3 chunk_lab.py --question q24 --profile chunk --output-dir reports/lesson-06-chunk-profile
+python3 chunk_lab.py --question q24 --profile graph --output-dir reports/lesson-06-graph-profile</code></pre>
+      <p><code>--profile chunk</code> 和 <code>--profile graph</code> 是预设档位，不是随意取的数字——它们对应第 1 节里约 500 token（Qdrant/Meilisearch）和约 1200 token（LightRAG）的真实窗口大小，换算成了字符数。两者的重叠都固定在 200 字符；唯一变化的是窗口大小。然后对比这两个报告文件：</p>
+      <pre><code>reports/lesson-06-chunk-profile/lesson-06-q24-chunks.md
+reports/lesson-06-graph-profile/lesson-06-q24-chunks.md</code></pre>
+      <p class="callout">这里的指标很简单：有多少窗口——占多大比例——同时包含预期编号和每一个 <code>must_include</code> 词。数字越高，越能支撑一个分块假设。但它不是检索准确率。graph 档位的比例几乎必然会显得更好看——这几乎是结构性的：一个足够大的窗口自然而然就能装下整篇文档，这正是你该在结论里点明的取舍，而不是当成一次胜利。</p>
+    </section>
+
+    <section>
+      <h2>3 · 检查三种题型</h2>
+      <p>做完 q24 之后，对 q30 和 q52 跑同样的实验。这三道题合在一起，能给你三种不同的失败形态：一次修订版本查找、一个横跨两篇文档的答案，以及一个事实找回目标。</p>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>题目</th><th>形态</th><th>预期来源</th><th>必需事实</th><th>要检查什么</th></tr></thead>
+          <tbody>
+            <tr><td>q24</td><td>修订版本查找</td><td>PR-QA-MRD-009</td><td>45</td><td>V4 的身份标识是否依然和改动后的截止日期绑在一起？</td></tr>
+            <tr><td>q30</td><td>多跳</td><td>PR-QA-MRD-001 + PR-QA-MRD-009</td><td>90 jours</td><td>哪个来源带着这个事实，另一个来源又还缺在哪？</td></tr>
+            <tr><td>q52</td><td>事实性查找</td><td>PR-EXM-MRD-014</td><td>8 heures</td><td>RTO 这个事实是否依然和业务连续性计划的身份标识绑在一起？</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>4 · 记录前后对比的证据</h2>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>题目</th><th>配置</th><th>同位数量 / 比例</th><th>观察到的边界效应</th><th>回退或成本</th><th>有边界的结论</th></tr></thead>
+          <tbody>
+            <tr><td>q24</td><td>chunk 档位（约 500 token）</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+            <tr><td>q24</td><td>graph 档位（约 1200 token）</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+            <tr><td>q30 或 q52</td><td>选一组受控对比</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>把这句话填完整：<em>"在 ___ 档位下（___ 字符，重叠 ___），___ / ___ 个窗口把必需事实和来源身份放在了同一个地方。这支持了一个假设：___。它不能证明线上检索质量，也不代表窗口越大就越好——下一步我会把它和 LightRAG 真实的抽取成本，以及一次重新索引加检索的验证放在一起权衡。"</em></p>
+    </section>
+
+    <section>
+      <h2>5 · 检索练习</h2>
+      <div class="quiz">
+        <p><strong>情形 A：</strong> 截止日期出现在某个窗口里，但文档编号没有。哪种修复真正对准了这个风险？</p>
+        <button onclick="answer(this,'q1','正确。在假设需要更大窗口之前，先保留或前置标题/编号。')">保留标题</button>
+        <button onclick="answer(this,'q1','不该先做这个。缺失的证据是文档身份，不一定是更多的周边文本。')">去掉标题</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>情形 B：</strong> 提高重叠之后，两个相邻窗口最终几乎重复了同样的文字。这该在笔记里记下什么风险？</p>
+        <button onclick="answer(this,'q2','正确。更大的重叠可能会把 top-k 的名额花在近乎重复的内容上，而不是互补的证据上。')">提高重叠</button>
+        <button onclick="answer(this,'q2','正确。当重复窗口占满了证据预算时，降低重叠是一个合理的下一步实验。')">降低重叠</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>情形 C：</strong> 从 chunk 档位切换到 graph 档位，代理指标提高了。诚实的下一步是什么？</p>
+        <button onclick="answer(this,'q3','正确。在隔离环境中重新索引，然后用同一套评估集测量检索效果。')">重跑指标</button>
+        <button onclick="answer(this,'q3','还不行。代理指标能支撑一个假设，但不能证明线上检索或回答质量真的更好。')">直接认定原因</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>与课程使命的关系</h2>
+      <p>一个 SOP 答案好不好，往往就取决于它的标题、版本、日期和例外情况是否都同时出现。这让分块成了引用和合规质量的一部分——而不是一个设置完就能不管的摄取环节细节。</p>
+    </section>
+
+    <section>
+      <h2>6 · 交付物与下一步行动</h2>
+      <ol>
+        <li>保存你受控对比 q24 得到的两份报告。</li>
+        <li>把 q24，加上 q30 或 q52 其中一个的证据表填完。</li>
+        <li>写下一个有边界的结论、一个回退风险，以及你接下来要跑的重新索引加检索验证。</li>
+      </ol>
+      <p><strong>接下来：</strong> 第 7 课——元数据、过滤器与访问边界。留好这份记录——它能告诉你一个检索问题，是不是其实源头就在搜索后端的上游。</p>
+      <p><strong>有问题？问我。</strong> 关于报告、代理指标、某个边界效应，或者接下来该现场跑点什么——我就是这门课的老师。</p>
+    </section>
+
+    <footer><a href="../zh/0005-semantic-keyword-and-hybrid-retrieval.html">上一课</a> · <a href="../zh/0007-metadata-filters-and-access-boundaries.html">下一课</a> · <a href="../../reference/zh/chunking-and-document-structure-cheatsheet.html">参考资料</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

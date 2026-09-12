@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG 术语词汇表</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · rag-formation 课程</p>
+    <h1>术语词汇表</h1>
+    <p class="dek">本课程锁定的中文措辞。每一课、每份速查表、每支动画用到下列五个词时，必须使用完全相同的措辞，不能用近义词替换。也提供<a href="../en/glossary-cheatsheet.html">英文版</a>和<a href="../fr/glossary-cheatsheet.html">法文版</a>。</p>
+
+    <section class="card accent">
+      <h2>为什么需要这份表</h2>
+      <p>术语一旦在某一课翻译定调，后面的课要嘛延用同一个（可能有问题的）译法，要嘛另创一个不一致的版本，问题会越滚越大。这份表格是所有课程内容、速查表、动画都必须对齐的唯一依据。它会持续扩充——遇到表格里还没收录的新词，应该先补进来，再写进课程内容，而不是临时自己翻译。</p>
+    </section>
+
+    <section>
+      <h2>锁定词汇</h2>
+      <table>
+        <thead><tr><th>术语</th><th>定义</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>分块</strong></td>
+            <td>把源文档切分成可检索的窗口，窗口之间保留重叠，避免把一个事实和它的识别上下文切开（参见<a href="../../lessons/zh/0006-chunking-and-document-structure.html">第 6 课</a>）。</td>
+          </tr>
+          <tr>
+            <td><strong>重排序</strong></td>
+            <td>用更强的信号——精确 ID 命中、元数据、交叉编码器分数——对检索器初筛出的候选列表重新排序（参见<a href="../../lessons/zh/0008-query-handling-and-reranking.html">第 8 课</a>）。</td>
+          </tr>
+          <tr>
+            <td><strong>幻觉</strong></td>
+            <td>系统回答了语料库并不支持的问题，而不是拒答或承认不知道（参见<a href="../../lessons/zh/0012-refusal-uncertainty-and-hallucination-control.html">第 12 课</a>）。</td>
+          </tr>
+          <tr>
+            <td><strong>有依据</strong></td>
+            <td>一个回答"有依据"，指的是其中每一条主张都有模型实际看到的检索证据支撑（参见<a href="../../lessons/zh/0001-from-question-to-cited-answer.html">第 1 课</a>）。</td>
+          </tr>
+          <tr>
+            <td><strong>拒答</strong></td>
+            <td>系统因为语料库证据不足而拒绝回答，而不是去猜（参见<a href="../../lessons/zh/0003-build-a-trustworthy-evaluation-set.html">第 3 课</a>、<a href="../../lessons/zh/0012-refusal-uncertainty-and-hallucination-control.html">第 12 课</a>）。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>范围与现状</h2>
+      <ul>
+        <li>词汇取自第 1、3、6、8、12 课已经确定的用法——这份表格锁定的是已有措辞，并不引入新的译法。</li>
+        <li>现已提供英文、法文、中文三个语言版本——每个语言版本各自锁定自己的措辞；英文版和法文版的对应锁定词汇见上方链接。</li>
+        <li>目前收录五个词，是因为它们被标记为漂移风险最高（在很多课里反复用到）。遇到另一个词出现同样的复用情况时，应该扩充这张表，而不是另起一份新的词汇表文件。</li>
+      </ul>
+    </section>
+
+    <footer><a href="../../lessons/zh/0001-from-question-to-cited-answer.html">第 1 课</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+</body>
+</html>

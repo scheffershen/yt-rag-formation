@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG QA 质量速查表</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · QualioBot 课程</p>
+    <h1>RAG QA 质量速查表</h1>
+    <p class="dek">一个可靠的 RAG 聊天机器人是一条完整的流水线，而不是一个提示词。</p>
+
+    <section class="card accent">
+      <h2>整条流水线</h2>
+      <p><strong>问题 → 检索证据 → 组装上下文 → 生成答案 → 引用来源 → 评估。</strong></p>
+      <p>答案出错时，首先要问：<em>证据缺失了，还是证据存在但没有被正确使用？</em></p>
+    </section>
+
+    <section>
+      <h2>两个质量层次</h2>
+      <table>
+        <thead><tr><th>层级</th><th>关键问题</th><th>演示环境信号</th></tr></thead>
+        <tbody>
+          <tr><td>检索</td><td>系统是否返回了所有预期的来源？</td><td>检索并集 / 各索引命中率</td></tr>
+          <tr><td>生成</td><td>答案是否准确陈述了所需事实，且没有自相矛盾？</td><td>严格与宽松评判准确率</td></tr>
+          <tr><td>有依据</td><td>是否引用了支撑答案的文档？</td><td>来源命中率</td></tr>
+          <tr><td>安全</td><td>是否拒答了语料库之外的问题？</td><td>拒答准确率与幻觉率</td></tr>
+          <tr><td>运维</td><td>用户能否快速、稳定地获得答案？</td><td>延迟 p50 / p95 与 API 错误</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>正确理解当前演示系统的指标</h2>
+      <ul>
+        <li><strong>严格准确率：</strong> 只统计判定为 <code>correct</code>（正确）的结果，把它作为核心指标。</li>
+        <li><strong>宽松准确率：</strong> 统计 <code>correct + partial</code>（正确 + 部分正确）。它有助于诊断，但不能替代严格准确率。</li>
+        <li><strong>来源命中率：</strong> 检查最终答案是否引用了所有预期的来源文档。</li>
+        <li><strong>拒答准确率：</strong> 检查系统是否正确拒答了自己回答不了的问题。</li>
+        <li><strong>幻觉率：</strong> 统计系统在面对答不了的问题时，仍然给出回答的频率。</li>
+      </ul>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>检索失败</h3><p>正确的文档没有进入答案提示词。改进分块、元数据、查询处理、混合检索、过滤器或排序。</p></div>
+      <div class="card"><h3>生成失败</h3><p>正确的证据已经存在，但答案遗漏、混淆或违背了证据。改进上下文组装、指令、答案结构或模型选择。</p></div>
+    </section>
+
+    <section>
+      <h2>课程规则</h2>
+      <p><strong>课程规则：</strong> 不要因为一个令人印象深刻的答案，就声称提示词改进有效。应该运行评估工具、检查失败案例，并把相同指标与上一次运行进行比较。</p>
+    </section>
+
+    <footer><a href="../../lessons/zh/0001-from-question-to-cited-answer.html">第 1 课</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+</body>
+</html>

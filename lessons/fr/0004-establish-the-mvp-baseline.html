@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 4 · Établir la référence MVP</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 4 · 20 à 30 minutes, plus le temps d’exécution</p>
+    <h1>Établir la référence MVP</h1>
+    <p class="dek">Transformez la pile de démonstration en une mesure reproductible, puis traitez chaque échec qu’elle révèle comme une preuve d’ingénierie.</p>
+    <p><a href="https://platform.openai.com/docs/guides/evaluation-best-practices" target="_blank" rel="noreferrer">Lecture principale : OpenAI — Bonnes pratiques d’évaluation</a></p>
+<section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>À la fin de la journée, vous aurez une référence fraîche et en conditions réelles pour le système Meridian Labs assaini — et vous saurez exactement ce qu’elle prouve, et tout aussi important, ce qu’elle ne prouve pas.</p>
+    </section>
+
+    <section>
+      <h2>1 · La sécurité d’abord : utilisez la démo isolée</h2>
+      <p>Lancez toutes les commandes depuis le répertoire de démonstration — pas depuis `api` :</p>
+      <pre><code>cd demo</code></pre>
+      <p>La pile de démonstration est entièrement isolée : ses propres noms de services, ports, collections, espaces de travail et répertoires de données. Elle ne lit que la configuration de démonstration et le seul fichier de clé API de démonstration. N’affichez et n’ouvrez jamais les fichiers d’environnement secrets.</p>
+      <p>Avant de commencer, vérifiez :</p>
+      <ul>
+        <li>Docker est en cours d’exécution.</li>
+        <li>Le fichier de clé API de démonstration existe et contient bien une clé.</li>
+        <li>Le port `8000` n’est pas déjà pris par le projet de production.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2 · Exécuter la recette de référence</h2>
+      <p>Commencez par les contrôles hors ligne :</p>
+      <pre><code>python3 eval.py verify
+python3 test_scoring.py</code></pre>
+      <p>Démarrez la pile isolée :</p>
+      <pre><code>python3 setup_demo.py up</code></pre>
+      <p>Vérifiez l’état à tout moment avec :</p>
+      <pre><code>python3 setup_demo.py status</code></pre>
+      <p>Indexez maintenant le corpus synthétique :</p>
+      <pre><code>python3 setup_demo.py ingest</code></pre>
+      <p>L’indexation n’est pas instantanée — l’index de graphe et l’index de résumé font tous deux appel au LLM, prévoyez donc du temps réel pour cela. Si le corpus est déjà indexé et que vous voulez le garder tel quel, consultez attentivement les options documentées. Ne détruisez pas les données de production par inadvertance.</p>
+    </section>
+
+    <section>
+      <h2>3 · Mesurer la récupération avant les réponses</h2>
+      <p>Lancez d’abord l’évaluation de récupération seule — elle saute complètement le juge LLM :</p>
+      <pre><code>python3 eval.py run \
+  --mode retrieval \
+  --workspace meridian_demo \
+  --tag lesson-4-retrieval</code></pre>
+      <p>Cela montre exactement ce que chaque index apporte :</p>
+      <ul>
+        <li>Vecteur seul</li>
+        <li>Vecteur plus texte intégral</li>
+        <li>Vecteur plus texte intégral plus résumé</li>
+        <li>Tous les index, y compris la correspondance approximative par graphe</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4 · Mesurer les réponses générées</h2>
+      <p>Ensuite, lancez l’évaluation des réponses :</p>
+      <pre><code>python3 eval.py run \
+  --mode answer \
+  --workspace meridian_demo \
+  --tag lesson-4-answer</code></pre>
+      <p>Cette exécution appelle `/api/v1/qa`, vérifie les citations et les mots-clés requis, et laisse un modèle juge classer chaque réponse en `correct`, `partial` ou `incorrect`. Elle suit aussi les refus et la latence au passage.</p>
+      <p>Vous le faites pour la première fois ? Limitez la taille de l’échantillon :</p>
+      <pre><code>python3 eval.py run \
+  --mode both \
+  --workspace meridian_demo \
+  --limit 10 \
+  --tag lesson-4-smoke</code></pre>
+    </section>
+
+    <section>
+      <h2>5 · Lire le rapport comme un ingénieur</h2>
+      <p>Les rapports atterrissent ici :</p>
+      <pre><code>demo/reports/</code></pre>
+      <p>Ne citez jamais un chiffre sans sa définition. Notez :</p>
+      <table>
+        <thead><tr><th>Métrique</th><th>Votre valeur</th><th>Signification</th></tr></thead>
+        <tbody>
+          <tr><td>Union de récupération</td><td>_____</td><td>Toutes les sources attendues trouvées sur l’ensemble des index combinés</td></tr>
+          <tr><td>Précision stricte</td><td>_____</td><td>Le verdict du juge est `correct`</td></tr>
+          <tr><td>Taux de couverture des sources</td><td>_____</td><td>Chaque source attendue est citée dans la réponse finale</td></tr>
+          <tr><td>Précision de refus</td><td>_____</td><td>Les questions sans réponse correctement refusées</td></tr>
+          <tr><td>Taux d’hallucination</td><td>_____</td><td>Les questions sans réponse auxquelles on a quand même répondu</td></tr>
+          <tr><td>Latence p50 / p95</td><td>_____</td><td>Temps de réponse typique et queue lente</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>6 · Pratique : référence ou exagération ?</h2>
+      <div class="quiz">
+        <p><strong>Affirmation A :</strong> « Sur le jeu d’évaluation Meridian Labs de 65 questions, avec `gpt-4o-mini`, topk 5, dans cet espace de travail, la précision stricte des réponses s’élève à 70 %. » Cela compte-t-il comme une affirmation de référence solide ?</p>
+        <button onclick="answer(this,'q1','Exact — cela verrouille le corpus, la configuration et la définition de la métrique.')">Oui</button>
+        <button onclick="answer(this,'q1','Pas tout à fait — ce sont précisément ces conditions et cette définition de métrique qui la rendent reproductible.')">Non</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Affirmation B :</strong> « Le chatbot est fiable à 70 %. » Est-ce que cela passerait dans un rapport technique ?</p>
+        <button onclick="answer(this,'q2','Exact — cela cache le jeu de données, la métrique, le modèle, la configuration, et la façon dont les refus sont gérés.')">Non</button>
+        <button onclick="answer(this,'q2','Pas suffisant — un chiffre ne veut dire quelque chose que s’il est rattaché à une configuration reproductible.')">Oui</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Affirmation C :</strong> L’union de récupération est élevée, mais la précision stricte des réponses est faible. Où regarder ensuite ?</p>
+        <button onclick="answer(this,'q3','Exact — les sources arrivent déjà, regardez donc du côté de l’assemblage du contexte, du prompting et de la génération.')">Le chemin de génération</button>
+        <button onclick="answer(this,'q3','Pas en premier — la récupération fait déjà son travail et ramène les sources attendues.')">Seulement l’ingestion</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>Une équipe QA ou réglementaire ne peut rien faire d’un chiffre qu’elle ne peut ni interpréter ni reproduire. Une référence, c’est ce qui garde un prototype honnête — elle met à nu ce qui fonctionne, ce qui ne fonctionne pas, et si votre prochain changement a vraiment fait bouger les choses.</p>
+    </section>
+
+    <section>
+      <h2>Prochaine action</h2>
+      <p>Au minimum, exécutez à la fois l’évaluation de récupération et l’évaluation des réponses. Envoyez-moi ensuite :</p>
+      <ol>
+        <li>Les deux étiquettes de rapport.</li>
+        <li>Le pourcentage d’union de récupération.</li>
+        <li>La précision stricte des réponses.</li>
+        <li>Le taux de couverture des sources.</li>
+        <li>La précision de refus et le taux d’hallucination.</li>
+        <li>Un échec que vous voulez examiner en premier, avec la raison donnée par le juge.</li>
+      </ol>
+      <p><strong>Posez vos questions</strong> dès que Docker, l’indexation, le juge, ou une métrique ne vous semble pas clair. Je vous aiderai à donner du sens aux chiffres en direct avant que l’on déclare la Leçon 4 terminée.</p>
+    </section>
+
+    <footer><a href="../../reference/fr/baseline-evaluation-cheatsheet.html">Référence de base</a> · <a href="../../reference/fr/evaluation-set-cheatsheet.html">Référence sur le jeu d’évaluation</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

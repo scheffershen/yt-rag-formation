@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeu d’évaluation RAG fiable</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Jeux d’évaluation RAG fiables</h1>
+    <p class="dek">Une check-list pratique pour mesurer un chatbot d’entreprise sans se raconter d’histoires.</p>
+
+    <section class="card accent">
+      <h2>Le tuple d’évaluation</h2>
+      <p><strong>Question + catégorie + sources attendues + faits requis + comportement attendu</strong></p>
+      <p>Pour une question répondable, le système doit donner une réponse correcte, fondée sur les preuves. Pour une question sans réponse, il doit refuser de répondre.</p>
+    </section>
+
+    <section>
+      <h2>Ce que teste un bon jeu d’évaluation</h2>
+      <table>
+        <thead><tr><th>Dimension</th><th>Pourquoi c’est important</th><th>Démo Meridian</th></tr></thead>
+        <tbody>
+          <tr><td>Repérage factuel</td><td>Trouver un nombre, un nom, une date ou une exigence précis.</td><td>35 questions</td></tr>
+          <tr><td>Repérage de référence</td><td>Trouver l’identifiant exact d’une SOP ou d’un document.</td><td>7 questions</td></tr>
+          <tr><td>Sauts multiples</td><td>Rassembler des preuves provenant de plus d’un document.</td><td>9 questions</td></tr>
+          <tr><td>Translinguistique</td><td>Faire correspondre une question à une source écrite dans une autre langue.</td><td>5 questions</td></tr>
+          <tr><td>Acronymes</td><td>Résoudre les termes de domaine et les abréviations.</td><td>3 questions</td></tr>
+          <tr><td>Sans réponse</td><td>Mesurer si le système refuse de répondre plutôt que de récompenser une hallucination.</td><td>6 questions</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Règles de la référence</h2>
+      <ol>
+        <li>Chaque source attendue doit être présente dans le corpus.</li>
+        <li>Chaque fait requis doit apparaître littéralement dans une source attendue.</li>
+        <li>Une question sans réponse ne doit avoir ni source attendue ni fait requis.</li>
+        <li>Faites correspondre les sources récupérées par métadonnées, pas par un texte arbitraire dans un fragment.</li>
+        <li>Gardez le jeu d’évaluation inchangé pendant la comparaison des changements du système.</li>
+      </ol>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Mauvaise mesure</h3><p>Compter un résultat vectoriel comme une réussite simplement parce que le texte de son fragment mentionne l’identifiant du document attendu.</p></div>
+      <div class="card"><h3>Meilleure mesure</h3><p>Ne le compter comme une réussite que lorsque les métadonnées de source identifient le document attendu.</p></div>
+    </section>
+
+    <section>
+      <h2>Limite de confiance</h2>
+      <p>Un harnais d’évaluation peut se tromper tout en affichant un pourcentage à l’air pourtant confiant. Testez l’outil de notation lui-même avec des accents, des questions multi-sources, des renvois dans le corps du texte, des citations manquantes et des refus.</p>
+    </section>
+
+    <footer><a href="../../lessons/fr/0003-build-a-trustworthy-evaluation-set.html">Leçon 3</a> · <a href="request-path-cheatsheet.html">Référence du chemin de requête</a> · <a href="../../MISSION.md">Mission</a></footer>
+  </main>
+</body>
+</html>

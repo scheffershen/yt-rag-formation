@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Référence · Découpage et structure des documents</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Découpage et structure des documents</h1>
+    <p class="dek">Un guide rapide pour former une hypothèse de découpage ciblée à partir des preuves de fenêtre source.</p>
+
+    <section class="card accent">
+      <h2>Règle en une ligne</h2>
+      <p><strong>Modifiez un seul réglage de fenêtre, mesurez si le fait et l'identité de la source restent ensemble, puis testez l'hypothèse avec une évaluation de récupération en production séparée.</strong></p>
+    </section>
+
+    <section>
+      <h2>Glossaire</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>Terme</th><th>Signification</th></tr></thead><tbody>
+        <tr><td><strong>Fenêtre source</strong></td><td>Une tranche reproductible et bornée de Markdown synthétique utilisée dans le laboratoire hors ligne.</td></tr>
+        <tr><td><strong>Taille de bloc</strong></td><td>Le nombre maximal de caractères autorisés dans une fenêtre source.</td></tr>
+        <tr><td><strong>Profil de taille de bloc</strong></td><td>Pas un réglage universel — Qdrant/Meilisearch indexent à environ 500 tokens, LightRAG utilise délibérément environ 1200 pour une meilleure extraction d'entités. <code>--profile chunk</code>/<code>graph</code> approximent les deux en caractères.</td></tr>
+        <tr><td><strong>Chevauchement</strong></td><td>Caractères copiés de la fin d'une fenêtre vers la suivante.</td></tr>
+        <tr><td><strong>Co-localisation</strong></td><td>La référence attendue et chaque terme de fait requis apparaissent dans la même fenêtre.</td></tr>
+        <tr><td><strong>Métrique proxy</strong></td><td>Un signal directionnel — pas un résultat de récupération ou de qualité de réponse en production. Le taux du profil graph paraît meilleur presque par construction, puisqu'une fenêtre assez grande contient trivialement le document entier.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section>
+      <h2>Fiche d'expérience contrôlée</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>Étape</th><th>Faire</th><th>Ne pas prétendre</th></tr></thead><tbody>
+        <tr><td>Référence</td><td>Lancez q24 avec <code>--profile chunk</code> (~500 tokens, la taille Qdrant/Meilisearch).</td><td>Que c'est le meilleur réglage de production.</td></tr>
+        <tr><td>Un seul changement</td><td>Gardez tout le reste identique et relancez q24 avec <code>--profile graph</code> (~1200 tokens, la taille de LightRAG).</td><td>Que plusieurs changements ont causé le résultat.</td></tr>
+        <tr><td>Mesurer</td><td>Comparez le nombre/taux de co-localisation et le texte lisible de la fenêtre.</td><td>Que l'index en production s'est amélioré, ou que la fenêtre plus grande est simplement meilleure.</td></tr>
+        <tr><td>Vérifier</td><td>Réindexez la démo isolée, puis relancez l'évaluation de récupération.</td><td>Qu'un proxy de fenêtre source peut remplacer l'évaluation.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section>
+      <h2>Carte des questions</h2>
+      <div class="table-scroll"><table class="comparison-table"><thead><tr><th>Question</th><th>Pourquoi elle est utile</th><th>Source(s)</th></tr></thead><tbody>
+        <tr><td>q24</td><td>Vérifie si une échéance révisée reste liée à l'identité de la procédure en vigueur.</td><td>PR-QA-MRD-009</td></tr>
+        <tr><td>q30</td><td>Montre qu'une seule fenêtre peut ne pas suffire pour une réponse qui nécessite deux sources.</td><td>PR-QA-MRD-001 + PR-QA-MRD-009</td></tr>
+        <tr><td>q52</td><td>Vérifie une courte réponse factuelle par rapport à l'identité du plan de continuité.</td><td>PR-EXM-MRD-014</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section>
+      <h2>Commandes et cadre de conclusion</h2>
+      <pre><code>cd demo
+python3 chunk_lab.py --question q24 --profile chunk --output-dir reports/lesson-06-chunk-profile
+python3 chunk_lab.py --question q24 --profile graph --output-dir reports/lesson-06-graph-profile</code></pre>
+      <p><strong>Cadre de conclusion :</strong> « Avec le profil ___ (___ caractères, chevauchement de ___), ___ fenêtres sur ___ gardaient le fait requis et l'identité de la source ensemble. Cela étaye l'hypothèse que ___. Cela ne prouve pas la qualité de la récupération en production, et cela ne signifie pas que la fenêtre plus grande est simplement meilleure ; ensuite, je pèserais cela contre le coût d'extraction réel de LightRAG et une vérification réindexation-plus-récupération. »</p>
+    </section>
+
+    <section>
+      <h2>Repères locaux</h2>
+      <ul>
+        <li><code>demo/chunk_lab.py</code></li>
+        <li><code>demo/eval_set.yaml</code></li>
+        <li><code>demo/corpus/md/</code></li>
+      </ul>
+    </section>
+
+    <footer><a href="../../lessons/fr/0006-chunking-and-document-structure.html">Leçon 6</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG Baseline Evaluation Cheat Sheet</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Reference · QualioBot course</p>
+    <h1>Run and read a RAG baseline</h1>
+    <p class="dek">A baseline is a snapshot of one run—not a universal score.</p>
+
+    <section class="card accent">
+      <h2>Baseline recipe</h2>
+      <p><strong>Verify → start isolated stack → ingest → retrieval run → answer run → inspect failures → save configuration.</strong></p>
+    </section>
+
+    <section>
+      <h2>What to record</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Tag</td><td>Labels the run, for example `lesson-4-baseline`.</td></tr>
+          <tr><td>Corpus and eval-set version</td><td>Stops you from comparing different test data as if it were the same.</td></tr>
+          <tr><td>Workspace and index names</td><td>Confirms that the run used the isolated demo data.</td></tr>
+          <tr><td>topk and thresholds</td><td>These retrieval settings affect the result.</td></tr>
+          <tr><td>Model and judge model</td><td>Changing either model can change the answer or the judge’s verdict.</td></tr>
+          <tr><td>Concurrency and timeout</td><td>These operational settings affect errors and latency.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Metrics to read separately</h2>
+      <ul>
+        <li><strong>Retrieval union:</strong> did the combined indexes return every expected document?</li>
+        <li><strong>Strict accuracy:</strong> how many judged answers were completely correct?</li>
+        <li><strong>Source hit rate:</strong> did the final answer cite every expected source?</li>
+        <li><strong>Refusal accuracy:</strong> did the system decline every unanswerable question?</li>
+        <li><strong>Hallucination rate:</strong> how often did it answer a question the evidence could not support?</li>
+        <li><strong>Latency p50 / p95:</strong> the typical response time and the slow tail.</li>
+      </ul>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Good baseline statement</h3><p>“With this corpus, eval set, model, and configuration, the system achieved X.”</p></div>
+      <div class="card"><h3>Bad baseline statement</h3><p>“The chatbot is 90% accurate.”</p></div>
+    </section>
+
+    <section>
+      <h2>Failure reading rule</h2>
+      <p>For every failure, write down three things: the expected source, the actual source, and the judge’s reason. That turns a percentage into an engineering hypothesis.</p>
+    </section>
+
+    <footer><a href="../../lessons/en/0004-establish-the-mvp-baseline.html">Lesson 4</a> · <a href="evaluation-set-cheatsheet.html">Evaluation-set reference</a> · <a href="../../MISSION.md">Mission</a></footer>
+  </main>
+</body>
+</html>

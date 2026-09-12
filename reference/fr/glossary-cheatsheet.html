@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossaire terminologique RAG</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · cours rag-formation</p>
+    <h1>Glossaire terminologique</h1>
+    <p class="dek">Formulations françaises figées pour ce cours. Chaque leçon, aide-mémoire et animation doit utiliser exactement la formulation ci-dessous — jamais un synonyme — pour ces cinq termes. Disponible aussi en <a href="../en/glossary-cheatsheet.html">anglais</a> et en <a href="../zh/glossary-cheatsheet.html">chinois</a>.</p>
+
+    <section class="card accent">
+      <h2>Pourquoi cette page existe</h2>
+      <p>Les dérives terminologiques s'accumulent : dès qu'une leçon traduit un concept d'une certaine façon, chaque leçon suivante qui réutilise ce concept soit répète le même choix, soit introduit une deuxième formulation incohérente. Cette page est la référence unique que toute leçon, aide-mémoire et animation doit respecter. C'est un document vivant — complétez-le avant d'écrire du nouveau contenu qui introduit un terme pas encore listé ici, plutôt que d'improviser une formulation au coup par coup.</p>
+    </section>
+
+    <section>
+      <h2>Termes figés</h2>
+      <table>
+        <thead><tr><th>Terme</th><th>Définition</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Découpage</strong></td>
+            <td>Diviser un document source en fenêtres récupérables, avec un chevauchement pour éviter de séparer un fait du contexte qui l'identifie (voir <a href="../../lessons/fr/0006-chunking-and-document-structure.html">Leçon 6</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Reclassement</strong></td>
+            <td>Retrier la liste de candidats grossièrement filtrée par le récupérateur, à l'aide de signaux plus fiables — correspondances d'ID exactes, métadonnées, scores d'un cross-encoder (voir <a href="../../lessons/fr/0008-query-handling-and-reranking.html">Leçon 8</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Hallucination</strong></td>
+            <td>Le système répond à une question que le corpus ne permet pas d'étayer, au lieu de refuser ou de dire qu'il ne sait pas (voir <a href="../../lessons/fr/0012-refusal-uncertainty-and-hallucination-control.html">Leçon 12</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Ancrage / fondé sur les preuves</strong></td>
+            <td>Une réponse est fondée sur les preuves quand chacune de ses affirmations s'appuie sur des preuves récupérées que le modèle a réellement vues (voir <a href="../../lessons/fr/0001-from-question-to-cited-answer.html">Leçon 1</a>).</td>
+          </tr>
+          <tr>
+            <td><strong>Refus</strong></td>
+            <td>Le système décline de répondre parce que le corpus manque de preuves suffisantes, plutôt que de deviner (voir <a href="../../lessons/fr/0003-build-a-trustworthy-evaluation-set.html">Leçon 3</a>, <a href="../../lessons/fr/0012-refusal-uncertainty-and-hallucination-control.html">Leçon 12</a>).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Portée et état actuel</h2>
+      <ul>
+        <li>Ces formulations reprennent l'usage déjà en place dans les leçons 1, 3, 6, 8 et 12 — cette page fige un usage existant, elle n'introduit pas de nouvelles traductions.</li>
+        <li>Disponible désormais en anglais, en français et en chinois — chaque page de langue fige son propre terme et sa propre définition ; voir les versions anglaise et chinoise ci-dessus pour leur formulation respective.</li>
+        <li>Cinq termes aujourd'hui, parce que ce sont ceux identifiés comme présentant le plus fort risque de dérive (réutilisés dans de nombreuses leçons). Complétez ce tableau — n'ouvrez pas un second fichier de glossaire — dès qu'un autre terme montre le même schéma de réutilisation.</li>
+      </ul>
+    </section>
+
+    <footer><a href="../../lessons/fr/0001-from-question-to-cited-answer.html">Leçon 1</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 6 · Découpage et structure des documents</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 06 · 25–35 minutes</p>
+    <h1>Découpage et structure des documents</h1>
+    <p class="dek">Modifiez un seul réglage de fenêtre de découpage, puis vérifiez si un fait requis voyage toujours avec l’identité de son document.</p>
+<section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>Vous comparerez deux configurations de fenêtre source et aboutirez à une hypothèse de découpage — bornée, et étayée par des preuves.</p>
+    </section>
+
+    <section>
+      <h2>1 · Le modèle minimal utile</h2>
+      <ul>
+        <li><strong>Bloc/fenêtre :</strong> une tranche bornée de texte source. Bien géré, il porte un fait avec son titre et l’identité de son document. Mal géré, il les sépare.</li>
+        <li><strong>Chevauchement :</strong> le texte répété d’un côté à l’autre de la frontière, dans la fenêtre suivante. Il peut sauver un fait à cheval sur une frontière — mais poussé trop loin, il ne produit que des preuves quasi dupliquées.</li>
+        <li><strong>La taille de bloc est un vrai choix de conception, pas un réglage universel :</strong> Qdrant et Meilisearch indexent tous deux à environ 500 tokens par bloc, tandis que LightRAG indexe délibérément à environ 1200 tokens — une fenêtre plus grande donne à son LLM d’extraction d’entités plus de contexte par appel, donc moins d’appels, moins chers, au prix de frontières d’entités plus grossières. Il n’existe pas une seule taille de fenêtre « correcte » ; la bonne taille dépend de l’usage de l’index.</li>
+        <li><strong>Co-localisation preuve-identité :</strong> la métrique sur laquelle repose cette leçon — une fenêtre source contient-elle à la fois la référence de document attendue et chaque terme de fait requis ?</li>
+        <li><strong>Conclusion bornée :</strong> un résultat de fenêtre source ne vous donne qu’une hypothèse de découpage, rien de plus. Cela ne prouve pas que l’index en production récupère ou répond mieux.</li>
+      </ul>
+      <p><a href="https://docs.llamaindex.ai/en/stable/examples/node_postprocessor/MetadataReplacementDemo/" target="_blank" rel="noreferrer">Lecture principale : LlamaIndex — Sentence Window Retrieval</a>. Observez comment une fenêtre récupérée peut restaurer le contexte local autour d’un fait sans perdre la trace de la source dont il provient.</p>
+    </section>
+
+    <section>
+      <h2>2 · Menez une expérience contrôlée de fenêtre source</h2>
+      <p>L’utilitaire hors ligne <code>chunk_lab.py</code> ne touche qu’à deux choses : le corpus Markdown synthétique et <code>eval_set.yaml</code>. Il ne contacte jamais Docker, ne lit aucun secret, n’appelle pas l’API et ne réindexe rien.</p>
+      <pre><code>cd demo
+python3 chunk_lab.py --question q24 --profile chunk --output-dir reports/lesson-06-chunk-profile
+python3 chunk_lab.py --question q24 --profile graph --output-dir reports/lesson-06-graph-profile</code></pre>
+      <p><code>--profile chunk</code> et <code>--profile graph</code> sont des préréglages, pas des chiffres arbitraires — ils correspondent aux tailles de fenêtre réelles d’environ 500 tokens (Qdrant/Meilisearch) et 1200 tokens (LightRAG) de la section 1, traduites en caractères. Le chevauchement reste fixé à 200 caractères dans les deux cas ; seule la taille de fenêtre change. Comparez ensuite ces fichiers de rapport :</p>
+      <pre><code>reports/lesson-06-chunk-profile/lesson-06-q24-chunks.md
+reports/lesson-06-graph-profile/lesson-06-q24-chunks.md</code></pre>
+      <p class="callout">La métrique ici est simple : combien de fenêtres — et selon quel taux — contiennent à la fois la référence attendue et chaque terme <code>must_include</code>. Un nombre plus élevé peut étayer une hypothèse de découpage. Ce n’est pas la précision de récupération. Attendez-vous à ce que le taux du profil graph paraisse meilleur presque par construction — une fenêtre assez grande contient trivialement le document entier, ce qui est précisément le compromis à nommer dans votre conclusion, pas à traiter comme une victoire.</p>
+    </section>
+
+    <section>
+      <h2>3 · Examinez trois formes de questions</h2>
+      <p>Après q24, menez la même expérience pour q30 et q52. Ensemble, ces trois questions couvrent des formes d’échec distinctes : une recherche de révision, une réponse qui s’étend sur deux documents, et une cible de récupération factuelle.</p>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>Question</th><th>Forme</th><th>Source(s) attendue(s)</th><th>Fait requis</th><th>Quoi vérifier</th></tr></thead>
+          <tbody>
+            <tr><td>q24</td><td>Recherche de révision</td><td>PR-QA-MRD-009</td><td>45</td><td>L’identité V4 reste-t-elle attachée à l’échéance modifiée ?</td></tr>
+            <tr><td>q30</td><td>Multi-saut</td><td>PR-QA-MRD-001 + PR-QA-MRD-009</td><td>90 jours</td><td>Quelle source porte le fait, et quelle seconde source manque encore ?</td></tr>
+            <tr><td>q52</td><td>Recherche factuelle</td><td>PR-EXM-MRD-014</td><td>8 heures</td><td>Le fait relatif au RTO reste-t-il attaché à l’identité du plan de continuité ?</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>4 · Consignez les preuves avant/après</h2>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>Question</th><th>Configuration</th><th>Nombre / taux de co-localisation</th><th>Effet de frontière observé</th><th>Régression ou coût</th><th>Conclusion bornée</th></tr></thead>
+          <tbody>
+            <tr><td>q24</td><td>profil chunk (~500 tok)</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+            <tr><td>q24</td><td>profil graph (~1200 tok)</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+            <tr><td>q30 ou q52</td><td>Choisissez une paire contrôlée</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Remplissez ce cadre de phrase : <em>« Avec le profil ___ (___ caractères, chevauchement de ___), ___ fenêtres sur ___ plaçaient le fait requis et l’identité de la source au même endroit. Cela étaye l’hypothèse que ___. Cela ne prouve pas la qualité de la récupération en production, et cela ne signifie pas que la fenêtre plus grande est simplement meilleure — ensuite, je pèserais cela contre le coût d’extraction réel de LightRAG et une vérification réindexation-plus-récupération. »</em></p>
+    </section>
+
+    <section>
+      <h2>5 · Mise en pratique</h2>
+      <div class="quiz">
+        <p><strong>Cas A :</strong> l’échéance apparaît dans une fenêtre, mais pas la référence de document. Quel correctif cible réellement ce risque ?</p>
+        <button onclick="answer(this,'q1','Correct. Conservez ou préfixez le titre/la référence avant de supposer qu’une fenêtre plus grande est nécessaire.')">Conserver le titre</button>
+        <button onclick="answer(this,'q1','Pas en premier. La preuve manquante est l’identité du document, pas nécessairement plus de texte environnant.')">Retirer le titre</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas B :</strong> après avoir augmenté le chevauchement, deux fenêtres voisines finissent par répéter presque le même texte. Quel risque notez-vous ?</p>
+        <button onclick="answer(this,'q2','Correct. Un chevauchement plus large peut dépenser le top-k sur des quasi-doublons plutôt que sur des preuves complémentaires.')">Augmenter le chevauchement</button>
+        <button onclick="answer(this,'q2','Correct. Réduire le chevauchement est une expérience suivante valable quand des fenêtres dupliquées dominent le budget de preuves.')">Réduire le chevauchement</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas C :</strong> passer du profil chunk au profil graph fait monter la métrique proxy. Quelle est la prochaine étape honnête ?</p>
+        <button onclick="answer(this,'q3','Correct. Réindexez dans l’environnement isolé, puis mesurez la récupération avec le même jeu d’évaluation.')">Relancer la métrique</button>
+        <button onclick="answer(this,'q3','Pas encore. Le proxy étaye une hypothèse mais ne peut pas prouver la qualité de la récupération ou de la réponse en production.')">Supposer la cause</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>La qualité d’une réponse sur une procédure ne vaut souvent que si son titre, sa version, sa date et ses exceptions apparaissent tous ensemble. Cela fait du découpage un élément de la qualité de citation et de conformité — pas un détail d’ingestion qu’on règle une fois pour toutes.</p>
+    </section>
+
+    <section>
+      <h2>6 · Livrable et prochaine action</h2>
+      <ol>
+        <li>Sauvegardez les deux rapports de votre comparaison contrôlée sur q24.</li>
+        <li>Remplissez le tableau de preuves pour q24 plus l’une de q30 ou q52.</li>
+        <li>Notez une conclusion bornée, un risque de régression, et la vérification réindexation-plus-récupération que vous mèneriez ensuite.</li>
+      </ol>
+      <p><strong>Suite :</strong> Leçon 7 — Métadonnées, filtres et limites d’accès. Gardez cet enregistrement — il vous dit si un problème de récupération commence en réalité en amont des moteurs de recherche.</p>
+      <p><strong>Des questions ? Demandez-moi.</strong> Sur les rapports, la métrique proxy, un effet de frontière, ou ce qu’il faut lancer ensuite en direct — je suis votre enseignant pour ce cours.</p>
+    </section>
+
+    <footer><a href="../fr/0005-semantic-keyword-and-hybrid-retrieval.html">Leçon précédente</a> · <a href="../fr/0007-metadata-filters-and-access-boundaries.html">Leçon suivante</a> · <a href="../../reference/fr/chunking-and-document-structure-cheatsheet.html">Référence</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

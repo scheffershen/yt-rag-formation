@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第 1 课 · 从提问到有引用的答案</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">第 1 课 · 10 分钟</p>
+    <h1>从员工提问到有引用的答案</h1>
+    <p class="dek">这一课，帮你建立起构建可靠企业 RAG 聊天机器人的第一个心智模型。</p>
+<section class="card accent">
+      <h2>本课的实际收获</h2>
+      <p><strong>本课的实际收获：</strong> 看到一个答案出了问题，你能马上判断是<strong>检索</strong>没找对证据，还是<strong>生成</strong>环节没写好——这个判断决定了接下来该动哪里。</p>
+    </section>
+
+    <section>
+      <h2>1 · 一句话说清 RAG</h2>
+      <p><strong>检索增强生成（RAG）</strong>说白了就是：用户一提问，系统立刻从公司知识库里挑出相关证据，塞进模型的上下文，再让模型照着这些证据给出有依据的答案。</p>
+      <p>这跟把所有 SOP 永久“教”给模型完全是两回事——模型每次看到的，只是为这一次请求挑出来的证据。也就是说，聊天机器人可能在模型动笔之前就已经出错了：检索错了文档、切错了文本块，或者压根没捞到有用的证据。</p>
+      <p class="callout">在受监管、要接受审计的场景里，“听起来靠谱”从来不是质量标准。答案必须有正确的证据撑腰，而且要标出处。</p>
+      <p><a href="https://platform.openai.com/docs/guides/optimizing-llm-accuracy" target="_blank" rel="noreferrer">首选阅读：OpenAI 的《优化 LLM 准确度》指南</a>——目前只需阅读其中关于 RAG 的部分。</p>
+    </section>
+
+    <section>
+      <h2>2 · 你实际使用的系统</h2>
+      <p>你在 <code>demo</code> 目录下的演示环境是我们安全的沙盒：25 份虚构的 Meridian Labs 文档和 65 个问题，其中 6 个问题系统应该直接拒答。</p>
+      <div class="card">
+        <p><strong>问题</strong><br>“Quel est le délai de clôture d’un plan d’action pour une non-conformité majeure ?”</p>
+        <p class="flow"><strong>1. 检索</strong> → Qdrant 语义分块 + Qdrant 摘要 + Meilisearch 关键词命中 + LightRAG 上下文</p>
+        <p><strong>2. 组装</strong> → `qa_service.py` 合并并截断证据</p>
+        <p><strong>3. 生成</strong> → 由生成模型根据组装好的上下文写出答案</p>
+        <p><strong>4. 引用</strong> → 从实际展示给模型的上下文条目中提取来源</p>
+        <p><strong>5. 评估</strong> → `demo/eval.py` 分别给检索、答案正确性、引用、拒答、幻觉和延迟打分</p>
+      </div>
+      <p>这种分层思维是整门课程的地基——演示报告可不只是给一个百分比，它会告诉你系统到底<strong>薄弱在哪个环节</strong>。</p>
+    </section>
+
+    <section>
+      <h2>3 · 先诊断，再改代码</h2>
+      <table>
+        <thead><tr><th>观察到的现象</th><th>可能出问题的层级</th><th>首先该检查的地方</th></tr></thead>
+        <tbody>
+          <tr><td>`/api/v1/search` 里缺少预期文档</td><td>检索</td><td>索引、分块、查询形式、阈值、排序</td></tr>
+          <tr><td>预期文档已检索到，但没有被引用</td><td>上下文/引用组装</td><td>上下文截断与来源提取</td></tr>
+          <tr><td>文档已引用，但答案遗漏了必要事实</td><td>生成</td><td>提示词、上下文组织方式、模型行为</td></tr>
+          <tr><td>答不了的问题却给出了自信的回答</td><td>有依据/安全</td><td>拒答指令、证据阈值、评估集</td></tr>
+          <tr><td>答案正确但响应缓慢</td><td>运维</td><td>后端延迟、图检索调用、上下文大小、并发</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4 · 练习：是检索问题还是生成问题？</h2>
+      <div class="quiz">
+        <p><strong>场景 A：</strong> 答案说是“24 小时”——可 `/api/v1/search` 根本没返回 `PR-QA-MRD-009`。先出问题的是哪一层？</p>
+        <button onclick="answer(this,'retrieval-a','回答正确。这个答案也可能只是蒙对了，甚至是幻觉，但可以证实的第一个失败点是检索。')">检索</button>
+        <button onclick="answer(this,'retrieval-a','还不是这里。既然预期的文档都没有被召回，应该先排查检索，再看生成。')">生成</button>
+        <p id="retrieval-a" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>场景 B：</strong> `PR-QA-MRD-009` 明明就在搜索结果里，但答案说“60 天”，证据写的却是“45 天”。这是哪里出了问题？</p>
+        <button onclick="answer(this,'generation-b','主要问题不在这里。所需证据已经检索到了，应该去检查上下文组装和生成环节。')">检索</button>
+        <button onclick="answer(this,'generation-b','回答正确。证据本身是齐的，是系统没有忠实地使用它。')">生成</button>
+        <p id="generation-b" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>场景 C：</strong> 一个本来答不了的问题，系统却给出一段详细又自信的回答，还没标来源。哪个指标应该揪出这个问题？</p>
+        <button onclick="answer(this,'safety-c','回答正确。这种情况下拒答准确率会下降，幻觉率会上升。')">有依据/安全</button>
+        <button onclick="answer(this,'safety-c','这不是主要信号。引用覆盖率可能也不理想，但真正针对这类失败的是拒答和幻觉指标。')">运维</button>
+        <p id="safety-c" class="feedback"></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>5 · 你的原型成功标准</h2>
+      <p>你的原型成功标准：继续做实验之前，先用自己的话把下面这五个目标写清楚。</p>
+      <ol>
+        <li>哪些问题类别是必须优先保证跑通的？</li>
+        <li>第一版 MVP 需要达到什么样的准确率门槛？</li>
+        <li>可以接受的最低来源命中率是多少？</li>
+        <li>什么样的幻觉率是不能接受的？</li>
+        <li>真实员工能够容忍的响应时间是多久？</li>
+      </ol>
+      <p>别直接把历史报告 `demo-fixed` 里的数字照搬当成自己的目标。那些数字只是拿来讨论的基线，不代表现在的系统已经能上生产。</p>
+    </section>
+
+    <section class="card">
+      <h2>与课程使命的关系</h2>
+      <p>你的用户是 QA 团队、监管机构、供应商、审计员——这些人不在乎答案说得多漂亮，他们在乎的是能不能对照正确的 SOP、政策或问卷核实。这就是为什么我们的第一个工程习惯是这样的：</p>
+      <p><strong>答案出错时，先查检索出来的证据，别急着改提示词。</strong></p>
+    </section>
+
+    <section>
+      <h2>下一步行动</h2>
+      <p><strong>下一步：</strong> 在脱敏的演示环境里跑一遍离线检查，然后去看评估报告。</p>
+      <pre><code>cd demo
+python eval.py verify
+python test_scoring.py</code></pre>
+      <p>然后打开现有报告 <a href="../../../demo/reports/demo-fixed.md">demo-fixed.md</a>，找出两个失败案例：一个是检索成功但答案仍然部分错误或完全错误，另一个是某个来源根本没有被检索到。</p>
+      <p><strong>如果哪个术语、指标或失败案例还没弄懂，尽管接着问我。</strong> 下一课，我们会拿一个真实问题，顺着实际代码和评估工具走一遍完整流程。</p>
+    </section>
+
+    <footer><a href="../../reference/zh/rag-quality-cheatsheet.html">RAG 质量速查表</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

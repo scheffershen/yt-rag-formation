@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>可信的 RAG 评估集</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">参考资料 · QualioBot 课程</p>
+    <h1>可信的 RAG 评估集</h1>
+    <p class="dek">一份可靠的 RAG 评估集：在不自欺的前提下衡量企业聊天机器人。</p>
+
+    <section class="card accent">
+      <h2>评估五元组</h2>
+      <p><strong>问题 + 类别 + 预期来源 + 必需事实 + 预期行为</strong></p>
+      <p>对于可回答问题，预期行为是正确且有依据的答案；对于不可回答问题，预期行为是拒答。</p>
+    </section>
+
+    <section>
+      <h2>一份好的评估集会测试什么</h2>
+      <table>
+        <thead><tr><th>维度</th><th>为什么重要</th><th>Meridian 演示语料</th></tr></thead>
+        <tbody>
+          <tr><td>事实类查找</td><td>查找精确的数字、名称、日期或要求。</td><td>35 题</td></tr>
+          <tr><td>编号查找</td><td>查找准确的 SOP 或文档编号。</td><td>7 题</td></tr>
+          <tr><td>多跳推理</td><td>综合一份以上文档中的证据。</td><td>9 题</td></tr>
+          <tr><td>跨语言</td><td>把问题与用另一种语言写成的来源匹配起来。</td><td>5 题</td></tr>
+          <tr><td>缩略语</td><td>解析领域术语和缩写。</td><td>3 题</td></tr>
+          <tr><td>不可回答</td><td>衡量系统是否会拒答，而不是被幻觉“奖励”。</td><td>6 题</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>参考答案规则</h2>
+      <ol>
+        <li>每一个预期来源都必须真实存在于语料库中。</li>
+        <li>每一个必需事实都必须逐字出现在某个预期来源里。</li>
+        <li>不可回答的问题，既不能有预期来源，也不能有必需事实。</li>
+        <li>检索匹配要依据元数据，而不是文本块里随意出现的文字。</li>
+        <li>在比较系统改动的过程中，评估集本身要保持不变。</li>
+      </ol>
+      <p>基本规则：预期来源必须存在；必需事实必须出现在来源中；不可回答问题不能有来源或必需事实；检索匹配应使用元数据而不是任意正文；比较系统改动时保持评估集稳定。</p>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>错误的衡量方式</h3><p>因为向量结果的正文提到了预期文档编号，就把它算作检索成功。</p></div>
+      <div class="card"><h3>更好的衡量方式</h3><p>只有当结果的来源元数据标识了预期文档时，才算检索成功。</p></div>
+    </section>
+
+    <section>
+      <h2>信任边界</h2>
+      <p>评估工具可能是错误的，却仍然输出看似自信的百分比。因此要测试评分器本身：重音符号、多来源问题、正文交叉引用、缺失引用和拒答。</p>
+    </section>
+
+    <footer><a href="../../lessons/zh/0003-build-a-trustworthy-evaluation-set.html">第 3 课</a> · <a href="request-path-cheatsheet.html">请求路径参考</a> · <a href="../../MISSION.md">使命</a></footer>
+  </main>
+</body>
+</html>

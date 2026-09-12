@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 5 · Recherche sémantique, recherche par mots-clés, parcours de graphe et récupération hybride</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 05 · 20–30 minutes plus le temps d’exécution</p>
+    <h1>Recherche sémantique, recherche par mots-clés, parcours de graphe et récupération hybride</h1>
+    <p class="dek">Avant de qualifier un système d’« hybride », mesurez ce que chacun de ses signaux de récupération — vecteur, plein texte/lexical, résumé et graphe — apporte réellement.</p>
+<section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>À la fin de cette leçon, vous aurez rempli un tableau comparatif question par question et choisi une amélioration de récupération que les preuves soutiennent réellement.</p>
+    </section>
+
+    <section>
+      <h2>1 · Le modèle minimal utile</h2>
+      <ul>
+        <li><strong>Recherche vectorielle (sémantique) :</strong> convertit le texte en embeddings à virgule flottante (par ex. Qdrant, Pinecone) pour capturer une similarité en haute dimension, le contexte, le sens et les reformulations plutôt que les mots exacts. Sa tenue selon les langues dépend du modèle d’embedding — ne le supposez pas, mesurez-le.</li>
+        <li><strong>Recherche plein texte (lexicale) :</strong> fait correspondre des chaînes de tokens littérales, des identifiants exacts, des noms, des sigles et des chiffres via des algorithmes comme BM25 et une tolérance aux fautes de frappe (par ex. Meilisearch, Elasticsearch). Quand l’orthographe exacte porte le sens, c’est elle qui vous sauve. <em>Remarque : les frontières entre moteurs évoluent — des moteurs comme Meilisearch savent aussi gérer nativement les embeddings vectoriels pour une recherche hybride unifiée.</em></li>
+        <li><strong>Récupération par graphe (relationnelle / structurelle) :</strong> parcourt dynamiquement des nœuds, des arêtes et des relations d’entités explicites (par ex. Neo4j, LightRAG). Ce n’est pas juste « une autre façon de retrouver un bloc » — c’est le seul signal structurel capable de tracer des connexions multi-sauts (par ex. relier des faits dispersés entre plusieurs documents), ce que la recherche vectorielle et la recherche plein texte ne peuvent pas faire de façon fiable seules.</li>
+        <li><strong>Récupération par résumé :</strong> un index séparé contenant un résumé vectorisé par document entier, pas par bloc. Il est conçu pour répondre à « de quoi parle ce document », quand un seul bloc d’environ 500 tokens est une unité trop étroite pour représenter le tout.</li>
+        <li><strong>Union cumulée :</strong> pour cette expérience, une source compte comme trouvée dès qu’elle apparaît dans l’un des quatre signaux. Cela renseigne sur la contribution de la récupération — rien sur la justesse de la réponse finale.</li>
+        <li><strong>Récupération hybride :</strong> dans ce système, « hybride » signifie faire tourner tous les signaux en parallèle et concaténer leurs résultats formatés dans le prompt — pas les fusionner ni les reclasser. Il n’y a ni normalisation de score ni fusion de rangs réciproques (reciprocal rank fusion) entre signaux ; la seule vraie fusion se produit à l’intérieur de LightRAG lui-même, entre ses propres passes d’entités, de relations et de vecteurs. Un moteur de reclassement existe dans le code mais n’est pas branché sur la récupération en production — ne présumez pas qu’« hybride » implique plus de sophistication qu’un simple parallèle-et-concaténation.</li>
+      </ul>
+
+      <figure class="diagram-scroll">
+        <svg viewBox="0 0 1240 620" role="img" aria-labelledby="fs-title fs-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="fs-title">Quatre signaux de récupération : vecteur, plein texte, résumé et graphe</title>
+          <desc id="fs-desc">Chaque signal traite la même requête à travers ses propres étapes, puis les quatre résultats sont concaténés — non fusionnés ni reclassés — dans un seul prompt.</desc>
+
+          <style>
+            .fs-panel-label { font: 700 13px/1 'DM Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+            .fs-box-label { font: 600 13px/1.3 'Source Serif 4', Georgia, serif; }
+            .fs-tagline { font: italic 400 12px/1.4 'Source Serif 4', Georgia, serif; fill: #6d716c; }
+            .fs-return-label { font: 700 13px/1.3 'Source Serif 4', Georgia, serif; }
+            .fs-bottom-label { font: 700 12px/1 'DM Mono', monospace; letter-spacing: .07em; text-transform: uppercase; }
+            .fs-prompt-label { font: 700 16px/1 'DM Mono', monospace; letter-spacing: .04em; }
+            .fs-prompt-sub { font: 400 12px/1.4 'Source Serif 4', Georgia, serif; fill: #6d716c; }
+          </style>
+
+          <!-- [[[ VECTOR (green) ]]] -->
+          <g>
+            <rect x="65" y="8" width="264" height="30" rx="6" fill="#315c4a" fill-opacity="0.10"/>
+            <text x="197" y="28" text-anchor="middle" fill="#315c4a" class="fs-panel-label">Vecteur · Sémantique</text>
+
+            <rect x="65" y="54" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="197" y="70" text-anchor="middle" class="fs-box-label" fill="#202321">Requête : « cours de</text>
+            <text x="197" y="86" text-anchor="middle" class="fs-box-label" fill="#202321">machine learning »</text>
+            <line x1="197" y1="96" x2="197" y2="114" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="65" y="114" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="197" y="140" text-anchor="middle" class="fs-box-label" fill="#202321">Vectoriser la requête</text>
+            <line x1="197" y1="156" x2="197" y2="174" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="65" y="174" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="197" y="200" text-anchor="middle" class="fs-box-label" fill="#202321">Comparer aux blocs vectorisés</text>
+            <line x1="197" y1="216" x2="197" y2="234" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="65" y="234" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="197" y="260" text-anchor="middle" class="fs-box-label" fill="#202321">Classer par similarité vectorielle</text>
+            <line x1="197" y1="276" x2="197" y2="294" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="65" y="294" width="264" height="48" rx="8" fill="#315c4a" fill-opacity="0.12" stroke="#315c4a" stroke-opacity="0.55"/>
+            <text x="197" y="322" text-anchor="middle" class="fs-return-label" fill="#315c4a">Blocs sémantiquement proches</text>
+
+            <text x="197" y="368" text-anchor="middle" class="fs-tagline">capte le sens, pas les mots exacts</text>
+          </g>
+
+          <!-- [[[ FULL-TEXT (terracotta) ]]] -->
+          <g>
+            <rect x="347" y="8" width="264" height="30" rx="6" fill="#b84b35" fill-opacity="0.10"/>
+            <text x="479" y="28" text-anchor="middle" fill="#b84b35" class="fs-panel-label">Plein texte · Lexical</text>
+
+            <rect x="347" y="54" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="479" y="70" text-anchor="middle" class="fs-box-label" fill="#202321">Requête : « cours de</text>
+            <text x="479" y="86" text-anchor="middle" class="fs-box-label" fill="#202321">machine learning »</text>
+            <line x1="479" y1="96" x2="479" y2="114" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="347" y="114" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="479" y="140" text-anchor="middle" class="fs-box-label" fill="#202321">Segmenter et normaliser</text>
+            <line x1="479" y1="156" x2="479" y2="174" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="347" y="174" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="479" y="200" text-anchor="middle" class="fs-box-label" fill="#202321">Faire correspondre les tokens, tolérant aux fautes</text>
+            <line x1="479" y1="216" x2="479" y2="234" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="347" y="234" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="479" y="260" text-anchor="middle" class="fs-box-label" fill="#202321">Classer par pertinence lexicale (BM25)</text>
+            <line x1="479" y1="276" x2="479" y2="294" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="347" y="294" width="264" height="48" rx="8" fill="#b84b35" fill-opacity="0.12" stroke="#b84b35" stroke-opacity="0.55"/>
+            <text x="479" y="322" text-anchor="middle" class="fs-return-label" fill="#b84b35">Blocs à correspondance exacte</text>
+
+            <text x="479" y="368" text-anchor="middle" class="fs-tagline">capte identifiants, noms, orthographe exacte</text>
+          </g>
+
+          <!-- [[[ SUMMARY (ochre) ]]] -->
+          <g>
+            <rect x="629" y="8" width="264" height="30" rx="6" fill="#a67c2e" fill-opacity="0.12"/>
+            <text x="761" y="28" text-anchor="middle" fill="#8a6521" class="fs-panel-label">Résumé</text>
+
+            <rect x="629" y="54" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="761" y="70" text-anchor="middle" class="fs-box-label" fill="#202321">Requête : « cours de</text>
+            <text x="761" y="86" text-anchor="middle" class="fs-box-label" fill="#202321">machine learning »</text>
+            <line x1="761" y1="96" x2="761" y2="114" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="629" y="114" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="761" y="140" text-anchor="middle" class="fs-box-label" fill="#202321">Vectoriser la requête</text>
+            <line x1="761" y1="156" x2="761" y2="174" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="629" y="174" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="761" y="194" text-anchor="middle" class="fs-box-label" fill="#202321">Comparer à un résumé</text>
+            <text x="761" y="209" text-anchor="middle" class="fs-box-label" fill="#202321">vectorisé par document</text>
+            <line x1="761" y1="216" x2="761" y2="234" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="629" y="234" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="761" y="260" text-anchor="middle" class="fs-box-label" fill="#202321">Classer par correspondance au niveau du document</text>
+            <line x1="761" y1="276" x2="761" y2="294" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="629" y="294" width="264" height="48" rx="8" fill="#a67c2e" fill-opacity="0.14" stroke="#a67c2e" stroke-opacity="0.6"/>
+            <text x="761" y="322" text-anchor="middle" class="fs-return-label" fill="#8a6521">Correspondances au niveau du document</text>
+
+            <text x="761" y="368" text-anchor="middle" class="fs-tagline">capte « de quoi parle ce document »</text>
+          </g>
+
+          <!-- [[[ GRAPH (slate) ]]] -->
+          <g>
+            <rect x="911" y="8" width="264" height="30" rx="6" fill="#3b5a70" fill-opacity="0.12"/>
+            <text x="1043" y="28" text-anchor="middle" fill="#3b5a70" class="fs-panel-label">Graphe · LightRAG</text>
+
+            <rect x="911" y="54" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="1043" y="70" text-anchor="middle" class="fs-box-label" fill="#202321">Requête : « cours de</text>
+            <text x="1043" y="86" text-anchor="middle" class="fs-box-label" fill="#202321">machine learning »</text>
+            <line x1="1043" y1="96" x2="1043" y2="114" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="911" y="114" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="1043" y="140" text-anchor="middle" class="fs-box-label" fill="#202321">Extraire entités + relations</text>
+            <line x1="1043" y1="156" x2="1043" y2="174" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="911" y="174" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="1043" y="200" text-anchor="middle" class="fs-box-label" fill="#202321">Parcourir les arêtes (multi-saut)</text>
+            <line x1="1043" y1="216" x2="1043" y2="234" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="911" y="234" width="264" height="42" rx="8" fill="#fbfaf7" stroke="#d8d4ca"/>
+            <text x="1043" y="260" text-anchor="middle" class="fs-box-label" fill="#202321">Fusionner les passes entité + relation</text>
+            <line x1="1043" y1="276" x2="1043" y2="294" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+            <rect x="911" y="294" width="264" height="48" rx="8" fill="#3b5a70" fill-opacity="0.12" stroke="#3b5a70" stroke-opacity="0.55"/>
+            <text x="1043" y="322" text-anchor="middle" class="fs-return-label" fill="#3b5a70">Connexions inter-documents</text>
+
+            <text x="1043" y="368" text-anchor="middle" class="fs-tagline">le seul signal multi-saut</text>
+          </g>
+
+          <!-- [[[ convergence: concatenated, not fused ]]] -->
+          <path d="M197,394 C197,420 460,420 550,438" fill="none" stroke="#b3ae9f" stroke-width="1.5"/>
+          <path d="M479,394 C479,412 530,420 570,436" fill="none" stroke="#b3ae9f" stroke-width="1.5"/>
+          <path d="M761,394 C761,412 710,420 670,436" fill="none" stroke="#b3ae9f" stroke-width="1.5"/>
+          <path d="M1043,394 C1043,420 780,420 690,438" fill="none" stroke="#b3ae9f" stroke-width="1.5" marker-end="url(#fs-arrow)"/>
+
+          <text x="620" y="410" text-anchor="middle" fill="#202321" class="fs-bottom-label">hybride — concaténé, non fusionné</text>
+
+          <rect x="270" y="452" width="700" height="52" rx="9" fill="#202321"/>
+          <text x="620" y="483" text-anchor="middle" fill="#f7f4ee" class="fs-prompt-label">PROMPT — vecteur + plein texte + résumé + graphe</text>
+
+          <text x="620" y="524" text-anchor="middle" class="fs-prompt-sub">Aucune fusion de scores. Aucun reclassement entre signaux. La seule vraie fusion a lieu</text>
+          <text x="620" y="542" text-anchor="middle" class="fs-prompt-sub">à l’intérieur même du signal graphe, entre ses passes entité et relation.</text>
+
+          <defs>
+            <marker id="fs-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#b3ae9f"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>Chacun des quatre signaux traite la même requête à travers ses propres étapes. Les résultats sont concaténés dans un seul prompt — non fusionnés, non reclassés.</figcaption>
+      </figure>
+
+      <p><a href="https://qdrant.tech/documentation/search/text-search/hybrid-search" target="_blank" rel="noreferrer">Lecture principale : Qdrant Hybrid Search</a> — soyez attentif à la façon dont il combine plusieurs représentations de recherche, et pourquoi cette combinaison doit être évaluée plutôt que simplement supposée fonctionner.</p>
+    </section>
+
+    <section>
+      <h2>2 · Menez une expérience contrôlée</h2>
+      <p>Réutilisez la même démo isolée et le même jeu d’évaluation que la Leçon 4. Le mode récupération interroge directement <code>/api/v1/search</code> sans juge LLM dans la boucle, ce qui garantit une lecture propre de la récupération seule.</p>
+      <pre><code>cd demo
+python3 eval.py verify
+python3 eval.py run --mode retrieval --workspace meridian_demo --tag lesson-05-experiment</code></pre>
+      <p>Cela vous donne deux fichiers : un rapport agrégé et un rapport JSON par question.</p>
+      <pre><code>reports/lesson-05-experiment.md
+reports/lesson-05-experiment.json</code></pre>
+      <p>Pour chaque question que vous vérifiez, regardez :</p>
+      <ul>
+        <li><code>results[].retrieval.indexes.vector.all</code></li>
+        <li><code>results[].retrieval.indexes.fulltext.all</code></li>
+        <li><code>results[].retrieval.indexes.summary.all</code></li>
+        <li><code>results[].retrieval.indexes.graph.all</code></li>
+        <li><code>results[].retrieval.cumulative["vector+fulltext"].all</code></li>
+        <li><code>results[].retrieval.cumulative["vector+fulltext+summary"].all</code></li>
+        <li><code>results[].retrieval.cumulative["vector+fulltext+summary+graph"].all</code></li>
+      </ul>
+      <p class="callout">Jugez un succès par les métadonnées de la source, pas par la correspondance textuelle — un identifiant de document qui apparaît simplement dans le corps d’un autre document ne compte pas comme un succès de récupération.</p>
+      <p class="callout">La colonne graphe est approximative, et le rapport le dit : LightRAG renvoie une seule chaîne de contexte plate plutôt qu’une liste de documents, donc une référence compte comme un succès graphe dès qu’elle apparaît n’importe où dans cette chaîne — ce qui peut venir d’un renvoi croisé à l’intérieur d’un autre document, et non du document cible lui-même. Traitez-la comme un signal réel mais plus bruité. Elle est rapportée séparément et jamais silencieusement fondue dans les trois autres.</p>
+    </section>
+
+    <section>
+      <h2>3 · Remplissez le tableau comparatif</h2>
+      <p>Remplissez les cinq colonnes de résultats avec <code>all</code>, <code>partial</code> ou <code>miss</code> — utilisez <code>partial</code> quand une question multi-documents ne fait remonter qu’une partie de ses sources attendues. Puis, pour chaque ligne, ajoutez une ligne d’interprétation et une action suivante précise.</p>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead><tr><th>ID de question</th><th>Type de requête</th><th>Source attendue</th><th>Résultat vecteur</th><th>Résultat plein texte</th><th>Résultat résumé</th><th>Résultat graphe</th><th>Union cumulée</th><th>Interprétation</th><th>Action suivante</th></tr></thead>
+          <tbody><tr><td>q21</td><td>Recherche de référence</td><td>PR-QA-MRD-010</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q24</td><td>Recherche de référence / révision</td><td>PR-QA-MRD-009</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q32</td><td>Factuel translinguistique</td><td>PR-EXM-MRD-003</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q46</td><td>Factuel littéral</td><td>PR-ACH-MRD-007</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr><tr><td>q63</td><td>Multi-saut</td><td>PR-CLI-MRD-013 + PR-QA-MRD-009</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td><td>_____</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>4 · Interprétez avant de changer le code</h2>
+      <div class="quiz">
+        <p><strong>Cas A :</strong> pour q21, le vecteur revient en <code>miss</code>, le plein texte en <code>all</code>, et l’union cumulée est <code>all</code>. Qu’est-ce que cela justifie réellement ?</p>
+        <button onclick="answer(this,'q1','Correct — ajoutez une extraction ou un boost de référence exacte, puis relancez la récupération.')">Correctif lexical</button>
+        <button onclick="answer(this,'q1','Pas tout à fait — les preuves pointent plutôt vers la gestion des références exactes.')">Réécriture des blocs</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas B :</strong> vecteur et plein texte tombent tous deux sur <code>all</code>, donc l’union n’ajoute pas de nouvelle source ici. Quelle est la lecture honnête ?</p>
+        <button onclick="answer(this,'q2','Correct — le plein texte n’ajoute aucune couverture de récupération sur cette ligne.')">Doublon</button>
+        <button onclick="answer(this,'q2','Pas tout à fait — l’union n’a récupéré aucune nouvelle source ici.')">Amélioration</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas C :</strong> pour q63, le résultat cumulé <code>vector+fulltext</code> est <code>all</code>, pourtant la réponse finale reste fausse. Où regardez-vous ensuite ?</p>
+        <button onclick="answer(this,'q3','Correct — le vecteur et le plein texte ont déjà trouvé toutes les sources attendues, regardez donc ensuite l’assemblage du contexte et la génération. Vérifiez aussi la colonne graphe avant de clore cette ligne : si elle confirme indépendamment la même connexion, c’est une preuve corroborante que la génération avait ce qu’il lui fallait ; si le graphe revient vide ou partiel, notez-le comme une lacune de signal distincte, pas comme la cause racine de cette ligne.')">Regarder la génération</button>
+        <button onclick="answer(this,'q3','Pas le premier arrêt — le vecteur et le plein texte ont déjà trouvé toutes les sources attendues ; le signal graphe peut encore corroborer cela, mais l’ingestion n’est pas où vit cet échec.')">Regarder l’ingestion</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>Un chatbot pour une entreprise réglementée doit réussir sur les deux fronts — une recherche de procédure précisément formulée et une question de politique posée comme la formulerait une vraie personne. Ce tableau transforme cet objectif de fiabilité en une décision de récupération concrète et traçable.</p>
+    </section>
+
+    <section>
+      <h2>5 · Livrable et prochaine action</h2>
+      <ol>
+        <li>Remplissez les cinq lignes du tableau comparatif.</li>
+        <li>Rédigez un paragraphe : quel signal a ajouté une source, pour quel type de requête, et quelle en est la preuve ?</li>
+        <li>Choisissez une prochaine action, et nommez la métrique que vous relancerez pour vérifier qu’elle a fonctionné.</li>
+      </ol>
+      <p><strong>Suite :</strong> Leçon 6 — Découpage et structure des documents. Gardez ce tableau — c’est votre référence de récupération pour les expériences de découpage et de traitement des requêtes à venir.</p>
+      <p><strong>Posez-moi toutes vos questions</strong> sur les champs du rapport, la correspondance des métadonnées, les catégories de requêtes, ou toute ligne qui ne vous paraît pas claire. Je suis votre enseignant pour ce cours — c’est exactement pour ça que je suis là.</p>
+    </section>
+
+    <footer><a href="../fr/0004-establish-the-mvp-baseline.html">Leçon 4</a> · <a href="../fr/0006-chunking-and-document-structure.html">Leçon suivante</a> · <a href="../../reference/fr/semantic-keyword-and-hybrid-retrieval-cheatsheet.html">Référence</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

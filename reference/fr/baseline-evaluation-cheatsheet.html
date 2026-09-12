@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche de référence — évaluation de la référence RAG</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Exécuter et lire une référence RAG</h1>
+    <p class="dek">Une référence est l’instantané d’une exécution — pas un score universel.</p>
+
+    <section class="card accent">
+      <h2>Recette de référence</h2>
+      <p><strong>Vérifier → démarrer la pile isolée → indexer → exécution de récupération → exécution des réponses → examiner les échecs → sauvegarder la configuration.</strong></p>
+    </section>
+
+    <section>
+      <h2>Ce qu’il faut noter</h2>
+      <table>
+        <thead><tr><th>Élément</th><th>Pourquoi</th></tr></thead>
+        <tbody>
+          <tr><td>Étiquette</td><td>Nomme l’exécution, par exemple `lesson-4-baseline`.</td></tr>
+          <tr><td>Corpus et version du jeu d’évaluation</td><td>Évite de comparer des données de test différentes comme si c’était la même chose.</td></tr>
+          <tr><td>Espace de travail et noms des index</td><td>Confirme que l’exécution a bien utilisé les données de démonstration isolées.</td></tr>
+          <tr><td>topk et seuils</td><td>Ces réglages de récupération influencent le résultat.</td></tr>
+          <tr><td>Modèle et modèle juge</td><td>Changer l’un ou l’autre peut changer la réponse ou le verdict du juge.</td></tr>
+          <tr><td>Concurrence et délai d’expiration</td><td>Ces réglages opérationnels influencent les erreurs et la latence.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Métriques à lire séparément</h2>
+      <ul>
+        <li><strong>Union de récupération :</strong> les index combinés ont-ils renvoyé chaque document attendu ?</li>
+        <li><strong>Précision stricte :</strong> combien de réponses jugées étaient entièrement correctes ?</li>
+        <li><strong>Taux de couverture des sources :</strong> la réponse finale a-t-elle cité chaque source attendue ?</li>
+        <li><strong>Précision de refus :</strong> le système a-t-il refusé de répondre à chaque question sans réponse ?</li>
+        <li><strong>Taux d’hallucination :</strong> à quelle fréquence a-t-il répondu à une question que les preuves ne soutenaient pas ?</li>
+        <li><strong>Latence p50 / p95 :</strong> le temps de réponse typique et la queue lente.</li>
+      </ul>
+    </section>
+
+    <section class="grid-2">
+      <div class="card"><h3>Bonne affirmation de référence</h3><p>« Avec ce corpus, ce jeu d’évaluation, ce modèle et cette configuration, le système a atteint X. »</p></div>
+      <div class="card"><h3>Mauvaise affirmation de référence</h3><p>« Le chatbot est fiable à 90 %. »</p></div>
+    </section>
+
+    <section>
+      <h2>Règle de lecture des échecs</h2>
+      <p>Pour chaque échec, notez trois choses : la source attendue, la source réelle, et la raison donnée par le juge. Cela transforme un pourcentage en hypothèse d’ingénierie.</p>
+    </section>
+
+    <footer><a href="../../lessons/fr/0004-establish-the-mvp-baseline.html">Leçon 4</a> · <a href="evaluation-set-cheatsheet.html">Référence sur le jeu d’évaluation</a> · <a href="../../MISSION.md">Mission</a></footer>
+  </main>
+</body>
+</html>

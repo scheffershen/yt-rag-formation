@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche récapitulative du parcours de requête RAG</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Référence · Cours QualioBot</p>
+    <h1>Une question à travers le système RAG</h1>
+    <p class="dek">Une cartographie, au niveau du code, du parcours actuel d’une requête `/api/v1/qa`.</p>
+
+    <section class="card accent">
+      <h2>Parcours principal</h2>
+      <p><strong>Requête HTTP → route → service → récupération → assemblage → citation → génération → réponse</strong></p>
+    </section>
+
+    <section>
+      <h2>Carte des appels</h2>
+      <table>
+        <thead><tr><th>Étape</th><th>Fichier / fonction</th><th>Responsabilité</th></tr></thead>
+        <tbody>
+          <tr><td>1. Entrée HTTP</td><td><code>routes/qa.py</code><br><code>ask_question()</code></td><td>Reçoit `QuestionRequest` et le transmet au service QA.</td></tr>
+          <tr><td>2. Orchestration</td><td><code>qa_service.py</code><br><code>answer_question_internal()</code></td><td>Vérifie l’entrée, résout les services et la configuration, et coordonne la requête.</td></tr>
+          <tr><td>3. Récupération</td><td><code>search.py</code></td><td>Interroge les blocs Qdrant, les résumés Qdrant, Meilisearch et LightRAG.</td></tr>
+          <tr><td>4. Contexte</td><td><code>utils.py</code><br><code>build_context()</code></td><td>Répartit le budget entre les canaux et conserve les éléments qui atteignent le modèle.</td></tr>
+          <tr><td>5. Citations</td><td><code>utils.py</code><br><code>sources_from_items()</code></td><td>Construit la liste des sources à partir des preuves ayant survécu à l’assemblage du contexte.</td></tr>
+          <tr><td>6. Prompt</td><td><code>utils.py</code><br><code>build_prompt()</code></td><td>Indique au modèle d’utiliser le contexte, de citer les sources, et de refuser les réponses non étayées.</td></tr>
+          <tr><td>7. Génération</td><td><code>qa_service.py</code><br><code>completion.generate()</code></td><td>Génère la réponse finale à partir de la question et du contexte assemblé.</td></tr>
+          <tr><td>8. Réponse</td><td><code>models.py</code><br><code>AnswerResponse</code></td><td>Renvoie la réponse, les sources et les statistiques de diagnostic.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Que vérifier lors d’un débogage</h2>
+      <ul>
+        <li><strong>Avant la génération :</strong> vérifiez `/api/v1/search` et `context_items_included`.</li>
+        <li><strong>Au moment de la citation :</strong> comparez `sources` avec les éléments réellement intégrés au contexte.</li>
+        <li><strong>Après la génération :</strong> comparez la réponse à la fois avec la preuve et avec la réponse attendue.</li>
+        <li><strong>Pour la latence :</strong> examinez les quatre appels de récupération — en particulier LightRAG — ainsi que l’appel de génération final.</li>
+      </ul>
+    </section>
+
+    <footer><a href="../../lessons/fr/0002-trace-one-question.html">Leçon 2</a> · <a href="rag-quality-cheatsheet.html">Fiche récapitulative qualité RAG</a> · <a href="../../MISSION.md">Mission</a></footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 1 · De la question à la réponse citée</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 01 · 10 minutes</p>
+    <h1>De la question d’un collaborateur à une réponse citée</h1>
+    <p class="dek">Le premier modèle mental à acquérir avant de construire un chatbot RAG auquel on peut vraiment faire confiance.</p>
+<section class="card accent">
+      <h2>Le gain concret du jour</h2>
+      <p>À la fin de cette leçon, vous saurez regarder la réponse d’un chatbot et déterminer si l’échec vient de la <strong>récupération</strong> ou de la <strong>génération</strong> — cette seule distinction détermine ce qu’il faut corriger ensuite.</p>
+    </section>
+
+    <section>
+      <h2>1 · Le RAG en une phrase</h2>
+      <p>La <strong>génération augmentée par récupération (RAG)</strong> fonctionne ainsi : dès qu’une question est posée, le système va chercher les preuves pertinentes de l’entreprise, les insère dans le contexte du modèle, puis lui demande de répondre en s’appuyant uniquement sur ce qui s’y trouve.</p>
+      <p>C’est très différent du fait d’enseigner vos procédures au modèle de façon permanente — il ne voit jamais que les preuves fournies pour cette seule requête. Autrement dit, le chatbot peut déjà avoir échoué avant même que le modèle n’écrive un seul mot : il peut avoir saisi le mauvais document, le mauvais passage, ou rien d’exploitable du tout.</p>
+      <p class="callout">Dans un environnement réglementé et audité, « ça sonne plausible » ne suffit pas à faire une bonne réponse. Une réponse ne compte que si elle s’appuie sur les bonnes preuves — et qu’elle les cite.</p>
+      <p><a href="https://platform.openai.com/docs/guides/optimizing-llm-accuracy" target="_blank" rel="noreferrer">Lecture principale : le guide Optimizing LLM Accuracy d’OpenAI</a> — pour l’instant, contentez-vous de lire la section consacrée au RAG.</p>
+    </section>
+
+    <section>
+      <h2>2 · Votre système en pratique</h2>
+      <p>Votre environnement de démonstration, dans <code>demo</code>, est notre bac à sable sans risque : 25 documents fictifs de Meridian Labs et 65 questions, dont six auxquelles le système doit purement et simplement refuser de répondre.</p>
+      <div class="card">
+        <p><strong>Question</strong><br>“Quel est le délai de clôture d’un plan d’action pour une non-conformité majeure ?”</p>
+        <p class="flow"><strong>1. Récupération</strong> → blocs sémantiques Qdrant + résumés Qdrant + résultats mots-clés Meilisearch + contexte LightRAG</p>
+        <p><strong>2. Assemblage</strong> → `qa_service.py` combine et tronque les preuves</p>
+        <p><strong>3. Génération</strong> → un modèle de complétion rédige la réponse à partir du contexte assemblé</p>
+        <p><strong>4. Citation</strong> → les sources sont extraites des éléments de contexte réellement montrés au modèle</p>
+        <p><strong>5. Évaluation</strong> → `demo/eval.py` note séparément la récupération, l’exactitude des réponses, les citations, les refus, les hallucinations et la latence</p>
+      </div>
+      <p>Cette séparation est le fondement même de ce cours — le rapport de démonstration n’est pas qu’un simple pourcentage, il indique précisément à quel endroit le système est fragile.</p>
+    </section>
+
+    <section>
+      <h2>3 · Diagnostiquer avant de toucher au code</h2>
+      <table>
+        <thead><tr><th>Observation</th><th>Couche probable</th><th>Premier endroit à inspecter</th></tr></thead>
+        <tbody>
+          <tr><td>Document attendu absent de `/api/v1/search`</td><td>Récupération</td><td>Index, découpage, formulation de la requête, seuils, classement</td></tr>
+          <tr><td>Document attendu récupéré, mais non cité</td><td>Assemblage du contexte / citation</td><td>Troncature du contexte et extraction des sources</td></tr>
+          <tr><td>Document cité, mais un fait requis manque dans la réponse</td><td>Génération</td><td>Prompt, organisation du contexte, comportement du modèle</td></tr>
+          <tr><td>Question sans réponse possible traitée avec assurance</td><td>Ancrage / sécurité</td><td>Consigne de refus, seuil de preuve, jeu d’évaluation</td></tr>
+          <tr><td>Réponse correcte mais lente</td><td>Exploitation</td><td>Latence du backend, appels au graphe, taille du contexte, concurrence</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4 · Exercice : récupération ou génération ?</h2>
+      <div class="quiz">
+        <p><strong>Scénario A :</strong> La réponse indique « 24 heures » — mais `/api/v1/search` n’a jamais renvoyé `PR-QA-MRD-009` dans les résultats. Qu’est-ce qui a échoué en premier ?</p>
+        <button onclick="answer(this,'retrieval-a','Correct. La réponse est peut-être une supposition chanceuse ou une hallucination, mais le premier échec avéré est la récupération.')">Récupération</button>
+        <button onclick="answer(this,'retrieval-a','Pas en premier. Puisque le document attendu n’a pas été renvoyé, diagnostiquez la récupération avant la génération.')">Génération</button>
+        <p id="retrieval-a" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Scénario B :</strong> `PR-QA-MRD-009` figure bien dans les résultats de recherche, mais la réponse indique « 60 jours » alors que la preuve indique clairement « 45 jours ». Qu’est-ce qui a échoué ?</p>
+        <button onclick="answer(this,'generation-b','Pas principalement. La preuve nécessaire a bien été récupérée : inspectez plutôt l’assemblage du contexte et la génération.')">Récupération</button>
+        <button onclick="answer(this,'generation-b','Correct. La preuve était disponible ; le système a échoué à l’utiliser fidèlement.')">Génération</button>
+        <p id="generation-b" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Scénario C :</strong> Une question sans réponse réelle reçoit une réponse détaillée et assurée — sans la moindre source. Quel indicateur devrait détecter ce cas ?</p>
+        <button onclick="answer(this,'safety-c','Correct. Le taux de bons refus devrait chuter et le taux d’hallucination devrait grimper.')">Ancrage / sécurité</button>
+        <button onclick="answer(this,'safety-c','Ce n’est pas le signal principal. La couverture des citations peut aussi être mauvaise, mais ce sont les indicateurs de refus et d’hallucination qui ciblent cet échec.')">Exploitation</button>
+        <p id="safety-c" class="feedback"></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>5 · Votre contrat de réussite pour le prototype</h2>
+      <p>Avant de lancer une nouvelle expérimentation, notez ces cinq objectifs avec vos propres mots :</p>
+      <ol>
+        <li>Quelles catégories de questions doivent absolument fonctionner en premier ?</li>
+        <li>Quel seuil d’exactitude le premier MVP doit-il atteindre ?</li>
+        <li>Quel est le taux minimal acceptable de sources correctement retrouvées ?</li>
+        <li>Quel taux d’hallucination serait rédhibitoire ?</li>
+        <li>Quel temps de réponse un collaborateur réel tolérera-t-il réellement ?</li>
+      </ol>
+      <p>Ne vous contentez pas de recopier les chiffres historiques de `demo-fixed` en guise d’objectifs. Ce sont une base de référence pour la discussion, pas la preuve que le système actuel est prêt pour la production.</p>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>Vos utilisateurs sont des équipes qualité, des régulateurs, des fournisseurs, des auditeurs — des personnes qui se moquent de l’éloquence d’une réponse. Ce qui compte pour eux, c’est qu’elle corresponde bien à la bonne procédure, à la bonne politique ou au bon questionnaire. C’est pourquoi notre premier réflexe d’ingénierie est celui-ci :</p>
+      <p><strong>Quand une réponse est fausse, vérifiez d’abord les preuves récupérées avant de toucher au prompt.</strong></p>
+    </section>
+
+    <section>
+      <h2>Prochaine action</h2>
+      <p>Restez sur la démonstration anonymisée et lancez ces vérifications hors ligne :</p>
+      <pre><code>cd demo
+python eval.py verify
+python test_scoring.py</code></pre>
+      <p>Ouvrez ensuite le rapport existant, <a href="../../../demo/reports/demo-fixed.md">demo-fixed.md</a>, et repérez deux échecs : un cas où la récupération a fonctionné mais où la réponse reste partielle ou fausse, et un cas où une source n’a jamais été récupérée du tout.</p>
+      <p><strong>Posez-moi vos questions</strong> sur tout ce qui reste flou — un terme, un indicateur, un cas d’échec. Dans la prochaine leçon, nous suivrons une question de bout en bout à travers le code réel et le dispositif d’évaluation.</p>
+    </section>
+
+    <footer><a href="../../reference/fr/rag-quality-cheatsheet.html">Fiche récapitulative qualité RAG</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

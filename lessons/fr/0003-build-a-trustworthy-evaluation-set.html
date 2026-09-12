@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leçon 3 · Construire un jeu d’évaluation fiable</title>
+  <link rel="stylesheet" href="../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Leçon 3 · 15 minutes</p>
+    <h1>Construire un jeu d’évaluation fiable</h1>
+    <p class="dek">Avant de poser la moindre question au chatbot, définissez à quoi ressemble une réponse correcte.</p>
+<section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>À la fin, vous saurez décortiquer une question d’évaluation et expliquer précisément pourquoi sa référence tient la route — ou ce qui cloche si ce n’est pas le cas.</p>
+    </section>
+
+    <section>
+      <h2>1 · Une évaluation, c’est un contrat</h2>
+      <p>Une question d’évaluation n’est pas simplement ce qu’un utilisateur pourrait taper. C’est un contrat entre l’équipe produit et ce qui se charge de la noter :</p>
+      <div class="card">
+        <p><strong>Question :</strong> ce que demande l’utilisateur</p>
+        <p><strong>Sources attendues :</strong> quels documents doivent appuyer la réponse</p>
+        <p><strong>Faits requis / <code>must_include</code> :</strong> les faits à fort enjeu qu’une bonne réponse doit contenir</p>
+        <p><strong>Réponse attendue :</strong> le sens de référence utilisé par le juge</p>
+        <p><strong>Refus attendu / <code>expect_refusal</code> :</strong> si le système doit refuser de répondre faute de réponse dans le corpus</p>
+      </div>
+      <p>Sautez ce contrat, et votre score peut sembler parfaitement rigoureux tout en mesurant, en silence, exactement la mauvaise chose.</p>
+      <p><a href="https://platform.openai.com/docs/guides/evaluation-best-practices" target="_blank" rel="noreferrer">Lecture principale : les bonnes pratiques d’évaluation d’OpenAI</a> — notez pourquoi des systèmes d’IA non déterministes ont besoin, dès le départ, d’évaluations structurées.</p>
+    </section>
+
+    <section>
+      <h2>2 · Lire le jeu de démonstration</h2>
+      <p>Ouvrez :</p>
+      <pre><code>demo/eval_set.yaml</code></pre>
+      <p>Ce jeu de démonstration regroupe 65 questions réparties sur 25 documents synthétiques, ainsi répartis :</p>
+      <ul>
+        <li>35 questions factuelles</li>
+        <li>7 questions de repérage de référence</li>
+        <li>9 questions à sauts multiples</li>
+        <li>5 questions translinguistiques</li>
+        <li>3 questions d’acronymes</li>
+        <li>6 questions sans réponse</li>
+      </ul>
+      <p>Ce dosage n’a rien d’arbitraire. Un chatbot peut filer sans accroc sur des questions sémantiques ordinaires et pourtant trébucher sur un identifiant de SOP exact, un raisonnement multi-documents, ou le simple fait de savoir quand refuser de répondre.</p>
+    </section>
+
+    <section>
+      <h2>3 · Pourquoi la correspondance de récupération ne s’appuie que sur les métadonnées</h2>
+      <p>Prenons q30 :</p>
+      <div class="card">
+        <p><strong>Sources attendues :</strong> `PR-QA-MRD-001`, `PR-QA-MRD-009`</p>
+        <p><strong>Fait requis :</strong> `90 jours`</p>
+      </div>
+      <p>Voici le piège : les documents de ce corpus se citent les uns les autres. Un fragment de `PR-QA-MRD-001` peut très bien mentionner `PR-QA-MRD-009` en plein cœur de son texte. À rechercher aveuglément dans tout ce fragment, l’outil de notation risque de créditer à tort `PR-QA-MRD-009` comme récupéré, alors qu’il n’est jamais réellement apparu.</p>
+      <p>C’est exactement pour cela que `eval.py` ne fait confiance qu’aux métadonnées de source — des champs comme `source`, `document_name` et `filename` — plutôt que d’accorder un crédit simplement parce qu’un identifiant apparaît quelque part dans le corps du texte.</p>
+    </section>
+
+    <section>
+      <h2>4 · Répondable ou non</h2>
+      <p>Ces six questions sans réponse ne sont pas une erreur de conception du test — ce sont des contrôles de sécurité. Chacune pose une question simple : le système sait-il où s’arrêtent ses propres connaissances ?</p>
+      <table>
+        <thead><tr><th>Type de question</th><th>Source attendue</th><th>Comportement attendu</th></tr></thead>
+        <tbody>
+          <tr><td>Répondable</td><td>Un ou plusieurs documents</td><td>Répondre au fait demandé et citer les sources</td></tr>
+          <tr><td>Sans réponse</td><td>Aucune</td><td>Refuser de répondre, ou indiquer que les données indexées ne contiennent pas la réponse</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>5 · Pratique : faire confiance à la question, ou la rejeter ?</h2>
+      <div class="quiz">
+        <p><strong>Cas A :</strong> `expect_sources` cite `PR-QA-MRD-009`, mais ce fichier n’existe nulle part dans le corpus. Cette question compte-t-elle encore comme valide ?</p>
+        <button onclick="answer(this,'q1','Exact. La référence est cassée et doit être corrigée avant toute mesure du système.')">La rejeter</button>
+        <button onclick="answer(this,'q1','Ce n’est pas prudent. Une source attendue absente rend le score dénué de sens.')">La garder</button>
+        <p id="q1" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas B :</strong> L’identifiant de document attendu n’apparaît que dans le corps du texte d’un autre document, nulle part ailleurs. La récupération mérite-t-elle quand même un crédit ?</p>
+        <button onclick="answer(this,'q2','Exact. Les renvois dans le corps du texte peuvent créer des faux positifs.')">Non</button>
+        <button onclick="answer(this,'q2','Pas tout à fait. L’outil de notation doit exiger les métadonnées de source pour identifier le document.')">Oui</button>
+        <p id="q2" class="feedback"></p>
+      </div>
+      <div class="quiz">
+        <p><strong>Cas C :</strong> Une question n’a aucune source attendue et porte le drapeau `expect_refusal: true`. Quelle est la bonne réaction pour un bon chatbot ?</p>
+        <button onclick="answer(this,'q3','Exact. Il doit refuser de répondre plutôt qu’inventer une réponse.')">Refuser</button>
+        <button onclick="answer(this,'q3','Ce n’est pas ce que dit cette référence. Une réponse assurée est une hallucination.')">Deviner</button>
+        <p id="q3" class="feedback"></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>6 · Votre revue du jeu d’évaluation</h2>
+      <p>Choisissez une question dans chaque catégorie de `eval_set.yaml` et notez :</p>
+      <ol>
+        <li>Cette question est-elle seulement répondable ?</li>
+        <li>Quel(s) document(s) source la soutiennent réellement ?</li>
+        <li>Quel fait doit apparaître dans une réponse correcte ?</li>
+        <li>Un renvoi croisé pourrait-il piéger l’outil de notation et lui faire accorder un crédit à tort ?</li>
+        <li>À quoi ressemble ici un échec sans danger ?</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Lien avec la mission</h2>
+      <p>Dans les cas d’usage SOP, QA, réglementaire, fournisseur et audit, le jeu d’évaluation n’est pas qu’un outil de test — il fait partie de la limite de sécurité du produit. C’est lui qui définit, en premier lieu, ce que veulent dire « fondé sur les preuves », « correct » et « inconnu ».</p>
+    </section>
+
+    <section>
+      <h2>Prochaine action</h2>
+      <p>Relancez une fois de plus le contrôle de cohérence hors ligne :</p>
+      <pre><code>cd demo
+python3 eval.py verify</code></pre>
+      <p>Choisissez ensuite une question dans chacune des six catégories et rédigez une brève revue. Envoyez-moi vos réponses — en particulier un cas où la correspondance par métadonnées seules vous évite un crédit de récupération erroné.</p>
+      <p><strong>Des questions sur la référence, la notation, ou l’une de ces catégories ? Demandez-moi.</strong> Une fois votre revue reçue, je marquerai la Leçon 3 comme terminée.</p>
+    </section>
+
+    <footer><a href="../../reference/fr/evaluation-set-cheatsheet.html">Référence sur le jeu d’évaluation</a> · <a href="../../reference/fr/request-path-cheatsheet.html">Référence du chemin de requête</a> · <a href="../../MISSION.md">Mission</a> · <a href="../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+  <script>
+    function answer(button, id, message) {
+      document.getElementById(id).textContent = message;
+      button.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    }
+  </script>
+</body>
+</html>

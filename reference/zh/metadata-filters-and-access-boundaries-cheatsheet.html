@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>参考资料 · 元数据、筛选与访问边界</title><link rel="stylesheet" href="../../assets/course.css"></head><body><main class="page">
+<p class="eyebrow">参考资料 · QualioBot 课程</p><h1>元数据、筛选与访问边界</h1><p class="dek">区分"已有元数据"和"已强制执行授权"的快速参考。</p>
+<section class="card accent"><h2>一句话规则</h2><p><strong>一句话规则：</strong>只有服务端在检索前把字段应用到请求用户身上，它才成为访问边界。</p></section>
+<section><h2>状态标签</h2><table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td>已实现</td><td>服务端在检索前强制执行规则。</td></tr><tr><td>已有元数据</td><td>文档字段存在，但尚无已验证的用户筛选规则。</td></tr><tr><td>提议</td><td>规则仍需要字段、策略、强制点和负向测试。</td></tr></tbody></table></section>
+<section><h2>演示清单</h2><p>当前演示导入提供公司、部门、文档类型和文档编号；它本身不提供用户角色、用户部门、供应商范围、密级或授权策略。</p></section>
+<section><h2>负向测试框架</h2><p><strong>负向测试：</strong>给定供应商身份和仅限 QA 的程序；当带该身份检索时；该程序必须不出现在检索结果中，也不能进入答案生成。服务端过滤必须独立接入全部四路检索（Qdrant 分块、Qdrant 摘要、Meilisearch、LightRAG）——它们各自是独立的函数调用，中间没有共享的过滤层，所以某一路接了过滤、另一路忘了接，就是真实的泄露风险，不是假设。</p></section>
+<section><h2>本地参考文件</h2><ul><li><code>demo/metadata_lab.py</code></li><li><code>demo/setup_demo.py</code></li><li><code>reports/lesson-07-metadata-inventory.md</code></li></ul></section><footer><a href="../../lessons/zh/0007-metadata-filters-and-access-boundaries.html">第 7 课</a> · <a href="../../MISSION.md">使命</a> · <a href="../../RESOURCES_ZH.md">资源</a></footer></main></body></html>
