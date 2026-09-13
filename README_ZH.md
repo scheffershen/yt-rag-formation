@@ -200,6 +200,11 @@
 
 这一课不计入上面第 1 到第 4 阶段的编号，也不是下面完成标准的必需项——它只是指明课程本身结束之后接下来该读什么，不是课程里又多出来的一个考核步骤。
 
+这套教程里有两章连同配图一起收录在本仓库中：
+
+- [从零开始搭建你自己的 RAG 聊天机器人](lessons/zh/continue/02-build-your-rag-from-zero.html)——一份可复制粘贴的搭建提示词和检查清单，用于搭建带引用回答的四通道基线。
+- [把 RAG 反馈转化为改进计划](lessons/zh/continue/01-improve-your-rag.html)——日志记录、用户反馈，以及配合 Claude Code 或 Codex 的从归类到修复流程。
+
 ## 主要参考文件
 
 - [资源](RESOURCES_ZH.md)

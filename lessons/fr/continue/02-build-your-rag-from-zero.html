@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formation continue · Construisez votre propre chatbot RAG à partir de zéro</title>
+  <link rel="stylesheet" href="../../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Formation continue · 02 · Construire une base RAG</p>
+    <h1>Construisez votre propre chatbot RAG à partir de zéro</h1>
+    <p class="dek">Un prompt prêt à copier-coller, un plan de construction et une checklist pour créer une base de questions-réponses documentaire fonctionnelle et fondée, avec Codex ou Claude Code.</p>
+
+    <section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>Construisez d’abord un seul chemin de questions-réponses documentaire fonctionnel, puis étendez-le en quatre canaux de récupération complémentaires. Chaque réponse doit rester fondée sur le contexte récupéré, nommer ses documents sources, ou refuser explicitement.</p>
+    </section>
+
+    <section>
+      <h2>1 · Donnez ce prompt de construction à un assistant de code IA</h2>
+      <p>Utilisez ceci comme brief de construction complet pour Claude Code, Codex, ou votre propre implémentation. Terminez chaque étape sur une vraie question avant de passer à la suivante.</p>
+      <pre><code>Vous construisez un chatbot de questions-réponses documentaire pour un corpus interne fixe. Construisez-le de bout en bout, une étape fonctionnelle à la fois ; ne passez pas à la suite avant que l’étape en cours ne réponde à une vraie question.
+
+Corpus et ingestion
+- Acceptez un dossier de documents sources, en commençant par du texte brut ou des PDF convertis en texte.
+- Analysez et découpez chaque document en passages chevauchants, dimensionnés pour la récupération, pas pour l’affichage.
+- Générez et stockez un court résumé de chaque document entier.
+
+Quatre canaux de récupération — construisez les quatre :
+1. Vecteur de bloc : vectorisez chaque passage et prenez en charge la recherche par similarité top-k.
+2. Vecteur de résumé : vectorisez les résumés de documents et prenez en charge la recherche par similarité top-k.
+3. Plein texte/mots-clés : recherche exacte et quasi exacte de termes sur le texte brut.
+4. Graphe : extrayez entités et relations à travers les documents, avec traversée multi-sauts.
+
+Fusion et assemblage
+- Interrogez les quatre canaux en parallèle pour chaque question.
+- Dédupliquez les résultats qui se chevauchent avant d’appliquer un budget de taille de contexte.
+- Un canal qui ne peut pas être interrogé est un statut, pas une exception qui fait tomber la requête.
+
+Génération et citation
+- Répondez strictement à partir du contexte assemblé, jamais à partir de connaissances externes.
+- Nommez le ou les documents utilisés par chaque réponse.
+- Refusez explicitement lorsque le contexte récupéré ne permet pas de répondre.
+
+Hors périmètre pour cette base de référence
+- La capture des retours utilisateurs et des commentaires par réponse.
+- La gestion du multi-tour ou des questions de suivi : traitez chaque question de façon indépendante.
+
+Définition du terminé : posez dix vraies questions couvrant la reformulation, la découverte large de documents, la recherche exacte de code, et les relations multi-sauts. Chacune reçoit une réponse fondée et citée — ou un refus honnête.</code></pre>
+    </section>
+
+    <section>
+      <h2>2 · Construisez un chemin de bout en bout avant d’étendre</h2>
+      <p>Commencez par les blocs, un index vectoriel, et une génération citée. Une fois ce chemin capable de répondre à une vraie question, ajoutez les autres canaux un par un. Cela garde chaque échec inspectable.</p>
+      <ol>
+        <li><strong>Corpus et analyse.</strong> Donnez à chaque source des identifiants stables et référençables avant d’écrire le code de récupération.</li>
+        <li><strong>Blocs, vecteur de bloc, et génération.</strong> Menez ce seul canal jusqu’à une réponse citée.</li>
+        <li><strong>Résumés et index vecteur de résumé.</strong> Générez chaque résumé de document une fois, stockez-le, puis vectorisez-le.</li>
+        <li><strong>Index plein texte.</strong> Utilisez un moteur de recherche établi plutôt que de coder à la main la correspondance et le classement.</li>
+        <li><strong>Index de graphe.</strong> Ajoutez les entités et relations en dernier ; c’est le canal le plus coûteux à maintenir.</li>
+        <li><strong>Fusion, déduplication, budget de contexte.</strong> Rendez cette étape testable indépendamment, sans appeler de LLM.</li>
+        <li><strong>Génération fondée et citations.</strong> Exigez des sources nommées et un refus explicite quand la preuve manque.</li>
+        <li><strong>Test de fumée en dix questions.</strong> Posez une question par spécialité de canal avant de considérer la base de référence terminée.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>3 · Checklist de la base de référence</h2>
+      <ul>
+        <li>Les documents peuvent être ajoutés et réindexés sans redémarrage complet.</li>
+        <li>Chacun des quatre canaux peut être interrogé et inspecté séparément.</li>
+        <li>L’étape de fusion supprime mesurablement les résultats qui se chevauchent avant d’appliquer le budget de contexte.</li>
+        <li>Chaque réponse générée nomme le ou les documents utilisés.</li>
+        <li>Le chatbot refuse plutôt que de deviner quand la récupération ne trouve aucune preuve pertinente.</li>
+        <li>Le test de fumée en dix questions enregistre quel canal a contribué à chaque réponse.</li>
+        <li>La capture de retours et la gestion des questions de suivi restent volontairement hors périmètre pour cette base de référence.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Leçon suivante</h2>
+      <p>Une fois cette base de référence fonctionnelle, ajoutez des journaux d’interactions, des retours utilisateurs et la gestion des questions de suivi. Cela transforme des réponses isolées en une boucle d’amélioration en production fondée sur des preuves.</p>
+      <p><a href="01-improve-your-rag.html">Ouvrir la boucle d’amélioration en production <span aria-hidden="true">→</span></a></p>
+    </section>
+
+    <footer><a href="../0017-what-comes-after-the-pilot.html">Formation continue</a> · <a href="../../../README_FR.md">Accueil du cours</a> · <a href="../../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

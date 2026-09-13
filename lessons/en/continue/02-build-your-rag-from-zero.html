@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Continuing education · Build your own RAG chatbot from zero</title>
+  <link rel="stylesheet" href="../../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Continuing education · 02 · Build a RAG baseline</p>
+    <h1>Build your own RAG chatbot from zero</h1>
+    <p class="dek">A copy-paste prompt, build plan, and checklist for creating a working, grounded document-Q&amp;A baseline with Codex or Claude Code.</p>
+
+    <section class="card accent">
+      <h2>Today’s tangible win</h2>
+      <p>Build one working document-Q&amp;A path, then extend it into four complementary retrieval channels. Every answer must stay grounded in retrieved context, name its source documents, or explicitly refuse.</p>
+    </section>
+
+    <section>
+      <h2>1 · Give an AI coding assistant this build prompt</h2>
+      <p>Use this as a complete build brief for Claude Code, Codex, or your own implementation. Finish each step against a real question before moving to the next one.</p>
+      <pre><code>You are building a document-Q&amp;A chatbot for a fixed internal corpus. Build it end to end, one working step at a time; do not move on before the current step answers a real question.
+
+Corpus &amp; ingestion
+- Accept a folder of source documents, starting with plain text or PDFs converted to text.
+- Parse and chunk each document into overlapping passages sized for retrieval, not display.
+- Generate and store a short summary of each whole document.
+
+Four retrieval channels — build all four:
+1. Chunk-vector: embed each passage and support top-k similarity search.
+2. Summary-vector: embed document summaries and support top-k similarity search.
+3. Full-text/keyword: exact and near-exact term search over raw text.
+4. Graph: extract entities and relations across documents, with multi-hop traversal.
+
+Merge and assemble
+- Query all four channels in parallel for every question.
+- Deduplicate overlapping results before applying a context-size budget.
+- A channel that cannot be queried is a status, not an exception that takes the request down.
+
+Generate and cite
+- Answer strictly from the assembled context, never from outside knowledge.
+- Name the document(s) used by every answer.
+- Refuse explicitly when the retrieved context does not support an answer.
+
+Out of scope for this baseline
+- Per-answer feedback capture and comments.
+- Multi-turn or follow-up handling: treat every question as independent.
+
+Definition of done: ask ten real questions spanning paraphrase, broad document discovery, exact-code lookup, and multi-hop relationships. Each receives a grounded, cited answer—or an honest refusal.</code></pre>
+    </section>
+
+    <section>
+      <h2>2 · Build one end-to-end path before expanding</h2>
+      <p>Start with chunks, a vector index, and cited generation. Once that path answers a real question, add the other channels one at a time. This keeps every failure inspectable.</p>
+      <ol>
+        <li><strong>Corpus and parsing.</strong> Give every source stable, referenceable IDs before writing retrieval code.</li>
+        <li><strong>Chunks, chunk-vector, and generation.</strong> Ship this one channel all the way to a cited answer.</li>
+        <li><strong>Summaries and summary-vector index.</strong> Generate each document summary once, store it, then embed it.</li>
+        <li><strong>Full-text index.</strong> Use an established search engine rather than hand-rolling matching and ranking.</li>
+        <li><strong>Graph index.</strong> Add entities and relations last; it is the most expensive channel to maintain.</li>
+        <li><strong>Merge, dedupe, context budget.</strong> Make this independently testable without calling an LLM.</li>
+        <li><strong>Grounded generation and citations.</strong> Require named sources and an explicit refusal when evidence is missing.</li>
+        <li><strong>Ten-question smoke test.</strong> Run one question per channel specialty before calling the baseline complete.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>3 · Baseline checklist</h2>
+      <ul>
+        <li>Documents can be added and re-indexed without a full restart.</li>
+        <li>Each of the four channels can be queried and inspected on its own.</li>
+        <li>The merge step measurably removes overlapping hits before applying the context budget.</li>
+        <li>Every generated answer names the document(s) it used.</li>
+        <li>The chatbot refuses instead of guessing when retrieval has no relevant evidence.</li>
+        <li>The ten-question smoke test records which channel contributed to every answer.</li>
+        <li>Feedback capture and follow-up handling remain deliberately out of scope for this baseline.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Next lesson</h2>
+      <p>Once this baseline works, add interaction logs, user feedback, and follow-up handling. That turns isolated answers into an evidence-backed production improvement loop.</p>
+      <p><a href="01-improve-your-rag.html">Open the production improvement loop <span aria-hidden="true">→</span></a></p>
+    </section>
+
+    <footer><a href="../0017-what-comes-after-the-pilot.html">Continuing education</a> · <a href="../../../README.md">Course home</a> · <a href="../../../RESOURCES.md">Resources</a></footer>
+  </main>
+</body>
+</html>

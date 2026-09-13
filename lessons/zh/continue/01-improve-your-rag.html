@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>继续学习 · 把 RAG 反馈转化为改进计划</title>
+  <link rel="stylesheet" href="../../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">继续学习 · 01 · 生产环境改进闭环</p>
+    <h1>把每一次 RAG 交互都变成更好的下一个版本</h1>
+    <p class="dek">先给应用打点埋点，倾听用户反馈，再把真实证据交给 Claude Code 或 Codex——而不是含糊地要求"把 RAG 做好一点"。</p>
+
+    <section class="card accent">
+      <h2>本课的具体收获</h2>
+      <p>交互 → 日志 → 用户反馈 → Agent 分析 → 改进计划 → 界定范围的修复 → 新证据。产出的是一份站得住脚的计划，而不是一堆猜测。</p>
+    </section>
+
+    <section>
+      <h2>1 · 先记录每一次交互，再调整任何东西</h2>
+      <p>对每一个回答，保存稳定的交互 ID、用户与入口、准确的问题、请求参数、按通道检索到的文档、最终上下文、回答、引用、延迟、成本和错误。</p>
+      <p class="callout">没有追溯记录的坏答案只是一则轶事。带着追溯记录的坏答案才是一个工程案例。</p>
+      <figure>
+        <img src="diagrams/architecture-baseline.en.svg" alt="四通道 RAG 基线，从源文档到有据可查、附带引用的回答">
+        <figcaption>给这条请求路径打点：每个环节都为交互日志贡献证据。</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>2 · 把反馈记在同一条记录上</h2>
+      <p>在每个回答下方加一个赞/踩按钮，附带可选评论。把评分、评论和时间写回那条交互 ID。反馈告诉你哪些失败真正要紧；日志告诉你系统实际做了什么。</p>
+      <figure>
+        <img src="diagrams/loop-triage-to-fix.en.svg" alt="反馈流经归类、编程 Agent 的界定修复、回归测试、部署，再到新一轮复查">
+        <figcaption>反馈和追溯数据共同打开并闭合这条改进闭环。</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>3 · 把真实日志交给 Claude Code 或 Codex</h2>
+      <p>抽取 20-30 条差评记录。脱敏之后，提供查询内容、按通道的结果、上下文、回答、引用、延迟和评论。让 Agent 把每个失败归类为 <code>retrieval_miss</code>、<code>ranking_miss</code>、<code>unfaithful_answer</code>、<code>over_refusal</code>、<code>under_refusal</code> 或 <code>followup_lost</code>。</p>
+      <pre><code>分析这些差评交互记录。
+对每一条，指出一个失败类别，并引用日志中的证据。
+把重复出现的模式归为一组。暂时不要提出修复方案。
+如果证据不足，说明日志里缺了哪个字段。</code></pre>
+      <figure>
+        <img src="diagrams/layers-context-window.en.svg" alt="更大的上下文窗口替代不了成本、访问控制、时效性和可追溯性">
+        <figcaption>更大的上下文并不能消除检索、权限、时效性、成本或可追溯性方面的失败。</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>4 · 索要一份计划，再界定一个修复范围</h2>
+      <p>把归类好的这批数据交还给 Claude Code 或 Codex。要求给出一份按优先级排序的计划，把每一项改动与其证据、责任层、预期的指标变化、回归用例和验证方法关联起来。先从影响最大、改动最小的修复开始。</p>
+      <pre><code>根据这些已归类的日志，提出一份按优先级排序的 RAG 改进计划。
+每一项包含：证据、责任层、改动内容、风险、验收标准、回归测试，以及基于新日志的验证方式。
+不要改动无关的检索通道或生成提示词。</code></pre>
+    </section>
+
+    <section>
+      <h2>5 · 按保持证据完整的顺序推进改进</h2>
+      <figure>
+        <img src="diagrams/timeline-build-order.en.svg" alt="构建时间线：从解析到检索、上下文组装、带引用的生成，再到冒烟测试">
+        <figcaption>按照能让一条路径始终可用、且每新增一层都可观测的顺序去构建和改进。</figcaption>
+      </figure>
+      <ol>
+        <li>先让日志和反馈变得可靠。</li>
+        <li>在责任层里修复一个已测量到的失败类别。</li>
+        <li>从一次真实交互中加入一个回归用例。</li>
+        <li>发布这个界定范围的改动。</li>
+        <li>在新日志上重新跑同样的分析，比较数量变化。</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>交付物</h2>
+      <p>一份与生产环境证据挂钩的、按优先级排序的 RAG 改进计划，每个提议的修复都配有一个回归用例，发布后还有明确的重新分析步骤。</p>
+      <p><strong>下一步行动：</strong>在再多花一个小时调整提示词或向量嵌入之前，先把交互日志和反馈控件加上。</p>
+    </section>
+
+    <footer><a href="02-build-your-rag-from-zero.html">从零开始搭建你自己的 RAG</a> · <a href="../0017-what-comes-after-the-pilot.html">继续学习</a> · <a href="../../../README_ZH.md">课程首页</a> · <a href="../../../RESOURCES_ZH.md">资源</a></footer>
+  </main>
+</body>
+</html>

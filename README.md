@@ -198,6 +198,11 @@ This lesson isn't numbered into Phases 1–4 above and isn't required for the
 completion criteria below — it's a signpost to what to read next once the
 course itself is done, not another graded step in it.
 
+Two chapters from that series are mirrored locally, with their diagrams:
+
+- [Build your own RAG chatbot from zero](lessons/en/continue/02-build-your-rag-from-zero.html) — a copy-paste build prompt and checklist for a four-channel, cited-answer baseline.
+- [Turn RAG feedback into an improvement plan](lessons/en/continue/01-improve-your-rag.html) — logging, user feedback, and a triage-to-fix workflow with Claude Code or Codex.
+
 ## Primary reference files
 
 - [Resources](RESOURCES.md)

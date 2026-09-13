@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formation continue · Transformer les retours du RAG en plan d’amélioration</title>
+  <link rel="stylesheet" href="../../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Formation continue · 01 · Boucle d’amélioration en production</p>
+    <h1>Transformez chaque interaction RAG en une meilleure prochaine version</h1>
+    <p class="dek">Instrumentez l’application, écoutez les utilisateurs, puis donnez à Claude Code ou Codex des preuves réelles — pas une vague demande de « rendre le RAG meilleur ».</p>
+
+    <section class="card accent">
+      <h2>Le gain concret d’aujourd’hui</h2>
+      <p>Interaction → journal → retour utilisateur → analyse par un agent → plan d’amélioration → correctif délimité → nouvelles preuves. Le résultat est un plan défendable, pas une collection de suppositions.</p>
+    </section>
+
+    <section>
+      <h2>1 · Journalisez chaque interaction avant de régler quoi que ce soit</h2>
+      <p>Pour chaque réponse, enregistrez un identifiant d’interaction stable, l’utilisateur et le point d’entrée, la question exacte, les paramètres de la requête, les documents récupérés par canal, le contexte final, la réponse, les citations, la latence, le coût et les erreurs.</p>
+      <p class="callout">Une mauvaise réponse sans sa trace est une anecdote. Une mauvaise réponse avec sa trace est un cas d’ingénierie.</p>
+      <figure>
+        <img src="diagrams/architecture-baseline.en.svg" alt="Base RAG à quatre canaux, des documents source aux réponses citées et fondées">
+        <figcaption>Instrumentez ce chemin de requête : chaque étape alimente le journal d’interactions en preuves.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>2 · Associez le retour utilisateur au même enregistrement</h2>
+      <p>Ajoutez un pouce levé et un pouce baissé sous chaque réponse, avec un commentaire optionnel. Réécrivez la note, le commentaire et l’horodatage sur cet identifiant d’interaction. Le retour utilisateur indique quels échecs comptent ; le journal indique ce que le système a réellement fait.</p>
+      <figure>
+        <img src="diagrams/loop-triage-to-fix.en.svg" alt="Le retour utilisateur alimente le tri, une correction ciblée par un agent de code, des tests de non-régression, le déploiement, puis une nouvelle relecture">
+        <figcaption>Le retour utilisateur et les données de trace ouvrent et referment la boucle d’amélioration.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>3 · Confiez de vrais journaux à Claude Code ou Codex</h2>
+      <p>Prélevez 20 à 30 lignes ayant reçu un retour négatif. Anonymisez les données sensibles, puis fournissez la requête, les résultats par canal, le contexte, la réponse, les citations, la latence et le commentaire. Demandez à l’agent de classer chaque échec en <code>retrieval_miss</code>, <code>ranking_miss</code>, <code>unfaithful_answer</code>, <code>over_refusal</code>, <code>under_refusal</code>, ou <code>followup_lost</code>.</p>
+      <pre><code>Analysez ces interactions ayant reçu un retour négatif.
+Pour chacune, nommez une classe d’échec et citez la preuve dans le journal.
+Regroupez les schémas récurrents. Ne proposez pas encore de correctif.
+Si la preuve est insuffisante, indiquez quel champ du journal manque.</code></pre>
+      <figure>
+        <img src="diagrams/layers-context-window.en.svg" alt="Les grandes fenêtres de contexte ne remplacent pas le coût, le contrôle d’accès, la fraîcheur des données ni la traçabilité">
+        <figcaption>Un contexte plus grand ne supprime pas les échecs de récupération, de permissions, de fraîcheur, de coût ni de traçabilité.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>4 · Demandez un plan, puis délimitez un seul correctif</h2>
+      <p>Redonnez le lot classé à Claude Code ou Codex. Exigez un plan hiérarchisé qui relie chaque changement à sa preuve, à la couche responsable, au mouvement de métrique attendu, à un cas de non-régression et à une méthode de vérification. Commencez par le correctif le plus petit et à fort impact.</p>
+      <pre><code>À partir des journaux classés, proposez un plan d’amélioration RAG hiérarchisé.
+Pour chaque élément : preuve, couche responsable, changement, risque, critère d’acceptation, test de non-régression et vérification sur des journaux frais.
+Ne modifiez pas les canaux de récupération non concernés ni le prompt de génération.</code></pre>
+    </section>
+
+    <section>
+      <h2>5 · Améliorez dans un ordre qui préserve les preuves</h2>
+      <figure>
+        <img src="diagrams/timeline-build-order.en.svg" alt="Chronologie de construction, du parsing à la récupération, à l’assemblage du contexte, à la génération citée et aux tests de fumée">
+        <figcaption>Construisez et améliorez dans un ordre qui garde un chemin fonctionnel et rend chaque couche ajoutée observable.</figcaption>
+      </figure>
+      <ol>
+        <li>Rendez d’abord les journaux et les retours utilisateurs fiables.</li>
+        <li>Corrigez une classe d’échec mesurée dans sa couche responsable.</li>
+        <li>Ajoutez un cas de non-régression tiré d’une interaction réelle.</li>
+        <li>Déployez le changement délimité.</li>
+        <li>Relancez la même analyse sur des journaux frais et comparez les décomptes.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Livrable</h2>
+      <p>Un plan d’amélioration RAG hiérarchisé, relié à des preuves de production, avec un cas de non-régression par correctif proposé et une étape explicite de réanalyse après la mise en production.</p>
+      <p><strong>Prochaine action :</strong> ajoutez le journal d’interactions et le contrôle de retour utilisateur avant de passer une heure de plus à régler des prompts ou des embeddings.</p>
+    </section>
+
+    <footer><a href="02-build-your-rag-from-zero.html">Construisez votre propre RAG à partir de zéro</a> · <a href="../0017-what-comes-after-the-pilot.html">Formation continue</a> · <a href="../../../README_FR.md">Accueil du cours</a> · <a href="../../../RESOURCES_FR.md">Ressources</a></footer>
+  </main>
+</body>
+</html>

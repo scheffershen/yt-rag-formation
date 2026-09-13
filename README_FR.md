@@ -200,6 +200,11 @@ Le cours est terminé lorsque vous pouvez :
 
 Cette leçon n'est pas numérotée dans les phases 1 à 4 ci-dessus et n'est pas requise pour les critères de réussite ci-dessous — c'est un panneau indicateur pour savoir quoi lire ensuite une fois le cours terminé, pas une étape notée de plus.
 
+Deux chapitres de cette série sont repris localement, avec leurs schémas :
+
+- [Construisez votre propre chatbot RAG à partir de zéro](lessons/fr/continue/02-build-your-rag-from-zero.html) — un prompt de construction prêt à copier-coller et une checklist pour une base à quatre canaux avec réponses citées.
+- [Transformer les retours du RAG en plan d'amélioration](lessons/fr/continue/01-improve-your-rag.html) — journalisation, retours utilisateurs, et un flux de tri-à-correction avec Claude Code ou Codex.
+
 ## Fichiers de référence principaux
 
 - [Ressources](RESOURCES_FR.md)

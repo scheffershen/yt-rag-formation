@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Continuing education · Turn RAG feedback into an improvement plan</title>
+  <link rel="stylesheet" href="../../../assets/course.css">
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Continuing education · 01 · Production improvement loop</p>
+    <h1>Turn every RAG interaction into a better next release</h1>
+    <p class="dek">Instrument the application, listen to users, then give Claude Code or Codex real evidence — not a vague request to “make the RAG better.”</p>
+
+    <section class="card accent">
+      <h2>Today’s tangible win</h2>
+      <p>Interaction → log → user feedback → agent analysis → improvement plan → scoped fix → fresh evidence. The output is a defensible plan, not a collection of guesses.</p>
+    </section>
+
+    <section>
+      <h2>1 · Log every interaction before you tune anything</h2>
+      <p>For each answer, store a stable interaction ID, user and entry point, exact question, request parameters, retrieved documents by channel, final context, answer, citations, latency, cost, and errors.</p>
+      <p class="callout">A bad answer without its trace is an anecdote. A bad answer with its trace is an engineering case.</p>
+      <figure>
+        <img src="diagrams/architecture-baseline.en.svg" alt="Four-channel RAG baseline from source documents to grounded cited answers">
+        <figcaption>Instrument this request path: every stage contributes evidence to the interaction log.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>2 · Put feedback on the same record</h2>
+      <p>Add thumbs-up and thumbs-down below every answer, with an optional comment. Write the rating, comment, and time back to that interaction ID. Feedback tells you which failures matter; the log tells you what the system actually did.</p>
+      <figure>
+        <img src="diagrams/loop-triage-to-fix.en.svg" alt="Feedback flows through triage, a scoped coding-agent fix, regression testing, deployment, and fresh review">
+        <figcaption>Feedback and trace data open and close the improvement loop.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>3 · Hand real logs to Claude Code or Codex</h2>
+      <p>Pull 20–30 negative-feedback rows. Redact sensitive material, then provide the query, results by channel, context, answer, citations, latency, and comment. Ask the agent to classify each failure as <code>retrieval_miss</code>, <code>ranking_miss</code>, <code>unfaithful_answer</code>, <code>over_refusal</code>, <code>under_refusal</code>, or <code>followup_lost</code>.</p>
+      <pre><code>Analyse these negative-feedback interactions.
+For each, name one failure class and cite the evidence in the log.
+Group recurring patterns. Do not suggest a fix yet.
+If evidence is insufficient, say which log field is missing.</code></pre>
+      <figure>
+        <img src="diagrams/layers-context-window.en.svg" alt="Large context windows do not replace cost, access control, freshness, or traceability">
+        <figcaption>More context does not remove retrieval, permissions, freshness, cost, or traceability failures.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>4 · Ask for a plan, then scope one fix</h2>
+      <p>Give the classified batch back to Claude Code or Codex. Require a ranked plan that connects each change to its evidence, responsible layer, expected metric movement, regression case, and verification method. Start with the smallest high-impact fix.</p>
+      <pre><code>Using the classified logs, propose a ranked RAG improvement plan.
+For each item: evidence, responsible layer, change, risk, acceptance criterion, regression test, and fresh-log verification.
+Do not change unrelated retrieval channels or the generation prompt.</code></pre>
+    </section>
+
+    <section>
+      <h2>5 · Improve in an order that keeps evidence intact</h2>
+      <figure>
+        <img src="diagrams/timeline-build-order.en.svg" alt="Build timeline from parsing through retrieval, context assembly, cited generation, and smoke testing">
+        <figcaption>Build and improve in an order that keeps one path working and every added layer observable.</figcaption>
+      </figure>
+      <ol>
+        <li>Make logs and feedback reliable first.</li>
+        <li>Fix one measured failure class in its responsible layer.</li>
+        <li>Add a regression case from a real interaction.</li>
+        <li>Ship the scoped change.</li>
+        <li>Run the same analysis on fresh logs and compare counts.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Deliverable</h2>
+      <p>A prioritized RAG improvement plan linked to production evidence, with one regression case per proposed fix and an explicit re-analysis step after release.</p>
+      <p><strong>Next action:</strong> add the interaction log and feedback control before spending another hour tuning prompts or embeddings.</p>
+    </section>
+
+    <footer><a href="02-build-your-rag-from-zero.html">Build your own RAG from zero</a> · <a href="../0017-what-comes-after-the-pilot.html">Continuing education</a> · <a href="../../../README.md">Course home</a> · <a href="../../../RESOURCES.md">Resources</a></footer>
+  </main>
+</body>
+</html>
